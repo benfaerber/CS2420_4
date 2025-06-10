@@ -122,8 +122,9 @@ public class ListSorterTest {
 
         ArrayList<Integer> lstWithFirst = createArrayList(new Integer[] {1, 4, 5, 3, 2, 20, 50, 22, 30});
         ArrayList<Integer> expected = createArrayList(new Integer[] {1, 2, 3, 4, 5, 20, 22, 30, 50});
-
         ListSorter.quicksort(lstWithFirst, firstChooser);
-        assertEquals(expected.toArray(), lstWithFirst.toArray());
+
+        printArrayList("After Quick Sort", lstWithFirst);
+        assertArrayEquals(expected.toArray(), lstWithFirst.toArray());
     }
 }

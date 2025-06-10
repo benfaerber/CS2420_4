@@ -146,38 +146,53 @@ public class ListSorter {
         }
     }
 
-    private static <T extends Comparable<? super T>> int partition(List<T> list, PivotChooser<T> chooser, int lowerIndex, int upperIndex) {
-        int pivotIndex = chooser.getPivotIndex(list, lowerIndex, upperIndex);
-        System.out.println("pivot index: " + pivotIndex);
-        int currentIndex = lowerIndex;
-
-        for (int j = currentIndex; j <= upperIndex - 1; j++) {
-            int compareValue = list.get(j).compareTo(list.get(pivotIndex));
-            if (compareValue < 0) {
-                currentIndex++;
-                T temp = list.get(j);
-                list.set(j, list.get(currentIndex));
-                list.set(currentIndex, temp);
-            }
-        }
-
-        currentIndex++;
-        T temp = list.get(currentIndex);
-        list.set(upperIndex, temp);
-        list.set(currentIndex, list.get(upperIndex));
-        return currentIndex;
-    }
-
-    public static <T extends Comparable<? super T>> void quicksortRec(List<T> list, PivotChooser<T> chooser, int lowerIndex, int upperIndex) {
-        if (lowerIndex < upperIndex) {
-            int partitionIndex = partition(list, chooser, lowerIndex, upperIndex);
-            quicksortRec(list, chooser, lowerIndex, partitionIndex - 1);
-            quicksortRec(list, chooser, partitionIndex + 1, upperIndex);
-        }
-    }
 
     public static <T extends Comparable<? super T>> void quicksort(List<T> list, PivotChooser<T> chooser) {
         quicksortRec(list, chooser, 0, list.size() - 1);
+    }
+
+    private static <T extends Comparable<? super T>> void quicksortRec(List<T> list, PivotChooser<T> chooser, int lowerIndex, int upperIndex) {
+        // List is sorted
+        if (lowerIndex - upperIndex <= 0) {
+            return;
+        }
+
+        int pivotIndex = chooser.getPivotIndex(list, lowerIndex, upperIndex);
+
+        int partitionPoint = partition(list, pivotIndex, lowerIndex, upperIndex);
+        quicksortRec(list, chooser, lowerIndex, partitionPoint - 1);
+        quicksortRec(list, chooser, partitionPoint + 1, upperIndex);
+    }
+
+    private static <T extends Comparable<? super T>> int partition(List<T> list, int pivotIndex, int leftIndex, int rightIndex) {
+        int currentLeft = leftIndex;
+        int currentRight = rightIndex - 1;
+
+        T pivot = list.get(pivotIndex);
+
+        while (true) {
+            do {
+                leftIndex++;
+            } while (list.get(leftIndex).compareTo(pivot) < 0);
+
+            do {
+                rightIndex--;
+            } while (rightIndex > 0 && list.get(rightIndex).compareTo(pivot) > 0);
+
+            if (currentLeft > rightIndex) {
+                break;
+            } else {
+                swap(list, currentLeft, currentRight);
+            }
+        }
+
+        return currentLeft;
+    }
+
+    private static <T> void swap(List<T> list, int indexA, int indexB) {
+        T temp = list.get(indexA);
+        list.set(indexA, list.get(indexB));
+        list.set(indexB, temp);
     }
 
     public static List<Integer> generateAscending(int size) {
