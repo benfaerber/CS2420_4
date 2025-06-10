@@ -152,44 +152,41 @@ public class ListSorter {
     }
 
     private static <T extends Comparable<? super T>> void quicksortRec(List<T> list, PivotChooser<T> chooser, int lowerIndex, int upperIndex) {
-        // List is sorted
-        if (lowerIndex - upperIndex <= 0) {
-            return;
+        if (lowerIndex < upperIndex) {
+            int partitionPoint = partition(list, chooser, lowerIndex, upperIndex);
+            quicksortRec(list, chooser, lowerIndex, partitionPoint - 1);
+            quicksortRec(list, chooser, partitionPoint + 1, upperIndex);
         }
-
-        int pivotIndex = chooser.getPivotIndex(list, lowerIndex, upperIndex);
-
-        int partitionPoint = partition(list, pivotIndex, lowerIndex, upperIndex);
-        quicksortRec(list, chooser, lowerIndex, partitionPoint - 1);
-        quicksortRec(list, chooser, partitionPoint + 1, upperIndex);
     }
 
-    private static <T extends Comparable<? super T>> int partition(List<T> list, int pivotIndex, int leftIndex, int rightIndex) {
-        int currentLeft = leftIndex;
-        int currentRight = rightIndex - 1;
+    private static <T extends Comparable<? super T>> int partition(List<T> lst, PivotChooser<T> chooser, int low, int high) {
+        // Choose the pivot
+        int pivotIndex = chooser.getPivotIndex(lst, low, high);
+        T pivot = lst.get(pivotIndex);
+        swap(lst, pivotIndex, high);
 
-        T pivot = list.get(pivotIndex);
+        // Index of smaller element and indicates
+        // the right position of pivot found so far
+        int i = low - 1;
 
-        while (true) {
-            do {
-                currentLeft++;
-            } while (list.get(currentLeft).compareTo(pivot) < 0);
-
-            do {
-                currentRight--;
-            } while (rightIndex > 0 && list.get(currentRight).compareTo(pivot) > 0);
-
-            if (currentLeft > rightIndex) {
-                break;
-            } else {
-                swap(list, currentLeft, currentRight);
+        // Traverse arr[low..high] and move all smaller
+        // elements to the left side. Elements from low to
+        // i are smaller after every iteration
+        for (int j = low; j <= high - 1; j++) {
+            if (lst.get(j).compareTo(pivot) < 0) {
+                i++;
+                swap(lst, i, j);
             }
         }
 
-        return currentLeft;
+        // Move pivot after smaller elements and
+        // return its position
+        swap(lst, i + 1, high);
+        return i + 1;
     }
 
     private static <T> void swap(List<T> list, int indexA, int indexB) {
+        System.out.println("indexA: " + indexA + ", indexB: " + indexB);
         T temp = list.get(indexA);
         list.set(indexA, list.get(indexB));
         list.set(indexB, temp);
