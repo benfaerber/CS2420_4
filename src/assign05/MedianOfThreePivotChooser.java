@@ -3,7 +3,19 @@ package assign05;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The median item of the first element, middle element, and last element
+ * @param <E> the type of item in the list
+ */
 public class MedianOfThreePivotChooser<E extends Comparable<? super E>> implements PivotChooser<E> {
+    /**
+     * Selects an element in the given List to serve as the quicksort pivot.
+     *
+     * @param list - list containing a portion to be sorted
+     * @param leftIndex - position of first item in the sublist to be sorted
+     * @param rightIndex - position of the last item in the sublist to be sorted
+     * @return index of the list element selected to serve as the pivot
+     */
     public int getPivotIndex(List<E> list, int leftIndex, int rightIndex) {
         E first = list.get(leftIndex);
         E last = list.get(rightIndex);
