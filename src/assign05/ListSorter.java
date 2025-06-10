@@ -172,12 +172,12 @@ public class ListSorter {
 
         while (true) {
             do {
-                leftIndex++;
-            } while (list.get(leftIndex).compareTo(pivot) < 0);
+                currentLeft++;
+            } while (list.get(currentLeft).compareTo(pivot) < 0);
 
             do {
-                rightIndex--;
-            } while (rightIndex > 0 && list.get(rightIndex).compareTo(pivot) > 0);
+                currentRight--;
+            } while (rightIndex > 0 && list.get(currentRight).compareTo(pivot) > 0);
 
             if (currentLeft > rightIndex) {
                 break;
