@@ -105,13 +105,13 @@ public class ListSorter {
     }
 
     /**
-     * Private method to merge all the sorted sub-arrays into auxiiery list.
+     * Private method to merge the sorted auxiliary list back to the original list.
      *
-     * @param list
-     * @param lower
-     * @param middle
-     * @param upper
-     * @param <T>
+     * @param list - <T> of auxiliary list we are merging
+     * @param lower - the first index of the section to merge
+     * @param middle - the middle index of the section to merge
+     * @param upper - the last index of the section to merge
+     * @param <T> - the type contained in the list
      */
     private static <T extends Comparable<? super T>> void merge(List<T> list, int lower, int middle, int upper) {
         int leftLength = middle - lower + 1;
@@ -158,9 +158,9 @@ public class ListSorter {
     /**
      * Sort a list using quick sort and a custom pivot chooser.
      *
-     * @param list the list to be sorted
-     * @param chooser A chooser that implements the PivotChooser protocol
-     * @param <T> The type the list contains
+     * @param list - the list to be sorted
+     * @param chooser - A chooser that implements the PivotChooser protocol
+     * @param <T> - The type the list contains
      */
     public static <T extends Comparable<? super T>> void quicksort(List<T> list, PivotChooser<T> chooser) {
         quicksortRec(list, chooser, 0, list.size() - 1);
@@ -169,11 +169,11 @@ public class ListSorter {
     /**
      * The auxialary method that powers quick sort.
      *
-     * @param list the list to be sorted
-     * @param chooser A chooser that implements the PivotChooser protocol
-     * @param lowerIndex the index to start quick sorting at
-     * @param upperIndex the index to end quick sorting at
-     * @param <T> the type the list contains
+     * @param list - the list to be sorted
+     * @param chooser - A chooser that implements the PivotChooser protocol
+     * @param lowerIndex - the index to start quick sorting at
+     * @param upperIndex - the index to end quick sorting at
+     * @param <T> - the type the list contains
      */
     private static <T extends Comparable<? super T>> void quicksortRec(List<T> list, PivotChooser<T> chooser, int lowerIndex, int upperIndex) {
         if (lowerIndex < upperIndex) {
@@ -186,12 +186,12 @@ public class ListSorter {
     /**
      * Split the list into quick sorting sections.
      *
-     * @param list the list to be partioned
-     * @param chooser the object that chooses the quick sort pivot
-     * @param low where to start the partion
-     * @param high where to end the partion
-     * @return the partition point
-     * @param <T> the type contained in the list
+     * @param list - the list to be partioned
+     * @param chooser - the object that chooses the quick sort pivot
+     * @param low - where to start the partion
+     * @param high - where to end the partion
+     * @return - the partition point
+     * @param <T> - the type contained in the list
      */
     private static <T extends Comparable<? super T>> int partition(List<T> list, PivotChooser<T> chooser, int low, int high) {
         int pivotIndex = chooser.getPivotIndex(list, low, high);
@@ -214,10 +214,10 @@ public class ListSorter {
     /**
      * Swaps 2 elements in the list.
      *
-     * @param list the list to swap elements in
-     * @param indexA the first index to swap
-     * @param indexB the second index to swap
-     * @param <T> the type contained in the list
+     * @param list - the list to swap elements in
+     * @param indexA - the first index to swap
+     * @param indexB - the second index to swap
+     * @param <T> - the type contained in the list
      */
     private static <T> void swap(List<T> list, int indexA, int indexB) {
         T temp = list.get(indexA);
