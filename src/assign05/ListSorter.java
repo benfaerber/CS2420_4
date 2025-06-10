@@ -160,18 +160,13 @@ public class ListSorter {
     }
 
     private static <T extends Comparable<? super T>> int partition(List<T> lst, PivotChooser<T> chooser, int low, int high) {
-        // Choose the pivot
         int pivotIndex = chooser.getPivotIndex(lst, low, high);
         T pivot = lst.get(pivotIndex);
         swap(lst, pivotIndex, high);
 
-        // Index of smaller element and indicates
-        // the right position of pivot found so far
+
         int i = low - 1;
 
-        // Traverse arr[low..high] and move all smaller
-        // elements to the left side. Elements from low to
-        // i are smaller after every iteration
         for (int j = low; j <= high - 1; j++) {
             if (lst.get(j).compareTo(pivot) < 0) {
                 i++;
@@ -179,8 +174,6 @@ public class ListSorter {
             }
         }
 
-        // Move pivot after smaller elements and
-        // return its position
         swap(lst, i + 1, high);
         return i + 1;
     }
