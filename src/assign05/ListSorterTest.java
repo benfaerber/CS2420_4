@@ -29,7 +29,6 @@ public class ListSorterTest {
     private PivotChooser<Integer> chooseRandomInt;
     private PivotChooser<Character> chooseRandomChar;
 
-
     @BeforeEach
     void setUp() throws Exception {
         emptyList = new ArrayList<>();

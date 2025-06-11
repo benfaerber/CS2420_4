@@ -13,39 +13,6 @@ import java.util.List;
  */
 public class ListSorter {
     /**
-     * Perform insertion sort on the specified range of the list.
-     *
-     * @param list  T[] type objects
-     * @param start int index start position of sorting
-     * @param end   int index end position of sorting
-     * @param <T>   Generic type of object
-     */
-    private static <T extends Comparable<? super T>> void insertionSort(List<T> list, int start, int end) {
-        for (int i = start; i < end; i++) {
-            for (int j = i; j > start; j--) {
-                T currentUnsortStar = list.get(j);
-                T currentUnsortEnd = list.get(j - 1);
-                if (currentUnsortStar.compareTo(currentUnsortEnd) < 0) {
-                    T temp = list.get(j);
-                    list.set(j, currentUnsortEnd);
-                    list.set(j - 1, temp);
-                }
-            }
-        }
-    }
-
-    /**
-     * Perform insertion sort on an entire list with insertion sort.
-     *
-     * @param list the full list to be sorted
-     * @param <T>  the type the list contains
-     */
-    private static <T extends Comparable<? super T>> void insertionSort(List<T> list) {
-        // Maybe add a count to see how many times we call insertion sort
-        insertionSort(list, 0, list.size());
-    }
-
-    /**
      * Perform merge sort on a given list, switch to insertion sort when the sub-array size is less than the threshold.
      *
      * @param list      <T> type list of objects
@@ -109,6 +76,39 @@ public class ListSorter {
             insertionSort(list, rightStartAt, rightEndAt + 1);
         }
         merge(list, lower, middle, upper);
+    }
+
+    /**
+     * Perform insertion sort on the specified range of the list.
+     *
+     * @param list  T[] type objects
+     * @param start int index start position of sorting
+     * @param end   int index end position of sorting
+     * @param <T>   Generic type of object
+     */
+    private static <T extends Comparable<? super T>> void insertionSort(List<T> list, int start, int end) {
+        for (int i = start; i < end; i++) {
+            for (int j = i; j > start; j--) {
+                T currentUnsortStar = list.get(j);
+                T currentUnsortEnd = list.get(j - 1);
+                if (currentUnsortStar.compareTo(currentUnsortEnd) < 0) {
+                    T temp = list.get(j);
+                    list.set(j, currentUnsortEnd);
+                    list.set(j - 1, temp);
+                }
+            }
+        }
+    }
+
+    /**
+     * Perform insertion sort on an entire list with insertion sort.
+     *
+     * @param list the full list to be sorted
+     * @param <T>  the type the list contains
+     */
+    private static <T extends Comparable<? super T>> void insertionSort(List<T> list) {
+        // Maybe add a count to see how many times we call insertion sort
+        insertionSort(list, 0, list.size());
     }
 
     /**
