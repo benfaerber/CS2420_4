@@ -89,7 +89,7 @@ public class ListSorter {
         if (leftSize >= threshold) {
             mergesortRec(list, leftStartAt, leftEndAt, threshold);
         } else {
-            insertionSort(list, leftStartAt, leftEndAt);
+            insertionSort(list, leftStartAt, leftEndAt + 1);
         }
 
         // Right SIDE
@@ -97,7 +97,7 @@ public class ListSorter {
         int rightEndAt = upper;
         int rightSize = rightEndAt - rightStartAt;
 
-        if (rightSize >= threshold) {
+        if (rightSize > threshold) {
             mergesortRec(list, rightStartAt, rightEndAt, threshold);
         } else {
             insertionSort(list, rightStartAt, rightEndAt + 1);

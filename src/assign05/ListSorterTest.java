@@ -73,11 +73,21 @@ public class ListSorterTest {
         list.add(20);
         list.add(200);
 
-        ListSorter.mergesort(list, );
+        ListSorter.mergesort(list, 1);
         printArrayList("4 long Merge Sort", list);
         assertArrayEquals(new Integer[] {20, 80, 100, 200}, list.toArray());
+    }
 
-        List<Integer> medianSizeIntList = new ArrayList<>();
+    @Test
+    void testMergeMediumLength() {
+        List<Integer> medianSizeIntList = ListSorter.generatePermuted(500);
+        List<Integer> medianSizeIntListExp = ListSorter.generateAscending(500);
+
+        ListSorter.mergesort(medianSizeIntList, 10);
+
+        printArrayList("Medium after sorting", medianSizeIntList);
+        assertArrayEquals(medianSizeIntListExp.toArray(), medianSizeIntList.toArray());
+
     }
 
     @Test
