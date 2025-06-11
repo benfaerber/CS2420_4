@@ -57,7 +57,27 @@ public class ListSorterTest {
         printArrayList("Long Merge Sort", lst);
         assertArrayEquals(expected.toArray(), lst.toArray());
 
-        ArrayList<Character> charList = createArrayList(new Character[] {1, 2, 3, 4, 5, 20, 22, 30});
+        // Test genericss
+        ArrayList<Character> charList = createArrayList(new Character[] {'a', 'd', 'c', 'e', 'g', 'h'});
+        ArrayList<Character> expectedChar = createArrayList(new Character[] {'a', 'c', 'd', 'e', 'g', 'h'});
+        ListSorter.mergesort(charList, 1);
+        assertArrayEquals(expectedChar.toArray(), charList.toArray());
+    }
+
+    @Test
+    void testMergeSort4Long() {
+        // Use mergesort on 4-element list with threshold 1 (0/1)
+        ArrayList<Integer> list = new ArrayList<>();
+        list.add(100);
+        list.add(80);
+        list.add(20);
+        list.add(200);
+
+        ListSorter.mergesort(list, );
+        printArrayList("4 long Merge Sort", list);
+        assertArrayEquals(new Integer[] {20, 80, 100, 200}, list.toArray());
+
+        List<Integer> medianSizeIntList = new ArrayList<>();
     }
 
     @Test

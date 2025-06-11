@@ -86,7 +86,7 @@ public class ListSorter {
         int leftSize = leftEndAt - leftStartAt;
 
         printListRange("Left Range Before Sort", list, leftStartAt, leftEndAt);
-        if (leftSize > threshold) {
+        if (leftSize >= threshold) {
             mergesortRec(list, leftStartAt, leftEndAt, threshold);
         } else {
             insertionSort(list, leftStartAt, leftEndAt);
@@ -97,7 +97,7 @@ public class ListSorter {
         int rightEndAt = upper;
         int rightSize = rightEndAt - rightStartAt;
 
-        if (rightSize > threshold) {
+        if (rightSize >= threshold) {
             mergesortRec(list, rightStartAt, rightEndAt, threshold);
         } else {
             insertionSort(list, rightStartAt, rightEndAt + 1);
