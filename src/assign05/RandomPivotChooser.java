@@ -4,7 +4,8 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Select a random element from the list to be the pivot
+ * Select a random element from the list to be the pivot.
+ *
  * @param <E> the type of item in the list
  */
 public class RandomPivotChooser<E extends Comparable<? super E>> implements PivotChooser<E> {

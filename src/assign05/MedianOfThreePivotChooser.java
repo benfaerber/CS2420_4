@@ -1,10 +1,10 @@
 package assign05;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The median item of the first element, middle element, and last element
+ * The median item of the first element, the middle element, and the last element.
+ *
  * @param <E> the type of item in the list
  */
 public class MedianOfThreePivotChooser<E extends Comparable<? super E>> implements PivotChooser<E> {

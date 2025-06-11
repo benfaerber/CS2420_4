@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * This class performs two sorting mechanisms (Merge/Insertion) to sort the List
+ * This class performs two sorting mechanisms (Merge/Insertion) to sort the List.
  * Generates lists in ascending, descending, and permuted (ie changed order of) order.
  *
  * @author Benjamin Faerber and David Chen

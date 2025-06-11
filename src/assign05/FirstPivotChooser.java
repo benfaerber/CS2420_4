@@ -1,9 +1,9 @@
 package assign05;
-
 import java.util.List;
 
 /**
- * Select the first element in the list as the pivot
+ * Select the first element in the list as the pivot.
+ *
  * @param <E> The type of items in the list
  */
 public class FirstPivotChooser<E extends Comparable<? super E>> implements PivotChooser<E> {
