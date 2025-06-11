@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class contains tests for ArraySet.
+ * This class contains tests for ListSorter.
  *
  * @author Benjamin Faerber and David Chen
- * @version 2025-05-29
+ * @version 2025-06-11
  */
 public class ListSorterTest {
     @BeforeEach
@@ -56,6 +56,8 @@ public class ListSorterTest {
         ListSorter.mergesort(lst, 3);
         printArrayList("Long Merge Sort", lst);
         assertArrayEquals(expected.toArray(), lst.toArray());
+
+        ArrayList<Character> charList = createArrayList(new Character[] {1, 2, 3, 4, 5, 20, 22, 30});
     }
 
     @Test

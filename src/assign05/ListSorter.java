@@ -159,9 +159,9 @@ public class ListSorter {
     /**
      * Sort a list using quick sort and a custom pivot chooser.
      *
-     * @param list - the list to be sorted
-     * @param chooser - A chooser that implements the PivotChooser protocol
-     * @param <T> - The type the list contains
+     * @param list the list to be sorted
+     * @param chooser a chooser that implements the PivotChooser protocol
+     * @param <T> the type the list contains
      */
     public static <T extends Comparable<? super T>> void quicksort(List<T> list, PivotChooser<T> chooser) {
         quicksortRec(list, chooser, 0, list.size() - 1);
@@ -171,7 +171,7 @@ public class ListSorter {
      * The auxialary method that powers quick sort.
      *
      * @param list - the list to be sorted
-     * @param chooser - A chooser that implements the PivotChooser protocol
+     * @param chooser - a chooser that implements the PivotChooser protocol
      * @param lowerIndex - the index to start quick sorting at
      * @param upperIndex - the index to end quick sorting at
      * @param <T> - the type the list contains
@@ -187,12 +187,12 @@ public class ListSorter {
     /**
      * Split the list into quick sorting sections.
      *
-     * @param list - the list to be partioned
-     * @param chooser - the object that chooses the quick sort pivot
-     * @param low - where to start the partion
-     * @param high - where to end the partion
-     * @return - the partition point
-     * @param <T> - the type contained in the list
+     * @param list the list to be partioned
+     * @param chooser the object that chooses the quick sort pivot
+     * @param low where to start the partion
+     * @param high where to end the partion
+     * @return the partition point
+     * @param <T> the type contained in the list
      */
     private static <T extends Comparable<? super T>> int partition(List<T> list, PivotChooser<T> chooser, int low, int high) {
         int pivotIndex = chooser.getPivotIndex(list, low, high);
@@ -215,10 +215,10 @@ public class ListSorter {
     /**
      * Swaps 2 elements in the list.
      *
-     * @param list - the list to swap elements in
-     * @param indexA - the first index to swap
-     * @param indexB - the second index to swap
-     * @param <T> - the type contained in the list
+     * @param list the list to swap elements in
+     * @param indexA the first index to swap
+     * @param indexB the second index to swap
+     * @param <T> the type contained in the list
      */
     private static <T> void swap(List<T> list, int indexA, int indexB) {
         T temp = list.get(indexA);
@@ -229,8 +229,8 @@ public class ListSorter {
     /**
      * This method generates and returns a List of integers 1 to size in ascending order.
      *
-     * @param size
-     * @return
+     * @param size the size of the list
+     * @return an ascending ordered list containing numbers from 1 to size
      */
     public static List<Integer> generateAscending(int size) {
         List<Integer> ascendingList = new ArrayList<>(size);
@@ -244,7 +244,7 @@ public class ListSorter {
      * This method generates and returns a List of integers 1 to size in permuted order (i,e., randomly ordered).
      *
      * @param size the size of the list
-     * @return A permuted ordered list contains numbers from 1 to size
+     * @return a permuted ordered list containing numbers from 1 to size
      */
     public static List<Integer> generatePermuted(int size) {
         List<Integer> list = generateAscending(size);
@@ -255,12 +255,12 @@ public class ListSorter {
     /**
      * This method generates and returns a List of integers 1 to size in descending order.
      * @param size the size of the list
-     * @return the newly created list
+     * @return a descending ordered list containing numbers from size to 1
      */
     public static List<Integer> generateDescending(int size) {
         List<Integer> list = new ArrayList<>(size);
         for (int i = size; i > 0; i--) {
-            list.addFirst(size - i + 1);
+            list.add(0, size - i + 1);
         }
 
         return list;
