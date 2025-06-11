@@ -1,5 +1,6 @@
 package assign05;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -225,16 +226,44 @@ public class ListSorter {
         list.set(indexB, temp);
     }
 
+    /**
+     * This method generates and returns a List of integers 1 to size in ascending order.
+     *
+     * @param size
+     * @return
+     */
     public static List<Integer> generateAscending(int size) {
-        return List.of();
+        List<Integer> ascendingList = new ArrayList<>(size);
+        for (int i = 0; i < size; i++){
+            ascendingList.add(i + 1);
+        }
+        return ascendingList;
     }
 
+    /**
+     * This method generates and returns a List of integers 1 to size in permuted order (i,e., randomly ordered).
+     *
+     * @param size the size of the list
+     * @return A permuted ordered list contains numbers from 1 to size
+     */
     public static List<Integer> generatePermuted(int size) {
-        return List.of();
+        List<Integer> list = generateAscending(size);
+        Collections.shuffle(list);
+        return list;
     }
 
+    /**
+     * This method generates and returns a List of integers 1 to size in descending order.
+     * @param size the size of the list
+     * @return the newly created list
+     */
     public static List<Integer> generateDescending(int size) {
-        return List.of();
+        List<Integer> list = new ArrayList<>(size);
+        for (int i = size; i > 0; i--) {
+            list.addFirst(size - i + 1);
+        }
+
+        return list;
     }
 
     // Needs to be deleted later

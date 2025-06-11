@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class contains tests for ArraySet.
@@ -38,10 +39,10 @@ public class ListSorterTest {
         return lst;
     }
 
-    private static <T> void printArrayList(String label, ArrayList<T> lst) {
+    private static <T> void printArrayList(String label, List<T> lst) {
         System.out.println(label + ":");
         for (T item : lst) {
-            System.out.print(item + ", ");
+            System.out.print(item.toString() + ", ");
         }
         System.out.println();
     }
@@ -130,5 +131,26 @@ public class ListSorterTest {
         ListSorter.quicksort(small, randomChooser);
         System.out.println(small);
         assertArrayEquals(smallEx.toArray(), small.toArray());
+    }
+
+    @Test
+    void testAscendingList() {
+        List<Integer> list10 = ListSorter.generateAscending(10);
+        assertArrayEquals(new Integer[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10},  list10.toArray());
+
+    }
+
+    @Test
+    void testDescendingList() {
+        List<Integer> list10 = ListSorter.generateDescending(10);
+        assertArrayEquals(new Integer[] {10, 9, 8, 7, 6, 5, 4, 3, 2, 1},  list10.toArray());
+    }
+
+    @Test
+    void testPermutted() {
+        List<Integer> list10 = ListSorter.generatePermuted(10);
+        for (int i = 1; i < 10; i++) {
+            assertTrue(list10.contains(i));
+        }
     }
 }
