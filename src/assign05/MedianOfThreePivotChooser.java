@@ -12,29 +12,24 @@ public class MedianOfThreePivotChooser<E extends Comparable<? super E>> implemen
      * Selects an element in the given List to serve as the quicksort pivot.
      *
      * @param list - list containing a portion to be sorted
-     * @param leftIndex - position of first item in the sublist to be sorted
-     * @param rightIndex - position of the last item in the sublist to be sorted
+     * @param firstIndex - position of first item in the sublist to be sorted
+     * @param lastIndex - position of the last item in the sublist to be sorted
      * @return index of the list element selected to serve as the pivot
      */
-    public int getPivotIndex(List<E> list, int leftIndex, int rightIndex) {
-        E first = list.get(leftIndex);
-        E last = list.get(rightIndex);
-        int middleIndex = ((rightIndex - leftIndex) / 2) + leftIndex;
+    public int getPivotIndex(List<E> list, int firstIndex, int lastIndex) {
+        int middleIndex = (firstIndex + lastIndex) / 2;
+        E first = list.get(firstIndex);
         E middle = list.get(middleIndex);
+        E last = list.get(lastIndex);
 
-        ArrayList<E> medianList = new ArrayList<E>();
-        medianList.add(first);
-        medianList.add(last);
-        medianList.add(middle);
-        ListSorter.insertionSort(medianList);
-        E medianElement = medianList.get(1);
-
-        if (middle == medianElement) {
+        if ((first.compareTo(middle) <= 0 && middle.compareTo(last) <= 0) ||
+                (last.compareTo(middle) <= 0 && middle.compareTo(first) <= 0)) {
             return middleIndex;
-        } else if (middle == first) {
-            return leftIndex;
+        } else if ((middle.compareTo(first) <= 0 && first.compareTo(last) <= 0) ||
+                (last.compareTo(first) <= 0 && first.compareTo(middle) <= 0)) {
+            return firstIndex;
         } else {
-            return rightIndex;
+            return lastIndex;
         }
     }
 }

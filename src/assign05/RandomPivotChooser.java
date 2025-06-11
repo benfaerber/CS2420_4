@@ -18,6 +18,8 @@ public class RandomPivotChooser<E extends Comparable<? super E>> implements Pivo
      */
     public int getPivotIndex(List<E> list, int leftIndex, int rightIndex) {
         Random rand = new Random();
-        return rand.nextInt(leftIndex, rightIndex);
+        // I think this won't include rightIndex
+//        return rand.nextInt(leftIndex, rightIndex);
+        return rand.nextInt(rightIndex - leftIndex + 1) + leftIndex;
     }
 }

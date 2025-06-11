@@ -1,12 +1,10 @@
 package assign05;
-
 import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -16,160 +14,163 @@ import java.util.List;
  * @version 2025-06-11
  */
 public class ListSorterTest {
+    private ArrayList<Integer> emptyList, smallIntList, smallIntWithDup, smallIntRever, medianIntList;
+    private ArrayList<Character> smallCharList;
+    private List<Integer> largeIntList;
+
+    private ArrayList<Integer> smallIntListExp, smallIntWithDupExp, smallIntReverExp, medianIntListExp;
+    private ArrayList<Character> smallCharListExp;
+    private List<Integer> largeIntListExp;
+
+    private PivotChooser<Integer> chooseFirstInt;
+    private PivotChooser<Character> chooseFirstChar;
+    private PivotChooser<Integer> chooseMedianInt;
+    private PivotChooser<Character> chooseMedianChar;
+    private PivotChooser<Integer> chooseRandomInt;
+    private PivotChooser<Character> chooseRandomChar;
+
+
     @BeforeEach
     void setUp() throws Exception {
+        emptyList = new ArrayList<>();
+        smallIntList = createArrayList(new Integer[] {9, 8, 7, 10});
+        smallIntWithDup = createArrayList(new Integer[] {2, 4, 4, 1});
+        smallIntRever = createArrayList(new Integer[] {4, 3, 2, 1});
+        smallCharList = createArrayList(new Character[] {'s', 'b', 'u', 'r'});
+        medianIntList = createArrayList(new Integer[] {20, 10, 30, 12, 9, 50, 44, 100, 123, 99, 777, 60, 40, 123, 223, 213});
+        largeIntList = new ArrayList<>(1000);
+        for (int i = 0; i < 1000; i++){
+            largeIntList.add(i + 1);
+        }
+        Collections.shuffle(largeIntList);
 
+        smallIntListExp = createArrayList(new Integer[] {7, 8, 9, 10});
+        smallIntWithDupExp = createArrayList(new Integer[] {1, 2, 4, 4});
+        smallIntReverExp = createArrayList(new Integer[] {1, 2, 3, 4});
+        smallCharListExp = createArrayList(new Character[] {'b', 'r', 's', 'u'});
+        medianIntListExp = createArrayList(new Integer[] {9, 10, 12, 20, 30, 40, 44, 50, 60, 99, 100, 123, 123, 213, 223, 777});
+        largeIntListExp = new ArrayList<>(1000);
+        for (int i = 0; i < largeIntList.size(); i++) {
+            largeIntListExp.add(i + 1);
+        }
+
+        chooseFirstInt = new FirstPivotChooser<>();
+        chooseFirstChar = new FirstPivotChooser<>();
+        chooseMedianInt = new MedianOfThreePivotChooser<>();
+        chooseMedianChar = new MedianOfThreePivotChooser<>();
+        chooseRandomInt = new RandomPivotChooser<>();
+        chooseRandomChar = new RandomPivotChooser<>();
     }
 
     @AfterEach
-    void tearDown() throws Exception {
+    void tearDown() throws Exception {}
 
-    }
-
-    @Test
-    void testEquals(){
-        assertTrue(true);
-    }
-
-    private static <T> ArrayList<T> createArrayList(T[] arr) {
-        ArrayList<T> lst = new ArrayList<>();
-        for (T item : arr) {
-            lst.add(item);
-        }
-        return lst;
-    }
-
-    private static <T> void printArrayList(String label, List<T> lst) {
-        System.out.println(label + ":");
-        for (T item : lst) {
-            System.out.print(item.toString() + ", ");
-        }
-        System.out.println();
-    }
+//    @Test
+//    void testInsertionSort() {
+//        // Test basic insertion sort
+//        ListSorter.insertionSort(smallIntList);
+//        assertArrayEquals(smallIntListExp.toArray(), smallIntList.toArray());
+//        ListSorter.insertionSort(smallIntRever);
+//        assertArrayEquals(smallIntReverExp.toArray(), smallIntRever.toArray());
+//        ListSorter.insertionSort(smallCharList);
+//        assertArrayEquals(smallCharListExp.toArray(), smallCharList.toArray());
+//        ListSorter.insertionSort(largeIntList);
+//        assertArrayEquals(largeIntListExp.toArray(), largeIntList.toArray());
+//
+//        // Start insertion sort from the beginning to middle
+//        ArrayList<Integer> insertionRangeTest = createArrayList(new Integer[] {1, 3, 2, 5, 2, 6});
+//        ArrayList<Integer> InsertionRangeExpected = createArrayList(new Integer[] {1, 2, 3, 5, 2, 6});
+//        ListSorter.insertionSort(insertionRangeTest, 0, 3);
+//        assertArrayEquals(insertionRangeTest.toArray(), InsertionRangeExpected.toArray());
+//
+//        // Start Insertion from a range in the middle
+//        ArrayList<Integer> insertionMiddle = createArrayList(new Integer[] {1, 3, 2, 10, 2, 6});
+//        ArrayList<Integer> insertionMiddleExpected = createArrayList(new Integer[] {1, 3, 2, 2, 6, 10});
+//        ListSorter.insertionSort(insertionMiddle, 2, 6);
+//        assertArrayEquals(insertionMiddleExpected.toArray(), insertionMiddle.toArray());
+//    }
 
     @Test
     void testMergeSort() {
-        // Test without caring about the insertion sort stuff
-        ArrayList<Integer> lst = createArrayList(new Integer[] {1, 4, 5, 3, 2, 20, 50, 22, 30});
-        ArrayList<Integer> expected = createArrayList(new Integer[] {1, 2, 3, 4, 5, 20, 22, 30, 50});
+        // Testing small size, generic, should use insertion sort right away: 10
+        ListSorter.mergesort(smallIntList, 10);
+        assertArrayEquals(smallIntListExp.toArray(), smallIntList.toArray());
+        ListSorter.mergesort(smallCharList, 10);
+        assertArrayEquals(smallCharListExp.toArray(), smallCharList.toArray());
 
-        ListSorter.mergesort(lst, 3);
-        printArrayList("Long Merge Sort", lst);
-        assertArrayEquals(expected.toArray(), lst.toArray());
+        // General testing
+        ListSorter.mergesort(smallIntRever, 5);
+        assertArrayEquals(smallIntReverExp.toArray(), smallIntRever.toArray());
+        ListSorter.mergesort(smallIntWithDup, 5);
+        assertArrayEquals(smallIntWithDupExp.toArray(), smallIntWithDup.toArray());
+        ListSorter.mergesort(medianIntList, 5);
+        assertArrayEquals(medianIntListExp.toArray(), medianIntList.toArray());
+        ListSorter.mergesort(largeIntList, 5);
+        assertArrayEquals(largeIntListExp.toArray(), largeIntList.toArray());
 
-        // Test genericss
-        ArrayList<Character> charList = createArrayList(new Character[] {'a', 'd', 'c', 'e', 'g', 'h'});
-        ArrayList<Character> expectedChar = createArrayList(new Character[] {'a', 'c', 'd', 'e', 'g', 'h'});
-        ListSorter.mergesort(charList, 1);
-        assertArrayEquals(expectedChar.toArray(), charList.toArray());
-    }
-
-    @Test
-    void testMergeSort4Long() {
-        // Use mergesort on 4-element list with threshold 1 (0/1)
-        ArrayList<Integer> list = new ArrayList<>();
-        list.add(100);
-        list.add(80);
-        list.add(20);
-        list.add(200);
-
-        ListSorter.mergesort(list, 1);
-        printArrayList("4 long Merge Sort", list);
-        assertArrayEquals(new Integer[] {20, 80, 100, 200}, list.toArray());
-    }
-
-    @Test
-    void testMergeMediumLength() {
-        List<Integer> medianSizeIntList = ListSorter.generatePermuted(500);
-        List<Integer> medianSizeIntListExp = ListSorter.generateAscending(500);
-
-        ListSorter.mergesort(medianSizeIntList, 10);
-
-        printArrayList("Medium after sorting", medianSizeIntList);
-        assertArrayEquals(medianSizeIntListExp.toArray(), medianSizeIntList.toArray());
-
-    }
-
-    @Test
-    void testInsertionSort() {
-        ArrayList<Integer> lst = createArrayList(new Integer[] {1, 4, 5, 3, 2});
-        ArrayList<Integer> expected = createArrayList(new Integer[] {1, 2, 3, 4, 5});
-        ListSorter.insertionSort(lst);
-        assertArrayEquals(expected.toArray(), lst.toArray());
-
-        ArrayList<Integer> reverse = createArrayList(new Integer[] {12, 8, 5, 3});
-        ArrayList<Integer> reverseExpected = createArrayList(new Integer[] {3, 5, 8, 12});
-        ListSorter.insertionSort(reverse);
-        assertArrayEquals(reverseExpected.toArray(), reverse.toArray());
-
-        ArrayList<Integer> insertionTest = createArrayList(new Integer[] {1, 3, 2, 4, 5});
-        ArrayList<Integer> InsertionExpected = createArrayList(new Integer[] {1, 2, 3, 4, 5});
-        ListSorter.insertionSort(insertionTest);
-        assertArrayEquals(InsertionExpected.toArray(), insertionTest.toArray());
-
-        ArrayList<Integer> insertionRangeTest = createArrayList(new Integer[] {1, 3, 2, 5, 2, 6});
-        ArrayList<Integer> InsertionRangeExpected = createArrayList(new Integer[] {1, 2, 3, 5, 2, 6});
-        ListSorter.insertionSort(insertionRangeTest, 0, 3);
-        assertArrayEquals(insertionRangeTest.toArray(), InsertionRangeExpected.toArray());
-
-        // Sort from middle
-        ArrayList<Integer> insertionMiddle = createArrayList(new Integer[] {1, 3, 2, 10, 2, 6});
-        ArrayList<Integer> insertionMiddleExpected = createArrayList(new Integer[] {1, 3, 2, 2, 6, 10});
-        ListSorter.insertionSort(insertionMiddle, 2, 6);
-        printArrayList("Insertion middle", insertionMiddle);
-        assertArrayEquals(insertionMiddleExpected.toArray(), insertionMiddle.toArray());
-    }
-
-    @Test
-    void testUnderThreshold() {
-        ArrayList<Integer> lst = createArrayList(new Integer[] {1, 4, 5, 3, 2});
-        ArrayList<Integer> expected = createArrayList(new Integer[] {1, 2, 3, 4, 5});
-
-        ListSorter.mergesort(lst, 10);
-        assertArrayEquals(expected.toArray(), lst.toArray());
+        // Testing 0 threshold and empty list
+        assertThrows(IllegalArgumentException.class, () -> ListSorter.mergesort(emptyList, 5));
+        assertThrows(IllegalArgumentException.class, () -> ListSorter.mergesort(smallIntList, 0));
+        assertThrows(IllegalArgumentException.class, () -> ListSorter.mergesort(smallCharList, -3));
     }
 
     @Test
     void testPivotChoosers(){
-        ArrayList<Integer> lst = createArrayList(new Integer[] {1, 4, 5, 3, 2});
+        // Choose first as pivot
+        assertEquals(9, smallIntList.get(chooseFirstInt.getPivotIndex(smallIntList, 0, smallIntList.size()-1)));
+        assertEquals(20, medianIntList.get(chooseFirstInt.getPivotIndex(smallIntList, 0, smallIntList.size()-1)));
+        assertEquals('s', smallCharList.get(chooseFirstChar.getPivotIndex(smallCharList, 0, smallCharList.size()-1)));
 
-        PivotChooser<Integer> firstChooser = new FirstPivotChooser<>();
-        PivotChooser<Integer> medianChooser = new MedianOfThreePivotChooser<>();
-        PivotChooser<Integer> randomChooser = new RandomPivotChooser<>();
+        // Choose the median of three as pivot
+        assertEquals(9, smallIntList.get(chooseMedianInt.getPivotIndex(smallIntList, 0, smallIntList.size()-1)));
+        assertEquals(100, medianIntList.get(chooseMedianInt.getPivotIndex(medianIntList, 0, medianIntList.size()-1)));
+        assertEquals('r', smallCharList.get(chooseMedianChar.getPivotIndex(smallCharList, 0, smallCharList.size()-1)));
 
-        assertEquals(0, firstChooser.getPivotIndex(lst, 0, lst.size() - 1));
-
-        // Sorted list: 1 2 3 4 5, median = 2
-        assertEquals(4, medianChooser.getPivotIndex(lst, 0, lst.size() - 1));
-
-        // Test random
-        int randomIndex = randomChooser.getPivotIndex(lst, 0, lst.size() - 1);
-        assertTrue(randomIndex >= 0 && randomIndex <= lst.size() - 1);
+        // Choose random as pivot
+        for (int i = 0; i < 1000; i++) {  // Repeat to cover randomness
+            int pivotIndexforSmallIntList = chooseRandomInt.getPivotIndex(smallIntList, 0, smallIntList.size()-1);
+            assertTrue(pivotIndexforSmallIntList >= 0 && pivotIndexforSmallIntList <= 3);
+            assertFalse(pivotIndexforSmallIntList >= 100 && pivotIndexforSmallIntList <= 150);
+            int pivotIndexForMedianIntList =  chooseRandomInt.getPivotIndex(medianIntList, 0, smallIntList.size()-1);
+            assertTrue(pivotIndexForMedianIntList >= 0 && pivotIndexForMedianIntList <= 15);
+            assertFalse(pivotIndexForMedianIntList >= 100 && pivotIndexForMedianIntList <= 150);
+            int pivotIndexForSmallCharList = chooseRandomChar.getPivotIndex(smallCharList, 0, smallCharList.size()-1);
+            assertTrue(pivotIndexForSmallCharList >= 0 && pivotIndexForSmallCharList <= 3);
+            assertFalse(pivotIndexForSmallCharList >= 100 && pivotIndexForSmallCharList <= 150);
+        }
     }
 
     @Test
     void testQuickSort(){
-        PivotChooser<Integer> firstChooser = new FirstPivotChooser<>();
-        PivotChooser<Integer> medianChooser = new MedianOfThreePivotChooser<>();
-        PivotChooser<Integer> randomChooser = new RandomPivotChooser<>();
+        // Use first pivot chooser
+        ListSorter.quicksort(smallIntList, chooseFirstInt);
+        assertArrayEquals(smallIntListExp.toArray(), smallIntList.toArray());
+        ListSorter.quicksort(smallIntRever, chooseFirstInt);
+        assertArrayEquals(smallIntReverExp.toArray(), smallIntRever.toArray());
+        ListSorter.quicksort(smallIntWithDup, chooseFirstInt);
+        assertArrayEquals(smallIntWithDupExp.toArray(), smallIntWithDup.toArray());
+        ListSorter.quicksort(largeIntList, chooseFirstInt);
+        assertArrayEquals(largeIntListExp.toArray(), largeIntList.toArray());
+        ListSorter.quicksort(smallCharList, chooseFirstChar);
+        assertArrayEquals(smallCharListExp.toArray(), smallCharList.toArray());
 
-        ArrayList<Integer> lstWithFirst = createArrayList(new Integer[] {1, 4, 5, 3, 2, 20, 50, 22, 30});
-        ArrayList<Integer> lstWithFirstExpected = createArrayList(new Integer[] {1, 2, 3, 4, 5, 20, 22, 30, 50});
-        ListSorter.quicksort(lstWithFirst, firstChooser);
-        assertArrayEquals(lstWithFirstExpected.toArray(), lstWithFirst.toArray());
+        // Use median of three pivot chooser
+        ListSorter.quicksort(smallIntList, chooseMedianInt);
+        assertArrayEquals(smallIntListExp.toArray(), smallIntList.toArray());
+        ListSorter.quicksort(largeIntList, chooseMedianInt);
+        assertArrayEquals(largeIntListExp.toArray(), largeIntList.toArray());
 
-        ArrayList<Integer> small = createArrayList(new Integer[] {1, 2, 3, 4});
-        ArrayList<Integer> smallEx = createArrayList(new Integer[] {1, 2, 3, 4});
-        ListSorter.quicksort(small, randomChooser);
-        System.out.println(small);
-        assertArrayEquals(smallEx.toArray(), small.toArray());
+        // Use random pivot chooser
+        ListSorter.quicksort(smallIntList, chooseRandomInt);
+        assertArrayEquals(smallIntListExp.toArray(), smallIntList.toArray());
+        ListSorter.quicksort(largeIntList, chooseRandomInt);
+        assertArrayEquals(largeIntListExp.toArray(), largeIntList.toArray());
     }
 
     @Test
     void testAscendingList() {
         List<Integer> list10 = ListSorter.generateAscending(10);
         assertArrayEquals(new Integer[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10},  list10.toArray());
-
     }
 
     @Test
@@ -184,5 +185,20 @@ public class ListSorterTest {
         for (int i = 1; i < 10; i++) {
             assertTrue(list10.contains(i));
         }
+    }
+
+    /**
+     * A private helper method to create an ArrayList
+     *
+     * @param arr array that we want to turn into an ArrayList
+     * @return ArrayList that contains all elements from the array.
+     * @param <T> any type of object
+     */
+    private static <T> ArrayList<T> createArrayList(T[] arr) {
+        ArrayList<T> lst = new ArrayList<>();
+        for (T item : arr) {
+            lst.add(item);
+        }
+        return lst;
     }
 }

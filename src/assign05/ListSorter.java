@@ -1,6 +1,7 @@
 package assign05;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -14,12 +15,12 @@ public class ListSorter {
     /**
      * Perform insertion sort on the specified range of the list.
      *
-     * @param list  - T[] type objects
-     * @param start - int index start position of sorting
-     * @param end   - int index end position of sorting
-     * @param <T>   - Generic type of object
+     * @param list  T[] type objects
+     * @param start int index start position of sorting
+     * @param end   int index end position of sorting
+     * @param <T>   Generic type of object
      */
-    public static <T extends Comparable<? super T>> void insertionSort(List<T> list, int start, int end) {
+    private static <T extends Comparable<? super T>> void insertionSort(List<T> list, int start, int end) {
         for (int i = start; i < end; i++) {
             for (int j = i; j > start; j--) {
                 T currentUnsortStar = list.get(j);
@@ -39,20 +40,26 @@ public class ListSorter {
      * @param list the full list to be sorted
      * @param <T>  the type the list contains
      */
-    public static <T extends Comparable<? super T>> void insertionSort(List<T> list) {
+    private static <T extends Comparable<? super T>> void insertionSort(List<T> list) {
+        // Maybe add a count to see how many times we call insertion sort
         insertionSort(list, 0, list.size());
     }
 
     /**
      * Perform merge sort on a given list, switch to insertion sort when the sub-array size is less than the threshold.
      *
-     * @param list - <T> type list of objects
-     * @param threshold - int size of the sub-array to perform insertion sort
-     * @param <T> - any type of object
+     * @param list      <T> type list of objects
+     * @param threshold int size of the sub-array to perform insertion sort
+     * @param <T>       any type of object
+     * @throws IllegalArgumentException if the threshold is <= 0 or the list is empty
      */
     public static <T extends Comparable<? super T>> void mergesort(List<T> list, int threshold) {
         if (threshold <= 0) {
             throw new IllegalArgumentException("Threshold must be a positive number");
+        }
+
+        if (list.isEmpty()) {
+            throw new IllegalArgumentException("Empty list has passed");
         }
 
         boolean shouldInsert = list.size() <= threshold;
@@ -78,14 +85,13 @@ public class ListSorter {
         if (lower == upper) {
             return;
         }
-        int middle = (lower + upper) / 2;
 
+        int middle = (lower + upper) / 2;
         // LEFT SIDE
         int leftStartAt = lower;
         int leftEndAt = middle;
         int leftSize = leftEndAt - leftStartAt;
 
-        printListRange("Left Range Before Sort", list, leftStartAt, leftEndAt);
         if (leftSize >= threshold) {
             mergesortRec(list, leftStartAt, leftEndAt, threshold);
         } else {
@@ -108,11 +114,11 @@ public class ListSorter {
     /**
      * Private method to merge the sorted auxiliary list back to the original list.
      *
-     * @param list - <T> of auxiliary list we are merging
-     * @param lower - the first index of the section to merge
-     * @param middle - the middle index of the section to merge
-     * @param upper - the last index of the section to merge
-     * @param <T> - the type contained in the list
+     * @param list   <T> of auxiliary list we are merging
+     * @param lower  the first index of the section to merge
+     * @param middle the middle index of the section to merge
+     * @param upper  the last index of the section to merge
+     * @param <T>    the type contained in the list
      */
     private static <T extends Comparable<? super T>> void merge(List<T> list, int lower, int middle, int upper) {
         int leftLength = middle - lower + 1;
@@ -159,22 +165,27 @@ public class ListSorter {
     /**
      * Sort a list using quick sort and a custom pivot chooser.
      *
-     * @param list the list to be sorted
+     * @param list    the list to be sorted
      * @param chooser a chooser that implements the PivotChooser protocol
-     * @param <T> the type the list contains
+     * @param <T>     the type the list contains
+     * @throws IllegalArgumentException if the list is empty
      */
     public static <T extends Comparable<? super T>> void quicksort(List<T> list, PivotChooser<T> chooser) {
+        if (list.isEmpty()) {
+            throw new IllegalArgumentException("Empty list has passed");
+        }
+
         quicksortRec(list, chooser, 0, list.size() - 1);
     }
 
     /**
      * The auxialary method that powers quick sort.
      *
-     * @param list - the list to be sorted
-     * @param chooser - a chooser that implements the PivotChooser protocol
-     * @param lowerIndex - the index to start quick sorting at
-     * @param upperIndex - the index to end quick sorting at
-     * @param <T> - the type the list contains
+     * @param list       the list to be sorted
+     * @param chooser    a chooser that implements the PivotChooser protocol
+     * @param lowerIndex the index to start quick sorting at
+     * @param upperIndex the index to end quick sorting at
+     * @param <T>        the type the list contains
      */
     private static <T extends Comparable<? super T>> void quicksortRec(List<T> list, PivotChooser<T> chooser, int lowerIndex, int upperIndex) {
         if (lowerIndex < upperIndex) {
@@ -187,12 +198,12 @@ public class ListSorter {
     /**
      * Split the list into quick sorting sections.
      *
-     * @param list the list to be partioned
+     * @param list    the list to be partioned
      * @param chooser the object that chooses the quick sort pivot
-     * @param low where to start the partion
-     * @param high where to end the partion
+     * @param low     where to start the partion
+     * @param high    where to end the partion
      * @return the partition point
-     * @param <T> the type contained in the list
+     * @param <T>     the type contained in the list
      */
     private static <T extends Comparable<? super T>> int partition(List<T> list, PivotChooser<T> chooser, int low, int high) {
         int pivotIndex = chooser.getPivotIndex(list, low, high);
@@ -200,25 +211,24 @@ public class ListSorter {
         swap(list, pivotIndex, high);
 
         int i = low - 1;
-
         for (int j = low; j <= high - 1; j++) {
             if (list.get(j).compareTo(pivot) < 0) {
                 i++;
                 swap(list, i, j);
             }
         }
-
         swap(list, i + 1, high);
+
         return i + 1;
     }
 
     /**
      * Swaps 2 elements in the list.
      *
-     * @param list the list to swap elements in
+     * @param list   the list to swap elements in
      * @param indexA the first index to swap
      * @param indexB the second index to swap
-     * @param <T> the type contained in the list
+     * @param <T>    the type contained in the list
      */
     private static <T> void swap(List<T> list, int indexA, int indexB) {
         T temp = list.get(indexA);
@@ -254,6 +264,7 @@ public class ListSorter {
 
     /**
      * This method generates and returns a List of integers 1 to size in descending order.
+     *
      * @param size the size of the list
      * @return a descending ordered list containing numbers from size to 1
      */
@@ -262,24 +273,6 @@ public class ListSorter {
         for (int i = size; i > 0; i--) {
             list.add(0, size - i + 1);
         }
-
         return list;
-    }
-
-    // Needs to be deleted later
-    private static <T> void printList(String label, List<T> lst) {
-        System.out.println(label + ":");
-        for (T item : lst) {
-            System.out.print(item + ", ");
-        }
-        System.out.println();
-    }
-
-    private static <T> void printListRange(String label, List<T> lst, int start, int end) {
-        System.out.println(label + ":");
-        for (T item : lst.subList(start, end)) {
-            System.out.print(item + ", ");
-        }
-        System.out.println();
     }
 }
