@@ -32,8 +32,6 @@ public class ListSorter {
         boolean shouldInsert = list.size() <= threshold;
         if (shouldInsert) {
             insertionSort(list);
-            // This is for debug
-            System.out.println("Size is less than the threshold. Insertion sort has been completed...");
             return;
         }
 
