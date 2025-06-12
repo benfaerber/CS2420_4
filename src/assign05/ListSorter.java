@@ -14,6 +14,7 @@ import java.util.List;
 public class ListSorter {
     /**
      * Perform merge sort on a given list, switch to insertion sort when the sub-array size is less than the threshold.
+     * Return an empty list if the list is empty
      *
      * @param list      <T> type list of objects
      * @param threshold int size of the sub-array to perform insertion sort
@@ -180,7 +181,7 @@ public class ListSorter {
     }
 
     /**
-     * The auxialary method that powers quick sort.
+     * The auxialary method that powers quick sort. Return an empty list if the list is empty
      *
      * @param list       the list to be sorted
      * @param chooser    a chooser that implements the PivotChooser protocol
