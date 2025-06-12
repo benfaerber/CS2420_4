@@ -1,8 +1,5 @@
 package assign05;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * This class performs two sorting mechanisms (Merge/Insertion) to sort the List.
@@ -248,6 +245,19 @@ public class ListSorter {
         List<Integer> ascendingList = new ArrayList<>(size);
         for (int i = 0; i < size; i++){
             ascendingList.add(i + 1);
+        }
+        return ascendingList;
+    }
+
+    public static List<Integer> generateNearlyAscending(int size) {
+        List<Integer> ascendingList = new ArrayList<>(size);
+        Random random = new Random();
+        for (int i = 0; i < size; i++){
+            if (random.nextInt(100) > 90) {
+                ascendingList.add(random.nextInt(size));
+            } else {
+                ascendingList.add(i + 1);
+            }
         }
         return ascendingList;
     }
