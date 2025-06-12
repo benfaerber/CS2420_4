@@ -1,6 +1,9 @@
 package timing;
 
 import java.util.Arrays;
+import java.awt.datatransfer.StringSelection;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
 
 /**
  * Abstract base class for running timing experiments.
@@ -44,13 +47,20 @@ public abstract class TimingExperiment {
      * Runs the timing experiment and prints the results.
      */
     public void printResults() {
+        StringBuilder results = new StringBuilder();
         System.out.println(problemSizeDescription + "\ttime (ns)");
         int size = problemSizeMin;
         for (int i = 0; i < problemSizeCount; i++) {
             long medianElapsedTime = computeMedianElapsedTime(size);
             System.out.println(size + "\t" + medianElapsedTime);
+//            System.out.println(medianElapsedTime);
+            results.append(medianElapsedTime).append("\n");
             size += problemSizeStep;
         }
+
+        // David, I added this to copy the results automatically
+        // It should work on your computer if you download xclip
+        ClipboardHelper.copyToClipboard(results.toString());
     }
 
     /**

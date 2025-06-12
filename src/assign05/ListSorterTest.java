@@ -148,6 +148,13 @@ public class ListSorterTest {
     }
 
     @Test
+    void testQuickSortWithFunctor() {
+        // A first pivot chooser with a functor
+        ListSorter.quicksort(medianIntList, (list, leftIndex, rightIndex) -> leftIndex);
+        assertArrayEquals(medianIntListExp.toArray(), medianIntList.toArray());
+    }
+
+    @Test
     void testAscendingList() {
         List<Integer> list10 = ListSorter.generateAscending(10);
         assertArrayEquals(new Integer[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10},  list10.toArray());

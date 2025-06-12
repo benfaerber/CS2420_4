@@ -14,10 +14,10 @@ import timing.TimingExperiment;
 public class MergeSortTimingExperiment extends TimingExperiment {
 
     private static String problemSizeDescription = "ArrayList Size";
-    private static int problemSizeMin = 0;
-    private static int problemSizeCount = 5_000;
-    private static int problemSizeStep = 5;
-    private static int experimentIterationCount = 30;
+    private static int problemSizeMin = 1;
+    private static int problemSizeCount = 5000;
+    private static int problemSizeStep = 1;
+    private static int experimentIterationCount = 25;
 
     private List<Integer> toSort = new ArrayList<>();
 
@@ -50,6 +50,7 @@ public class MergeSortTimingExperiment extends TimingExperiment {
      */
     @Override
     protected void runComputation() {
-        ListSorter.mergesort(this.toSort, 100);
+        ListSorter.mergesort(this.toSort, 1);
     }
+
 }
