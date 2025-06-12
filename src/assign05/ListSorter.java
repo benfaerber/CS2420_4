@@ -25,10 +25,6 @@ public class ListSorter {
             throw new IllegalArgumentException("Threshold must be a positive number");
         }
 
-        if (list.isEmpty()) {
-            throw new IllegalArgumentException("Empty list has passed");
-        }
-
         boolean shouldInsert = list.size() <= threshold;
         if (shouldInsert) {
             insertionSort(list);
