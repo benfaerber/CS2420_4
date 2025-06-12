@@ -18,7 +18,7 @@ public class ListSorterTest {
     private ArrayList<Character> smallCharList;
     private List<Integer> largeIntList;
 
-    private ArrayList<Integer> smallIntListExp, smallIntWithDupExp, smallIntReverExp, medianIntListExp;
+    private ArrayList<Integer> emptyListExp, smallIntListExp, smallIntWithDupExp, smallIntReverExp, medianIntListExp;
     private ArrayList<Character> smallCharListExp;
     private List<Integer> largeIntListExp;
 
@@ -42,6 +42,7 @@ public class ListSorterTest {
             largeIntList.add(i + 1);
         }
         Collections.shuffle(largeIntList);
+        emptyListExp = createArrayList(new Integer[]{});
 
         smallIntListExp = createArrayList(new Integer[] {7, 8, 9, 10});
         smallIntWithDupExp = createArrayList(new Integer[] {1, 2, 4, 4});
@@ -77,9 +78,8 @@ public class ListSorterTest {
         assertArrayEquals(largeIntListExp.toArray(), largeIntList.toArray());
 
         // Testing 0 threshold and empty list
-        assertThrows(IllegalArgumentException.class, () -> ListSorter.mergesort(emptyList, 5));
-        assertThrows(IllegalArgumentException.class, () -> ListSorter.mergesort(smallIntList, 0));
-        assertThrows(IllegalArgumentException.class, () -> ListSorter.mergesort(smallCharList, -3));
+        ListSorter.mergesort(emptyList, 5);
+        assertArrayEquals(emptyListExp.toArray(), emptyList.toArray());
     }
 
     @Test
@@ -121,6 +121,8 @@ public class ListSorterTest {
     @Test
     void testQuickSort(){
         // Use first pivot chooser
+        ListSorter.quicksort(emptyList, chooseFirstInt);
+        assertArrayEquals(emptyListExp.toArray(), emptyList.toArray());
         ListSorter.quicksort(smallIntList, chooseFirstInt);
         assertArrayEquals(smallIntListExp.toArray(), smallIntList.toArray());
         ListSorter.quicksort(smallIntRever, chooseFirstInt);

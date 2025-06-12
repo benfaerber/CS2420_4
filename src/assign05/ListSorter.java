@@ -25,6 +25,10 @@ public class ListSorter {
             throw new IllegalArgumentException("Threshold must be a positive number");
         }
 
+        if(list.isEmpty()){
+            return;
+        }
+
         boolean shouldInsert = list.size() <= threshold;
         if (shouldInsert) {
             insertionSort(list);
@@ -169,6 +173,9 @@ public class ListSorter {
      * @throws IllegalArgumentException if the list is empty
      */
     public static <T extends Comparable<? super T>> void quicksort(List<T> list, PivotChooser<T> chooser) {
+        if(list.isEmpty()){
+            return;
+        }
         quicksortRec(list, chooser, 0, list.size() - 1);
     }
 
