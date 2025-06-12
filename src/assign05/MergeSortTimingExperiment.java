@@ -13,13 +13,13 @@ import timing.TimingExperiment;
  */
 public class MergeSortTimingExperiment extends TimingExperiment {
 
-    private static String problemSizeDescription = "Permutted ArrayList Size";
+    private static String problemSizeDescription = "ArrayList Size";
     private static int problemSizeMin = 0;
-    private static int problemSizeCount = 1000;
-    private static int problemSizeStep = 1;
+    private static int problemSizeCount = 5_000;
+    private static int problemSizeStep = 5;
     private static int experimentIterationCount = 30;
 
-    private List<Integer> toSort = new ArrayList();
+    private List<Integer> toSort = new ArrayList<>();
 
     public static void main(String[] args) {
         TimingExperiment timingExperiment = new MergeSortTimingExperiment();
