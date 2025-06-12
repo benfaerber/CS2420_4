@@ -36,7 +36,11 @@ public class ListSorter {
             System.out.println("Size is less than the threshold. Insertion sort has been completed...");
             return;
         }
-        mergesortRec(list, 0, list.size() - 1, threshold);
+
+        List<T> tempListLeft = new ArrayList<>(list);
+        List<T> tempListRight = new ArrayList<>(list);
+
+        mergesortRec(list, 0, list.size() - 1, threshold, tempListLeft, tempListRight);
     }
 
     /**
@@ -49,7 +53,7 @@ public class ListSorter {
      * @param threshold when to switch to using insertion sort (quicker for small lists)
      * @param <T>       the type the data it contains
      */
-    private static <T extends Comparable<? super T>> void mergesortRec(List<T> list, int lower, int upper, int threshold) {
+    private static <T extends Comparable<? super T>> void mergesortRec(List<T> list, int lower, int upper, int threshold, List<T> tempListLeft, List<T> tempListRight) {
         // Base Cases
         if (lower == upper) {
             return;
@@ -62,7 +66,7 @@ public class ListSorter {
         int leftSize = leftEndAt - leftStartAt;
 
         if (leftSize >= threshold) {
-            mergesortRec(list, leftStartAt, leftEndAt, threshold);
+            mergesortRec(list, leftStartAt, leftEndAt, threshold, tempListLeft, tempListRight);
         } else {
             insertionSort(list, leftStartAt, leftEndAt + 1);
         }
@@ -73,11 +77,11 @@ public class ListSorter {
         int rightSize = rightEndAt - rightStartAt;
 
         if (rightSize > threshold) {
-            mergesortRec(list, rightStartAt, rightEndAt, threshold);
+            mergesortRec(list, rightStartAt, rightEndAt, threshold, tempListLeft, tempListRight);
         } else {
             insertionSort(list, rightStartAt, rightEndAt + 1);
         }
-        merge(list, lower, middle, upper);
+        merge(list, lower, middle, upper, tempListLeft, tempListRight);
     }
 
     /**
@@ -121,43 +125,42 @@ public class ListSorter {
      * @param upper  the last index of the section to merge
      * @param <T>    the type contained in the list
      */
-    private static <T extends Comparable<? super T>> void merge(List<T> list, int lower, int middle, int upper) {
+    private static <T extends Comparable<? super T>> void merge(List<T> list, int lower, int middle, int upper, List<T> tempListLeft, List<T> tempListRight) {
         int leftLength = middle - lower + 1;
         int rightLength = upper - middle;
 
-        List<T> leftSide = new ArrayList<T>(leftLength);
-        List<T> rightSide = new ArrayList<T>(rightLength);
-
+        tempListLeft.clear();
+        tempListRight.clear();
         for (int i = 0; i < leftLength; i++) {
-            leftSide.add(list.get(lower + i));
+            tempListLeft.add(list.get(lower + i));
         }
         for (int i = 0; i < rightLength; i++) {
-            rightSide.add(list.get(middle + 1 + i));
+            tempListRight.add(list.get(middle + 1 + i));
         }
 
         int i = 0, j = 0;
 
         int currentIndex = lower;
         while (i < leftLength && j < rightLength) {
-            int leftVsRightCmp = leftSide.get(i).compareTo(rightSide.get(j));
+            int leftVsRightCmp = tempListLeft.get(i).compareTo(tempListRight.get(j));
             if (leftVsRightCmp <= 0) {
-                list.set(currentIndex, leftSide.get(i));
+                list.set(currentIndex, tempListLeft.get(i));
                 i++;
             } else {
-                list.set(currentIndex, rightSide.get(j));
+                list.set(currentIndex, tempListRight.get(j));
                 j++;
             }
             currentIndex++;
         }
 
         while (i < leftLength) {
-            list.set(currentIndex, leftSide.get(i));
+            list.set(currentIndex, tempListLeft.get(i));
             i++;
             currentIndex++;
         }
 
         while (j < rightLength) {
-            list.set(currentIndex, rightSide.get(j));
+            list.set(currentIndex, tempListRight.get(j));
             j++;
             currentIndex++;
         }
