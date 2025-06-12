@@ -64,47 +64,16 @@ public class ListSorterTest {
     @AfterEach
     void tearDown() throws Exception {}
 
-//    @Test
-//    void testInsertionSort() {
-//        // Test basic insertion sort
-//        ListSorter.insertionSort(smallIntList);
-//        assertArrayEquals(smallIntListExp.toArray(), smallIntList.toArray());
-//        ListSorter.insertionSort(smallIntRever);
-//        assertArrayEquals(smallIntReverExp.toArray(), smallIntRever.toArray());
-//        ListSorter.insertionSort(smallCharList);
-//        assertArrayEquals(smallCharListExp.toArray(), smallCharList.toArray());
-//        ListSorter.insertionSort(largeIntList);
-//        assertArrayEquals(largeIntListExp.toArray(), largeIntList.toArray());
-//
-//        // Start insertion sort from the beginning to middle
-//        ArrayList<Integer> insertionRangeTest = createArrayList(new Integer[] {1, 3, 2, 5, 2, 6});
-//        ArrayList<Integer> InsertionRangeExpected = createArrayList(new Integer[] {1, 2, 3, 5, 2, 6});
-//        ListSorter.insertionSort(insertionRangeTest, 0, 3);
-//        assertArrayEquals(insertionRangeTest.toArray(), InsertionRangeExpected.toArray());
-//
-//        // Start Insertion from a range in the middle
-//        ArrayList<Integer> insertionMiddle = createArrayList(new Integer[] {1, 3, 2, 10, 2, 6});
-//        ArrayList<Integer> insertionMiddleExpected = createArrayList(new Integer[] {1, 3, 2, 2, 6, 10});
-//        ListSorter.insertionSort(insertionMiddle, 2, 6);
-//        assertArrayEquals(insertionMiddleExpected.toArray(), insertionMiddle.toArray());
-//    }
-
     @Test
     void testMergeSort() {
-        // Testing small size, generic, should use insertion sort right away: 10
-        ListSorter.mergesort(smallIntList, 10);
-        assertArrayEquals(smallIntListExp.toArray(), smallIntList.toArray());
-        ListSorter.mergesort(smallCharList, 10);
-        assertArrayEquals(smallCharListExp.toArray(), smallCharList.toArray());
-
         // General testing
-        ListSorter.mergesort(smallIntRever, 5);
+        ListSorter.mergesort(smallIntRever, 2);
         assertArrayEquals(smallIntReverExp.toArray(), smallIntRever.toArray());
-        ListSorter.mergesort(smallIntWithDup, 5);
+        ListSorter.mergesort(smallIntWithDup, 2);
         assertArrayEquals(smallIntWithDupExp.toArray(), smallIntWithDup.toArray());
         ListSorter.mergesort(medianIntList, 5);
         assertArrayEquals(medianIntListExp.toArray(), medianIntList.toArray());
-        ListSorter.mergesort(largeIntList, 5);
+        ListSorter.mergesort(largeIntList, 100);
         assertArrayEquals(largeIntListExp.toArray(), largeIntList.toArray());
 
         // Testing 0 threshold and empty list
@@ -112,6 +81,16 @@ public class ListSorterTest {
         assertThrows(IllegalArgumentException.class, () -> ListSorter.mergesort(smallIntList, 0));
         assertThrows(IllegalArgumentException.class, () -> ListSorter.mergesort(smallCharList, -3));
     }
+
+    @Test
+    void testSwitchingToInsertionSort() {
+        // Testing small size, generic, should use insertion sort right away: 10
+        ListSorter.mergesort(smallIntList, 10);
+        assertArrayEquals(smallIntListExp.toArray(), smallIntList.toArray());
+        ListSorter.mergesort(smallCharList, 10);
+        assertArrayEquals(smallCharListExp.toArray(), smallCharList.toArray());
+    }
+
 
     @Test
     void testPivotChoosers(){

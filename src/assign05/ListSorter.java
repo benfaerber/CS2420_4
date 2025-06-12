@@ -32,6 +32,8 @@ public class ListSorter {
         boolean shouldInsert = list.size() <= threshold;
         if (shouldInsert) {
             insertionSort(list);
+            // This is for debug
+            System.out.println("Size is less than the threshold. Insertion sort has been completed...");
             return;
         }
         mergesortRec(list, 0, list.size() - 1, threshold);
@@ -107,7 +109,6 @@ public class ListSorter {
      * @param <T>  the type the list contains
      */
     private static <T extends Comparable<? super T>> void insertionSort(List<T> list) {
-        // Maybe add a count to see how many times we call insertion sort
         insertionSort(list, 0, list.size());
     }
 

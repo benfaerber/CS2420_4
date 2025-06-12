@@ -22,7 +22,6 @@ public class MedianOfThreePivotChooser<E extends Comparable<? super E>> implemen
         E middle = list.get(middleIndex);
         E last = list.get(lastIndex);
 
-        // Change to find the index directly instead
         if ((first.compareTo(middle) <= 0 && middle.compareTo(last) <= 0) ||
                 (last.compareTo(middle) <= 0 && middle.compareTo(first) <= 0)) {
             return middleIndex;
