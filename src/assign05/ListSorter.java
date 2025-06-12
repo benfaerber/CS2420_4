@@ -172,10 +172,6 @@ public class ListSorter {
      * @throws IllegalArgumentException if the list is empty
      */
     public static <T extends Comparable<? super T>> void quicksort(List<T> list, PivotChooser<T> chooser) {
-        if (list.isEmpty()) {
-            throw new IllegalArgumentException("Empty list has passed");
-        }
-
         quicksortRec(list, chooser, 0, list.size() - 1);
     }
 
