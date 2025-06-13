@@ -53,8 +53,8 @@ public class MergeSortVsQuickSortTimingExperiment extends TimingExperiment {
      */
     @Override
     protected void runComputation() {
-        ListSorter.mergesort(this.toSort, 50);
-        //ListSorter.quicksort(this.toSort, new MedianOfThreePivotChooser<>());
+        //ListSorter.mergesort(this.toSort, 50);
+        ListSorter.quicksort(this.toSort, new MedianOfThreePivotChooser<>());
 
     }
 }
