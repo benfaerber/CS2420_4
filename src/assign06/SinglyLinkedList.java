@@ -20,16 +20,33 @@ public class SinglyLinkedList<E> implements List<E> {
      */
     private int size = 0;
 
+    /**
+     * A single node of the linked list.
+     * @param <E> The type the node contains
+     */
     public class Node<E> {
+        /**
+         * The value this node contains (cannot be null)
+         */
         private E value;
+        /**
+         * The next node in the list
+         * (can be null if this is the end)
+         */
         private Node<E> next = null;
 
+        /**
+         * Construct a new node
+         * @param value the value the node holds
+         * @param next the next in the list (can be null if this is the end)
+         */
         public Node(E value, Node<E> next) {
             this.value = value;
             this.next = next;
         }
     }
 
+    /** Create a new SinglyLinkedList */
     public SinglyLinkedList() {
 
     }
@@ -51,6 +68,14 @@ public class SinglyLinkedList<E> implements List<E> {
         return list;
     }
 
+    /**
+     * Inserts an element at a specific position in the list.
+     * O(N) for a singly-linked list.
+     *
+     * @param index - the specified position
+     * @param element - the element to add
+     * @throws IndexOutOfBoundsException if index is out of range (index < 0 || index > size())
+     */
     public void insertFirst(E element) {
         this.size++;
 
@@ -62,6 +87,14 @@ public class SinglyLinkedList<E> implements List<E> {
         this.list = new Node<>(element, this.list);
     }
 
+    /**
+     * Inserts an element at a specific position in the list.
+     * O(N) for a singly-linked list.
+     *
+     * @param index - the specified position
+     * @param element - the element to add
+     * @throws IndexOutOfBoundsException if index is out of range (index < 0 || index > size())
+     */
     @Override
     public void insert(int index, E element) throws IndexOutOfBoundsException {
         this.validateIndex(index);
@@ -81,6 +114,13 @@ public class SinglyLinkedList<E> implements List<E> {
         this.size++;
     }
 
+    /**
+     * Gets the first element in the list.
+     * O(1) for a singly-linked list.
+     *
+     * @return the first element in the list
+     * @throws NoSuchElementException if the list is empty
+     */
     public E getFirst() throws NoSuchElementException {
         if (this.list == null) {
             throw new NoSuchElementException();
@@ -88,7 +128,14 @@ public class SinglyLinkedList<E> implements List<E> {
         return this.list.value;
     }
 
-    @Override
+    /**
+     * Gets the element at a specific position in the list.
+     * O(N) for a singly-linked list.
+     *
+     * @param index - the specified position
+     * @return the element at the position
+     * @throws IndexOutOfBoundsException if index is out of range (index < 0 || index >= size())
+     */
     public E get(int index) throws IndexOutOfBoundsException {
         this.validateIndex(index);
 
@@ -102,7 +149,13 @@ public class SinglyLinkedList<E> implements List<E> {
         return currentNode.value;
     }
 
-    @Override
+    /**
+     * Deletes and returns the first element from the list.
+     * O(1) for a singly-linked list.
+     *
+     * @return the first element
+     * @throws NoSuchElementException if the list is empty
+     */
     public E deleteFirst() throws NoSuchElementException {
         if (this.list == null) {
             throw new NoSuchElementException();
@@ -115,7 +168,14 @@ public class SinglyLinkedList<E> implements List<E> {
         return toDelete;
     }
 
-    @Override
+    /**
+     * Deletes and returns the element at a specific position in the list.
+     * O(N) for a singly-linked list.
+     *
+     * @param index - the specified position
+     * @return the element at the position
+     * @throws IndexOutOfBoundsException if index is out of range (index < 0 || index >= size())
+     */
     public E delete(int index) throws IndexOutOfBoundsException {
         this.validateIndex(index);
 
@@ -135,7 +195,14 @@ public class SinglyLinkedList<E> implements List<E> {
         return toDelete.value;
     }
 
-    @Override
+    /**
+     * Determines the index of the first occurrence of the specified element in the list,
+     * or -1 if this list does not contain the element.
+     * O(N) for a singly-linked list.
+     *
+     * @param element - the element to search for
+     * @return the index of the first occurrence; -1 if the element is not found
+     */
     public int indexOf(E element) {
         int currentIndex = 0;
         for (E item : this) {
@@ -148,6 +215,13 @@ public class SinglyLinkedList<E> implements List<E> {
         return -1;
     }
 
+    /**
+     * Generates an array containing all of the elements in this list in proper sequence
+     * (from first element to last element).
+     * O(N) for a singly-linked list.
+     *
+     * @return an array containing all of the elements in this list, in order
+     */
     public Object[] toArray() {
         if (this.size == 0) {
             return new Object[] {};
@@ -162,6 +236,10 @@ public class SinglyLinkedList<E> implements List<E> {
         return built;
     }
 
+    /**
+     * Convert a singly linked list to a string
+     * @return a string representation of the singly linked list
+     */
     @Override
     public String toString() {
         Object[] arr = this.toArray();
@@ -172,27 +250,51 @@ public class SinglyLinkedList<E> implements List<E> {
         return "[" + sj + "]";
     }
 
+    /**
+     * O(1) for a singly-linked list.
+     *
+     * @return the number of elements in this list
+     */
     public int size() {
         return this.size;
     }
 
+    /**
+     * O(1) for a singly-linked list.
+     *
+     * @return true if this collection contains no elements; false, otherwise
+     */
     public boolean isEmpty() {
         return this.size == 0;
     }
 
+    /**
+     * Removes all of the elements from this list.
+     * O(1) for a singly-linked list.
+     */
     public void clear() {
         this.size = 0;
         this.list = null;
     }
 
+    /** The iterator that allows iteration over a singly linked list */
     public class SinglyLinkedListIterator implements Iterator<E> {
+        /** The current node of the iteration */
         private Node<E> currentNode = list;
+        /** If the element can be removed */
         private boolean canRemove = false;
+        /** Internal value for removal */
         private Node<E> lastReturned = null;
+        /** Another internal value for removal */
         private Node<E> previousLastReturned = null;
 
-
-        @Override
+        /**
+         * Returns {@code true} if the iteration has more elements.
+         * (In other words, returns {@code true} if {@link #next} would
+         * return an element rather than throwing an exception.)
+         *
+         * @return {@code true} if the iteration has more elements
+         */
         public boolean hasNext() {
             if (this.currentNode == null) {
                 return false;
@@ -200,7 +302,12 @@ public class SinglyLinkedList<E> implements List<E> {
             return this.currentNode.next != null;
         }
 
-        @Override
+        /**
+         * Returns the next element in the iteration.
+         *
+         * @return the next element in the iteration
+         * @throws NoSuchElementException if the iteration has no more elements
+         */
         public E next() {
             if (! this.hasNext()) {
                 throw new NoSuchElementException();
@@ -215,6 +322,9 @@ public class SinglyLinkedList<E> implements List<E> {
             return node.value;
         }
 
+        /**
+         * Removes the current item from the iterator (and outer list)
+         */
         public void remove() {
             if (! this.canRemove) {
                 throw new IllegalStateException();
@@ -232,10 +342,19 @@ public class SinglyLinkedList<E> implements List<E> {
         }
     }
 
+    /**
+     * @return an iterator over the elements in this list in proper sequence (from first
+     * element to last element)
+     */
     public Iterator<E> iterator() {
         return new SinglyLinkedListIterator();
     }
 
+    /**
+     * Throws an exception if a given index is invalid
+     * @param index the index to validate
+     * @throws IndexOutOfBoundsException
+     */
     private void validateIndex(int index) throws IndexOutOfBoundsException {
         if (index >= this.size || index < 0) {
             throw new IndexOutOfBoundsException();
