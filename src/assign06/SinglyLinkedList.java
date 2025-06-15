@@ -69,12 +69,10 @@ public class SinglyLinkedList<E> implements List<E> {
     }
 
     /**
-     * Inserts an element at a specific position in the list.
-     * O(N) for a singly-linked list.
+     * Inserts an element at the beginning of the list.
+     * O(1) for a singly-linked list.
      *
-     * @param index - the specified position
      * @param element - the element to add
-     * @throws IndexOutOfBoundsException if index is out of range (index < 0 || index > size())
      */
     public void insertFirst(E element) {
         this.size++;
