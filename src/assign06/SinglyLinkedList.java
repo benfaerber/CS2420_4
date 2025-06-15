@@ -61,7 +61,7 @@ public class SinglyLinkedList<E> implements List<E> {
     @SafeVarargs
     public static <E> SinglyLinkedList<E> of(E... items) {
         SinglyLinkedList<E> list = new SinglyLinkedList<>();
-        for (int i = items.length - 1; i > 0; i--) {
+        for (int i = items.length - 1; i >= 0; i--) {
             list.insertFirst(items[i]);
         }
 
@@ -107,7 +107,6 @@ public class SinglyLinkedList<E> implements List<E> {
             currentNode = currentNode.next;
         }
 
-        Node<E> oldNext = currentNode.next;
         currentNode.next = new Node<>(element, currentNode.next);
         this.size++;
     }
@@ -354,7 +353,7 @@ public class SinglyLinkedList<E> implements List<E> {
      * @throws IndexOutOfBoundsException
      */
     private void validateIndex(int index) throws IndexOutOfBoundsException {
-        if (index >= this.size || index < 0) {
+        if (index > this.size || index < 0) {
             throw new IndexOutOfBoundsException();
         }
     }
