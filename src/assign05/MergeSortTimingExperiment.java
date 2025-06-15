@@ -15,7 +15,7 @@ public class MergeSortTimingExperiment extends TimingExperiment {
 
     private static String problemSizeDescription = "ArrayList Size";
     private static int problemSizeMin = 1;
-    private static int problemSizeCount = 5000;
+    private static int problemSizeCount = 50_000;
     private static int problemSizeStep = 1;
     private static int experimentIterationCount = 25;
 
