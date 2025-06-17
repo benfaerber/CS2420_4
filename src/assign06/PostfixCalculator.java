@@ -1,5 +1,7 @@
 package assign06;
 
+import java.util.Scanner;
+
 /**
  * Evaluates postfix expressions using a stack.
  * 
@@ -17,9 +19,41 @@ public class PostfixCalculator {
 	 * @throws IllegalArgumentException if the expression in invalid
 	 */
 	public static double evaluate(String expression) {
-		// TODO fill in this method using your LinkedListStack class
-		
-		return 0.0;
+		String allowedChars = "0123456789. +-*/";
+		for (String letter : expression.split("")) {
+			if (! allowedChars.contains(letter)) {
+				throw new IllegalArgumentException("Can only contain numbers and operators!");
+			}
+		}
+
+		LinkedListStack<Double> stack = new LinkedListStack<>();
+		Scanner scanner = new Scanner(expression);
+
+		try {
+			while (scanner.hasNext()) {
+				if (scanner.hasNextDouble()) {
+					double currentDouble = scanner.nextDouble();
+					stack.push(currentDouble);
+					continue;
+				}
+
+				if (scanner.hasNext()) {
+					String operator = scanner.next();
+
+					double itemRight = stack.pop();
+					double itemLeft = stack.pop();
+
+					double newResult = applyOperator(itemLeft, operator, itemRight);
+					stack.push(newResult);
+				}
+			}
+
+			return stack.pop();
+		} catch (Exception e) {
+			// If we get an error from our popping, consider it an illegal expression
+			throw new IllegalArgumentException("Invalid expression " + expression);
+		}
+
 	}
 	
 	/**
