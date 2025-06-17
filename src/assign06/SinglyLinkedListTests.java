@@ -15,7 +15,7 @@ import java.util.NoSuchElementException;
  */
 public class SinglyLinkedListTests {
 
-    private SinglyLinkedList<Integer> listTo4, listTo3;
+    private SinglyLinkedList<Integer> listTo4, listTo3, listTo1, listTo2, listEmpty;
 
     @BeforeEach
     void setUp() throws Exception {
@@ -27,6 +27,10 @@ public class SinglyLinkedListTests {
 
         // 8 10 8
         this.listTo3 = SinglyLinkedList.of(8, 10, 8);
+
+        this.listTo1 = SinglyLinkedList.of(1);
+        this.listEmpty = new SinglyLinkedList<>();
+        this.listTo2 = SinglyLinkedList.of(1, 2);
     }
 
     @AfterEach
@@ -115,7 +119,6 @@ public class SinglyLinkedListTests {
         iter.remove();
 
         assertEquals(2, listTo4.size());
-        System.out.println(listTo4.toString());
         assertArrayEquals(new Integer[] {3, 4}, listTo4.toArray());
     }
 
@@ -139,11 +142,9 @@ public class SinglyLinkedListTests {
     @Test
     void testDelete() {
         listTo4.delete(2);
-        System.out.println("List " + listTo4.toString());
         assertArrayEquals(new Integer[] {1, 2, 4}, listTo4.toArray());
 
         listTo4.delete(2);
-        System.out.println("List " + listTo4.toString());
 
         assertArrayEquals(new Integer[] {1, 2}, listTo4.toArray());
 
@@ -160,5 +161,29 @@ public class SinglyLinkedListTests {
     void testIndexOf() {
         assertEquals(2, listTo4.indexOf(3));
         assertEquals(-1, listTo4.indexOf(12));
+    }
+
+    @Test
+    void testIteratorForSmallList() {
+        boolean didRun = false;
+        for (Integer item : this.listTo1) {
+            didRun = true;
+            assertEquals(1, item);
+        }
+        assertTrue(didRun);
+
+        int iterCount = 0;
+        for (Integer item : this.listTo2) {
+            iterCount++;
+        }
+        assertEquals(2, iterCount);
+
+
+        // Shouldnt iterate over empty list...
+        boolean ranForLoop = false;
+        for (Integer item : this.listEmpty) {
+            ranForLoop = true;
+        }
+        assertFalse(ranForLoop);
     }
 }

@@ -293,10 +293,7 @@ public class SinglyLinkedList<E> implements List<E> {
          * @return {@code true} if the iteration has more elements
          */
         public boolean hasNext() {
-            if (this.currentNode == null) {
-                return false;
-            }
-            return this.currentNode.next != null;
+            return this.currentNode != null;
         }
 
         /**
