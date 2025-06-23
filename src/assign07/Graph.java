@@ -120,23 +120,26 @@ public class Graph<T> {
 		Queue<Vertex<T>> queue = new LinkedList<Vertex<T>>();
 		queue.add(vertices.get(source));
 
-		List<T> foundPath = new ArrayList<>();
-		ArrayList<Vertex<T>> visited = new ArrayList<>();
 		Vertex<T> current = vertices.get(source);
-		visited.add(current);
+		List<T> pathFound = new ArrayList<>();
 
 		while (!queue.isEmpty()) {
-			current = queue.poll();
-			foundPath.add(current.getValue());
+			current = queue.remove();
+			System.out.println("adding to path found: " + current.getValue());
 
-			for (Iterator<Vertex<T>> it = current.edges(); it.hasNext(); ) {
-				Vertex<T> vertex = it.next();
-				if (! visited.contains(vertex)) {
-					visited.add(vertex);
+			if (current.getValue().equals(destination)) {
+				return pathFound;
+			} else {
+				for (Iterator<Vertex<T>> it = current.edges(); it.hasNext(); ) {
+					Vertex<T> vertex = it.next();
+					System.out.println("adding to queue " + vertex.getValue());
 					queue.add(vertex);
 				}
+
+				pathFound.add(current.getValue());
 			}
 		}
-		return foundPath;
+
+		return new ArrayList<>();
 	}
 }
