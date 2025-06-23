@@ -284,9 +284,9 @@ public class ArraySet<E> implements Set<E>, Iterable<E> {
 	public class ArraySetIterator implements Iterator<E> {
 		private int currentIndex = 0;
 		private ArraySet<E> set;
+		private boolean canRemove = false;
 
-		public ArraySetIterator(ArraySet<E> set) {
-			this.set = set;
+		public ArraySetIterator() {
 		}
 
 		@Override
@@ -299,18 +299,31 @@ public class ArraySet<E> implements Set<E>, Iterable<E> {
 			if (! this.hasNext()) {
 				throw new NoSuchElementException();
 			}
+			this.canRemove = true;
 			E current = ArraySet.this.internalArray[this.currentIndex];
 			this.currentIndex++;
 			return current;
 		}
 
 		public void remove() {
+			if (! this.canRemove) {
+				throw new IllegalStateException();
+			}
+
+			for (int i = currentIndex; i < ArraySet.this.size(); i++) {
+				ArraySet.this.internalArray[i-1] = ArraySet.this.internalArray[i];
+			}
+
+			ArraySet.this.internalArray[currentIndex] = null;
+			currentIndex--;
+
+			this.canRemove = false;
 
 		}
 	}
 
 	@Override
 	public Iterator<E> iterator() {
-		return new ArraySetIterator(this);
+		return new ArraySetIterator();
 	}
 }
