@@ -119,24 +119,29 @@ public class Graph<T> {
 	public List<T> breadthFirstSearch(T source, T destination){
 		Queue<Vertex<T>> queue = new LinkedList<Vertex<T>>();
 		queue.add(vertices.get(source));
+		List<T> pathFound = new ArrayList<>();
+		List<T> visited = new ArrayList<>();
 
 		Vertex<T> current = vertices.get(source);
-		List<T> pathFound = new ArrayList<>();
 
 		while (!queue.isEmpty()) {
-			current = queue.remove();
-			System.out.println("adding to path found: " + current.getValue());
+			current = queue.poll();
 
 			if (current.getValue().equals(destination)) {
 				return pathFound;
-			} else {
+			}
+
+			if (! visited.contains(current.getValue())) {
+				visited.add(current.getValue());
 				for (Iterator<Vertex<T>> it = current.edges(); it.hasNext(); ) {
 					Vertex<T> vertex = it.next();
-					System.out.println("adding to queue " + vertex.getValue());
-					queue.add(vertex);
+
+					if (! visited.contains(vertex.getValue())) {
+						queue.add(vertex);
+					}
+					pathFound.add(vertex.getValue());
 				}
 
-				pathFound.add(current.getValue());
 			}
 		}
 
