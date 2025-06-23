@@ -1,9 +1,6 @@
 package assign07;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Represents a sparse, unweighted, directed graph (a set of vertices and a set of edges).
@@ -97,7 +94,6 @@ public class Graph<T> {
 	private boolean edgeVisitor(Vertex<T> current, T dest, List<Vertex<T>> visited) {
 		for (Iterator<Vertex<T>> it = current.edges(); it.hasNext(); ) {
 			Vertex<T> vertex = it.next();
-			System.out.println(vertex.getName());
 
 			if (vertex.getValue().equals(dest)) {
 				return true;
@@ -118,5 +114,29 @@ public class Graph<T> {
 
 		// Go to all connected
 		return edgeVisitor(current, destination, visited);
+	}
+
+	public List<T> breadthFirstSearch(T source, T destination){
+		Queue<Vertex<T>> queue = new LinkedList<Vertex<T>>();
+		queue.add(vertices.get(source));
+
+		List<T> foundPath = new ArrayList<>();
+		ArrayList<Vertex<T>> visited = new ArrayList<>();
+		Vertex<T> current = vertices.get(source);
+		visited.add(current);
+
+		while (!queue.isEmpty()) {
+			current = queue.poll();
+			foundPath.add(current.getValue());
+
+			for (Iterator<Vertex<T>> it = current.edges(); it.hasNext(); ) {
+				Vertex<T> vertex = it.next();
+				if (! visited.contains(vertex)) {
+					visited.add(vertex);
+					queue.add(vertex);
+				}
+			}
+		}
+		return foundPath;
 	}
 }

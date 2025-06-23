@@ -6,6 +6,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GenericGraphTest {
     private Graph<String> simpleGraph, exampleDag;
 
@@ -44,6 +47,17 @@ public class GenericGraphTest {
         assertTrue(this.simpleGraph.depthFirstSearch("a", "d"));
         assertFalse(this.exampleDag.depthFirstSearch("d", "a"));
     }
+
+   @Test
+   void testBreadthFirstSearch() {
+        Graph<String> a = GraphParser.parseGraphFromFile("src/assign07/exampleDag.txt");
+        List<String> foundPath = new ArrayList<>();
+        foundPath.add("a");
+        foundPath.add("b");
+        foundPath.add("d");
+        assertEquals(foundPath, a.breadthFirstSearch("a", "d"));
+   }
+
 
 
 }
