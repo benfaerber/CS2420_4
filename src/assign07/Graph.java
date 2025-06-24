@@ -30,12 +30,13 @@ public class Graph<T> {
 	 * @param name2 - string name for destination vertex
 	 */
 	public void addEdge(T name1, T name2) {
+		if (name1 == null || name2 == null) throw new IllegalArgumentException("Vertex names cannot be null");
+
 		Vertex vertex1;
 		// if vertex already exists in graph, get its object
 		if (vertices.containsKey(name1)) {
 			vertex1 = vertices.get(name1);
 		}
-		// else, create a new object and add to graph
 		else {
 			vertex1 = new Vertex<T>(name1);
 			vertices.put(name1, vertex1);
@@ -51,9 +52,10 @@ public class Graph<T> {
 			vertices.put(name2, vertex2);
 		}
 
-		// add new directed edge from vertex1 to vertex2
 		vertex1.addEdge(vertex2);
 	}
+
+
 	
 	/**
 	 * Generates the DOT encoding of this graph as string, which can be 
@@ -87,11 +89,7 @@ public class Graph<T> {
 		return result.toString();
 	}
 
-	private void dfsRecursive() {
-
-	}
-
-	private boolean edgeVisitor(Vertex<T> current, T dest, List<Vertex<T>> visited) {
+	private boolean dfsRec(Vertex<T> current, T dest, List<Vertex<T>> visited) {
 		for (Iterator<Vertex<T>> it = current.edges(); it.hasNext(); ) {
 			Vertex<T> vertex = it.next();
 
@@ -102,7 +100,7 @@ public class Graph<T> {
 			if (! visited.contains(current)) {
 				visited.add(current);
 
-				return edgeVisitor(vertex, dest, visited);
+				return dfsRec(vertex, dest, visited);
 			}
 		}
 		return false;
@@ -111,40 +109,71 @@ public class Graph<T> {
 	public boolean depthFirstSearch(T source, T destination) {
 		List<Vertex<T>> visited = new ArrayList<Vertex<T>>();
 		Vertex<T> current = vertices.get(source);
+		if (source == null || destination == null) {return false;}
 
-		// Go to all connected
-		return edgeVisitor(current, destination, visited);
+		return dfsRec(current, destination, visited);
 	}
 
-	public List<T> breadthFirstSearch(T source, T destination){
-		Queue<Vertex<T>> queue = new LinkedList<Vertex<T>>();
-		queue.add(vertices.get(source));
-		List<T> pathFound = new ArrayList<>();
-		List<T> visited = new ArrayList<>();
-
-		Vertex<T> current = vertices.get(source);
-
-		while (!queue.isEmpty()) {
-			current = queue.poll();
-
-			if (current.getValue().equals(destination)) {
-				return pathFound;
-			}
-
-			if (! visited.contains(current.getValue())) {
-				visited.add(current.getValue());
-				for (Iterator<Vertex<T>> it = current.edges(); it.hasNext(); ) {
-					Vertex<T> vertex = it.next();
-
-					if (! visited.contains(vertex.getValue())) {
-						queue.add(vertex);
-					}
-					pathFound.add(vertex.getValue());
+	// Handling the cycle
+	private boolean dfsVisited(Vertex<T> current, Vertex<T> goal, List<Vertex<T>> visited) {
+		if (current.equals(goal)) {
+			return true;
+		}
+		visited.add(current);
+		for (Iterator<Vertex<T>> it = current.edges(); it.hasNext(); ) {
+			Vertex<T> neighbor = it.next();
+			if (!visited.contains(neighbor)) {
+				if (dfsVisited(neighbor, goal, visited)) {
+					return true;
 				}
-
 			}
 		}
+		return false;
+	}
 
-		return new ArrayList<>();
+	public boolean dfs(T source, T destination) {
+		if (source == null || destination == null) {return false;}
+
+		Vertex<T> firstVert = vertices.get(source);
+		Vertex<T> lastVert = vertices.get(destination);
+
+		return dfsVisited(firstVert, lastVert, new ArrayList<>());
+	}
+
+
+	public List<T> breadthFirstSearch(T source, T destination) {
+		Vertex<T> firstVert = vertices.get(source);
+		Vertex<T> lastVert = vertices.get(destination);
+		Queue<Vertex<T>> exploreQue = new LinkedList<>();
+		List<T> foundPath = new ArrayList<>();
+
+		if (firstVert == null || lastVert == null) {
+			return new ArrayList<>(){};
+		}
+
+		exploreQue.add(firstVert);
+		firstVert.setVisited(true);
+
+		while (!exploreQue.isEmpty()) {
+			Vertex<T> current = exploreQue.poll();
+			// Reverse adding kinda
+			if (current.equals(lastVert)) {
+				Vertex<T> next = lastVert;
+				while (next != null) {
+					foundPath.add(0, next.getValue());
+					next = next.getParent();
+				}
+				return foundPath;
+			}
+
+			for (Vertex<T> neighbor : current.getNeighbors()) {
+				if (!neighbor.isVisited()) {
+					exploreQue.add(neighbor);
+					neighbor.setVisited(true);
+					neighbor.setParent(current);
+				}
+			}
+		}
+		return new ArrayList<>(){};
 	}
 }

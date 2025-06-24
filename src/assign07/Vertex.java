@@ -13,14 +13,11 @@ import java.util.Iterator;
  */
 public class Vertex<T> {
 
-	// data held in the Vertex
 	private T value;
+	private Vertex<T> parent;  // Added for BFS parent tracking
+	private boolean visited;
 
-	// adjacency list
-	// We have a choice
 	private List<Vertex<T>> adjacent;
-	// or
-	//private List<Edge> adjacent; // <- Good for weighted graphs
 
 	/**
 	 * Creates a new Vertex object, using the given name.
@@ -30,6 +27,8 @@ public class Vertex<T> {
 	public Vertex(T value) {
 		this.value = value;
 		this.adjacent = new LinkedList<Vertex<T>>();
+		this.parent = null;
+		this.visited = false;
 	}
 
 	/**
@@ -72,4 +71,28 @@ public class Vertex<T> {
 		}
 		return s;
 	}
+
+	/**
+	 * @return a list of vertices that are directly reachable from this vertex
+	 */
+	public List<Vertex<T>> getNeighbors() {
+		return new LinkedList<>(adjacent); // Defensive copy
+	}
+
+	public Vertex<T> getParent() {
+		return parent;
+	}
+
+	public void setParent(Vertex<T> parent) {
+		this.parent = parent;
+	}
+
+	public boolean isVisited() {
+		return visited;
+	}
+
+	public void setVisited(boolean visited) {
+		this.visited = visited;
+	}
+
 }
