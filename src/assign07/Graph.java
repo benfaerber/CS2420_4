@@ -32,7 +32,7 @@ public class Graph<T> {
 	public void addEdge(T name1, T name2) {
 		if (name1 == null || name2 == null) throw new IllegalArgumentException("Vertex names cannot be null");
 
-		Vertex vertex1;
+		Vertex<T> vertex1;
 		// if vertex already exists in graph, get its object
 		if (vertices.containsKey(name1)) {
 			vertex1 = vertices.get(name1);
@@ -42,13 +42,13 @@ public class Graph<T> {
 			vertices.put(name1, vertex1);
 		}
 
-		Vertex vertex2;
+		Vertex<T> vertex2;
 		// do the same for vertex2
 		if (vertices.containsKey(name2)) {
 			vertex2 = vertices.get(name2);
 		}
 		else {
-			vertex2 = new Vertex(name2);
+			vertex2 = new Vertex<>(name2);
 			vertices.put(name2, vertex2);
 		}
 
@@ -69,7 +69,10 @@ public class Graph<T> {
 			// for every edge
 			Iterator<Vertex<T>> edges = vertices.get(str).edges();
 			while (edges.hasNext()) {
-				dot.append("\t\"" + vertices.get(str).getName() + "\" -> \"" + edges.next().getName() + "\"\n");
+				dot.append("\t\"").append(vertices.get(str).getName())
+						.append("\" -> \"")
+						.append(edges.next().getName())
+						.append("\"\n");
 			}
 		}
 		
@@ -83,7 +86,7 @@ public class Graph<T> {
 		StringBuilder result = new StringBuilder();
 		
 		for (T str : vertices.keySet()) {
-			result.append(vertices.get(str) + "\n");	
+			result.append(vertices.get(str)).append("\n");
 		}
 		
 		return result.toString();
@@ -160,7 +163,7 @@ public class Graph<T> {
 			if (current.equals(lastVert)) {
 				Vertex<T> next = lastVert;
 				while (next != null) {
-					foundPath.add(0, next.getValue());
+					foundPath.addFirst(next.getValue());
 					next = next.getParent();
 				}
 				return foundPath;
@@ -175,5 +178,9 @@ public class Graph<T> {
 			}
 		}
 		return new ArrayList<>(){};
+	}
+
+	public List<T> topoSort() {
+		return new ArrayList<>();
 	}
 }
