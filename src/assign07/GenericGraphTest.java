@@ -9,12 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GenericGraphTest {
-    private Graph<String> simpleGraph, exampleDag;
+    private Graph<String> simpleGraph, simpleDag;
 
     @BeforeEach
     void setUp() throws Exception {
         this.simpleGraph = GraphParser.parseGraphFromFile("src/assign07/exampleGraph.txt");
-        this.exampleDag = GraphParser.parseGraphFromFile("src/assign07/exampleDag.txt");
+        this.simpleDag = GraphParser.parseGraphFromFile("src/assign07/exampleDag.txt");
     }
 
     @AfterEach
@@ -44,7 +44,7 @@ public class GenericGraphTest {
         System.out.println(a);
 
         assertTrue(this.simpleGraph.depthFirstSearch("a", "d"));
-        assertFalse(this.exampleDag.depthFirstSearch("d", "a"));
+        assertFalse(this.simpleDag.depthFirstSearch("d", "a"));
     }
 
    @Test
@@ -58,6 +58,15 @@ public class GenericGraphTest {
    }
 
 
+   @Test
+   void testTopoSort(){
+        List<String> expectedPathUniq = new ArrayList<>();
+        expectedPathUniq.add("a");
+        expectedPathUniq.add("b");
+        expectedPathUniq.add("c");
+        expectedPathUniq.add("d");
+
+   }
 
 }
 

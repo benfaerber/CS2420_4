@@ -16,6 +16,7 @@ public class Vertex<T> {
 	private T value;
 	private Vertex<T> parent;  // Added for BFS parent tracking
 	private boolean visited;
+	private int indegree;
 
 	private List<Vertex<T>> adjacent;
 
@@ -29,6 +30,7 @@ public class Vertex<T> {
 		this.adjacent = new LinkedList<Vertex<T>>();
 		this.parent = null;
 		this.visited = false;
+		this.indegree = 0;
 	}
 
 	/**
@@ -84,7 +86,9 @@ public class Vertex<T> {
 	}
 
 	public void setParent(Vertex<T> parent) {
+
 		this.parent = parent;
+		this.indegree++;
 	}
 
 	public boolean isVisited() {
@@ -93,6 +97,18 @@ public class Vertex<T> {
 
 	public void setVisited(boolean visited) {
 		this.visited = visited;
+	}
+
+	public void setIndegree(int indegree) {
+		this.indegree = indegree;
+	}
+
+	public void addIndegree(int indegree) {
+		this.indegree += indegree;
+	}
+
+	public int getIndegree() {
+		return indegree;
 	}
 
 }

@@ -134,16 +134,6 @@ public class Graph<T> {
 		return false;
 	}
 
-	public boolean dfs(T source, T destination) {
-		if (source == null || destination == null) {return false;}
-
-		Vertex<T> firstVert = vertices.get(source);
-		Vertex<T> lastVert = vertices.get(destination);
-
-		return dfsVisited(firstVert, lastVert, new ArrayList<>());
-	}
-
-
 	public List<T> breadthFirstSearch(T source, T destination) {
 		Vertex<T> firstVert = vertices.get(source);
 		Vertex<T> lastVert = vertices.get(destination);
@@ -181,6 +171,43 @@ public class Graph<T> {
 	}
 
 	public List<T> topoSort() {
-		return new ArrayList<>();
+		List<T> result = new ArrayList<>();
+
+		// Add all the indegrees
+		for (T val : vertices.keySet()) {
+			Vertex<T> vertex = vertices.get(val);
+
+			int c = vertex.getNeighbors().size();
+			vertex.addIndegree(c);
+		}
+
+		Queue<Vertex<T>> queue = new LinkedList<>();
+		int visitCount = 0;
+
+		for (Map.Entry<T, Vertex<T>> entry : vertices.entrySet()) {
+			Vertex<T> vertex = entry.getValue();
+			if (vertex.getIndegree() == 0) {
+				queue.add(vertex);
+			}
+		}
+
+		while (!queue.isEmpty()) {
+			Vertex<T> current = queue.poll();
+			visitCount++;
+			result.add(current.getValue());
+
+			for (Vertex<T> neighbor : current.getNeighbors()) {
+				neighbor.addIndegree(-1);
+				if (neighbor.getIndegree() == 0) {
+					queue.add(neighbor);
+				}
+			}
+		}
+
+		if (visitCount != vertices.size()) {
+			throw new IllegalStateException("Graph is a cycle!");
+		}
+		
+		return result;
 	}
 }
