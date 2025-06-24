@@ -112,25 +112,11 @@ public class Graph<T> {
 	public boolean depthFirstSearch(T source, T destination) {
 		List<Vertex<T>> visited = new ArrayList<Vertex<T>>();
 		Vertex<T> current = vertices.get(source);
-		if (source == null || destination == null) {return false;}
+		if (current == null || vertices.get(destination) == null) {
+			throw new IllegalArgumentException("Vertex names cannot be null");
+		}
 
 		return dfsRec(current, destination, visited);
-	}
-
-	private boolean dfsVisited(Vertex<T> current, Vertex<T> goal, List<Vertex<T>> visited) {
-		if (current.equals(goal)) {
-			return true;
-		}
-		visited.add(current);
-		for (Iterator<Vertex<T>> it = current.edges(); it.hasNext(); ) {
-			Vertex<T> neighbor = it.next();
-			if (!visited.contains(neighbor)) {
-				if (dfsVisited(neighbor, goal, visited)) {
-					return true;
-				}
-			}
-		}
-		return false;
 	}
 
 	public List<T> breadthFirstSearch(T source, T destination) {
@@ -194,7 +180,7 @@ public class Graph<T> {
 		}
 
 		if (visitCount != vertices.size()) {
-			throw new IllegalArgumentException("Graph contains vertices");
+			throw new IllegalArgumentException("Graph contains cycle");
 		}
 
 		return result;
