@@ -152,7 +152,7 @@ public class Graph<T> {
 			if (current.equals(lastVert)) {
 				Vertex<T> next = lastVert;
 				while (next != null) {
-					foundPath.addFirst(next.getValue());
+					foundPath.add(0, next.getValue());
 					next = next.getParent();
 				}
 				return foundPath;
@@ -194,7 +194,7 @@ public class Graph<T> {
 		}
 
 		if (visitCount != vertices.size()) {
-			throw new IllegalStateException("Graph contains vertices");
+			throw new IllegalArgumentException("Graph contains vertices");
 		}
 
 		return result;
