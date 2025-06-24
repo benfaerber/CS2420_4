@@ -78,7 +78,7 @@ public class Graph<T> {
 		
 		return dot.toString() + "}";
 	}
-	
+
 	/**
 	 * Generates a simple textual representation of this graph.
 	 */
@@ -126,7 +126,7 @@ public class Graph<T> {
 		List<T> foundPath = new ArrayList<>();
 
 		if (firstVert == null || lastVert == null) {
-			return new ArrayList<>(){};
+			throw new IllegalArgumentException("Vertex names cannot be null");
 		}
 
 		exploreQue.add(firstVert);
