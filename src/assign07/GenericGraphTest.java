@@ -6,15 +6,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class GenericGraphTest {
-    private Graph<String> simpleGraph, simpleDag;
+    private Graph<String> simpleGraph, simpleDag, graphFromSlides;
 
     @BeforeEach
     void setUp() throws Exception {
         this.simpleGraph = GraphParser.parseGraphFromFile("src/assign07/exampleGraph.txt");
         this.simpleDag = GraphParser.parseGraphFromFile("src/assign07/exampleDag.txt");
+        this.graphFromSlides = GraphParser.parseGraphFromFile("src/assign07/toposortTwoPossible.txt");
     }
 
     @AfterEach
@@ -40,9 +42,6 @@ public class GenericGraphTest {
     void testDepthFirstSearch() {
         Graph<String> a = GraphParser.parseGraphFromFile("src/assign07/exampleGraph.txt");
 
-        System.out.println("Depth First Search");
-        System.out.println(a);
-
         assertTrue(this.simpleGraph.depthFirstSearch("a", "d"));
         assertFalse(this.simpleDag.depthFirstSearch("d", "a"));
     }
@@ -57,7 +56,6 @@ public class GenericGraphTest {
         assertEquals(foundPath, a.breadthFirstSearch("a", "d"));
    }
 
-
    @Test
    void testTopoSort(){
         List<String> expectedPathUniq = new ArrayList<>();
@@ -65,8 +63,17 @@ public class GenericGraphTest {
         expectedPathUniq.add("b");
         expectedPathUniq.add("c");
         expectedPathUniq.add("d");
-
+        assertEquals(expectedPathUniq, this.simpleDag.topoSort());
    }
+
+   @Test
+   void testTopoSortFromSlides() {
+        List<String> expectedSort1 = new ArrayList<>(Arrays.asList(
+                "a", "c", "e", "f", "h", "g"
+        ));
+        assertEquals(expectedSort1, this.graphFromSlides.topoSort());
+   }
+
 
 }
 

@@ -53,6 +53,7 @@ public class Vertex<T> {
 	 */
 	public void addEdge(Vertex<T> otherVertex) {
 		adjacent.add(otherVertex);
+		otherVertex.addIndegree(1);
 	}
 
 	/**
@@ -86,9 +87,7 @@ public class Vertex<T> {
 	}
 
 	public void setParent(Vertex<T> parent) {
-
 		this.parent = parent;
-		this.indegree++;
 	}
 
 	public boolean isVisited() {

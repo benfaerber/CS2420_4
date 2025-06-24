@@ -117,7 +117,6 @@ public class Graph<T> {
 		return dfsRec(current, destination, visited);
 	}
 
-	// Handling the cycle
 	private boolean dfsVisited(Vertex<T> current, Vertex<T> goal, List<Vertex<T>> visited) {
 		if (current.equals(goal)) {
 			return true;
@@ -172,29 +171,19 @@ public class Graph<T> {
 
 	public List<T> topoSort() {
 		List<T> result = new ArrayList<>();
-
-		// Add all the indegrees
-		for (T val : vertices.keySet()) {
-			Vertex<T> vertex = vertices.get(val);
-
-			int c = vertex.getNeighbors().size();
-			vertex.addIndegree(c);
-		}
-
 		Queue<Vertex<T>> queue = new LinkedList<>();
-		int visitCount = 0;
 
-		for (Map.Entry<T, Vertex<T>> entry : vertices.entrySet()) {
-			Vertex<T> vertex = entry.getValue();
+		for (Vertex<T> vertex : vertices.values()) {
 			if (vertex.getIndegree() == 0) {
 				queue.add(vertex);
 			}
 		}
+		int visitCount = 0;
 
 		while (!queue.isEmpty()) {
 			Vertex<T> current = queue.poll();
-			visitCount++;
 			result.add(current.getValue());
+			visitCount++;
 
 			for (Vertex<T> neighbor : current.getNeighbors()) {
 				neighbor.addIndegree(-1);
@@ -205,9 +194,9 @@ public class Graph<T> {
 		}
 
 		if (visitCount != vertices.size()) {
-			throw new IllegalStateException("Graph is a cycle!");
+			throw new IllegalStateException("Graph contains vertices");
 		}
-		
+
 		return result;
 	}
 }
