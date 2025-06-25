@@ -92,6 +92,13 @@ public class Graph<T> {
 		return result.toString();
 	}
 
+	/**
+	 * The auxillary method powering depth-first search
+	 * @param current vertex to start at
+	 * @param dest the value we are looking for
+	 * @param visited a list of already visited
+	 * @return true if item is found
+	 */
 	private boolean dfsRec(Vertex<T> current, T dest, List<Vertex<T>> visited) {
 		for (Iterator<Vertex<T>> it = current.edges(); it.hasNext(); ) {
 			Vertex<T> vertex = it.next();
@@ -109,8 +116,14 @@ public class Graph<T> {
 		return false;
 	}
 
+	/**
+	 * Use the depth-first search algorithm to find the destination
+	 * @param source The value where to start
+	 * @param destination The destination to end up at
+	 * @return true if a path from source to destination is found
+	 */
 	public boolean depthFirstSearch(T source, T destination) {
-		List<Vertex<T>> visited = new ArrayList<Vertex<T>>();
+		List<Vertex<T>> visited = new ArrayList<>();
 		Vertex<T> current = vertices.get(source);
 		if (current == null || vertices.get(destination) == null) {
 			throw new IllegalArgumentException("Vertex names cannot be null");
@@ -119,6 +132,12 @@ public class Graph<T> {
 		return dfsRec(current, destination, visited);
 	}
 
+	/**
+	 * Use the breadth-first search algorithm to find a path
+	 * @param source The value of where to start
+	 * @param destination The value of where to end
+	 * @return A list of the path values
+	 */
 	public List<T> breadthFirstSearch(T source, T destination) {
 		Vertex<T> firstVert = vertices.get(source);
 		Vertex<T> lastVert = vertices.get(destination);
@@ -155,6 +174,10 @@ public class Graph<T> {
 		return new ArrayList<>(){};
 	}
 
+	/**
+	 * Perform a topological sort of graph
+	 * @return The nodes in topological sort order
+	 */
 	public List<T> topoSort() {
 		List<T> result = new ArrayList<>();
 		Queue<Vertex<T>> queue = new LinkedList<>();

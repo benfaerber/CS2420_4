@@ -79,33 +79,61 @@ public class Vertex<T> {
 	 * @return a list of vertices that are directly reachable from this vertex
 	 */
 	public List<Vertex<T>> getNeighbors() {
-		return new LinkedList<>(adjacent); // Defensive copy
+		return new LinkedList<>(adjacent);
 	}
 
+	/**
+	 * Get the parent of the vertex
+	 * @return the parent vertex
+	 */
 	public Vertex<T> getParent() {
 		return parent;
 	}
 
+	/**
+	 * Set the varent of the vertex
+	 * @param parent the parent to set
+	 */
 	public void setParent(Vertex<T> parent) {
 		this.parent = parent;
 	}
 
+	/**
+	 * Check if this node is visited
+	 * @return true if visited
+	 */
 	public boolean isVisited() {
 		return visited;
 	}
 
+	/**
+	 * Set if item is visited
+	 * @param visited is visited?
+	 */
 	public void setVisited(boolean visited) {
 		this.visited = visited;
 	}
 
+	/**
+	 * Set the indegree
+	 * @param indegree
+	 */
 	public void setIndegree(int indegree) {
 		this.indegree = indegree;
 	}
 
+	/**
+	 * Add to the indegree
+	 * @param indegree to add
+	 */
 	public void addIndegree(int indegree) {
 		this.indegree += indegree;
 	}
 
+	/**
+	 * Get indegree
+	 * @return indegree
+	 */
 	public int getIndegree() {
 		return indegree;
 	}

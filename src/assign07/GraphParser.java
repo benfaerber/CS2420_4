@@ -5,6 +5,11 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class GraphParser {
+    /**
+     * Parses a graph from a scanner containing a dot file
+     * @param scanner A scanner containing the file
+     * @return A graph
+     */
     static Graph<String> parseGraph(Scanner scanner) {
         String digraphType = scanner.next();
         boolean isDigraph = digraphType.equals("digraph");
@@ -35,10 +40,20 @@ public class GraphParser {
         return graph;
     }
 
+    /**
+     * Parse a graph from a string
+     * @param data A dot file in a string
+     * @return A graph
+     */
     static Graph<String> parseGraph(String data) {
         return parseGraph(new Scanner(data));
     }
 
+    /**
+     * Parse a graph from a dot file
+     * @param filename the name of the dot file
+     * @return A graph
+     */
     static Graph<String> parseGraphFromFile(String filename) {
         try {
             File myObj = new File(filename);
