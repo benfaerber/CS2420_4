@@ -46,7 +46,11 @@ public class GraphUtility {
      */
     public static <T> List<T> shortestPath(List<T> sources, List<T> destinations, T srcData, T dstData) {
         Graph<T> graph = buildGraphFromLists(sources, destinations);
-        return graph.breadthFirstSearch(srcData, dstData);
+        List<T> path = graph.breadthFirstSearch(srcData, dstData);
+        if (path == null) {
+            throw new IllegalArgumentException("Could not find shortest path from " + srcData + " to " + dstData);
+        }
+        return path;
     }
 
     /**

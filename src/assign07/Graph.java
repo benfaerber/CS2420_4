@@ -171,7 +171,7 @@ public class Graph<T> {
 				}
 			}
 		}
-		return new ArrayList<>(){};
+		return null;
 	}
 
 	/**
