@@ -208,4 +208,10 @@ public class Graph<T> {
 
 		return result;
 	}
+
+	public Vertex<T> getRandomVertex() {
+		List<T> keys = new ArrayList<>(vertices.keySet());
+		T randomKey = keys.get(new Random().nextInt(keys.size()));
+		return vertices.get(randomKey);
+	}
 }
