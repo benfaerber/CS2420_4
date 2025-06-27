@@ -14,10 +14,10 @@ import timing.TimingExperiment;
 public class TopoSortDenseTimingExperiment extends TimingExperiment {
     private static String problemSizeDescription = "vertexCount";
 
-    private static int problemSizeMin = 5000;
-    private static int problemSizeCount = 50;
-    private static int problemSizeStep = 1000;
-    private static int experimentIterationCount = 100;
+    private static int problemSizeMin = 1;
+    private static int problemSizeCount = 500;
+    private static int problemSizeStep = 50;
+    private static int experimentIterationCount = 20;
 
 
     private final Random rng = new Random();
@@ -25,7 +25,7 @@ public class TopoSortDenseTimingExperiment extends TimingExperiment {
     private Graph<Integer> acyclicRandomGraph;
 
     public static void main(String[] args) {
-        TimingExperiment timingExperiment = new TopoSortSparseTimingExperiment();
+        TimingExperiment timingExperiment = new TopoSortDenseTimingExperiment();
         timingExperiment.printResults();
     }
 

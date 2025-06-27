@@ -20,13 +20,13 @@ public class DepthFirstSearchSparseTimingExperiment extends TimingExperiment {
 
     private final Random rng = new Random();
 
-    private Graph<Integer> acyclicRandomGraph;
+    private Graph<Integer> graph;
 
     private Vertex<Integer> randomSource;
     private Vertex<Integer> randomDestination;
 
     public static void main(String[] args) {
-        TimingExperiment timingExperiment = new TopoSortSparseTimingExperiment();
+        TimingExperiment timingExperiment = new DepthFirstSearchSparseTimingExperiment();
         timingExperiment.printResults();
     }
 
@@ -40,25 +40,23 @@ public class DepthFirstSearchSparseTimingExperiment extends TimingExperiment {
      * @param problemSize - number of vertices
      */
     protected void setupExperiment(int problemSize) {
-    	// V = {0, 1, ..., problemSize - 1}
-    	acyclicRandomGraph = new Graph<Integer>();
-    	   	
-    	// |E| = 2 * problemSize
+        graph = new Graph<>();
+        // |E| = 2 * problemSize
         for(int i = 0; i < 2 * problemSize; i++) {
-        	// Add random edge between two random vertices.
-        	int sourceVertexData = rng.nextInt(problemSize - 1);
-        	int destinationVertexData = rng.nextInt(sourceVertexData + 1, problemSize);
-        	acyclicRandomGraph.addEdge(sourceVertexData, destinationVertexData);
+            // Add random edge between two random vertices.
+            int sourceVertexData = rng.nextInt(problemSize - 1);
+            int destinationVertexData = rng.nextInt(sourceVertexData + 1, problemSize);
+            graph.addEdge(sourceVertexData, destinationVertexData);
         }
 
-        this.randomSource = acyclicRandomGraph.getRandomVertex();
-        this.randomDestination = acyclicRandomGraph.getRandomVertex();
+        randomSource = graph.getRandomVertex();
+        randomDestination = graph.getRandomVertex();
     }
 
     /**
      * Run the topoSort method.
      */
     protected void runComputation() {
-        acyclicRandomGraph.depthFirstSearch(randomSource.getValue(), randomDestination.getValue());
+        graph.depthFirstSearch(randomSource.getValue(), randomDestination.getValue());
     }
 }
