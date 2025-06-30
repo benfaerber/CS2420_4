@@ -1,8 +1,6 @@
 package assign08;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class BinarySearchTree<Type extends Comparable<? super Type>> implements SortedSet<Type> {
     private BinaryNode<Type> root = null;
@@ -18,18 +16,43 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
             return true;
         }
 
+        if (root.getData().compareTo(item) == 0) {
+            return false;
+        }
 
+        this.addAux(root, item);
+        return true;
     }
 
-    private boolean addRE
+    private BinaryNode<Type> addAux(BinaryNode<Type> node, Type key) {
+        if (node == null) {
+            return new BinaryNode<>(key);
+        }
+
+        int compare = node.getData().compareTo(key);
+        if (compare > 0) {
+            BinaryNode<Type> left = node.getLeftChild();
+            BinaryNode<Type> newLeft = addAux(left, key);
+            node.setLeftChild(newLeft);
+        } else if (compare < 0) {
+            BinaryNode<Type> right = node.getRightChild();
+            BinaryNode<Type> newRight = addAux(right, key);
+            node.setRightChild(newRight);
+        }
+
+        return node;
+    }
+
 
     public void addAll(Collection<? extends Type> items) {
-        // TODO
+        for (Type item : items) {
+            this.add(item);
+        }
     }
 
 
     public boolean contains(Type item) {
-        // TODO
+        // TODO: After create iterator
         return false;
     }
 
@@ -40,17 +63,17 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
     }
 
     public Type first() throws NoSuchElementException {
-        // TODO
+        // TODO: after create iterator
         throw new NoSuchElementException();
     }
 
     public Type last() throws NoSuchElementException {
-        // TODO
+        // TODO: after create iterator
         throw new NoSuchElementException();
     }
 
     public int size() {
-        // TODO
+        // TODO: after create iterator
         return 0;
     }
 
@@ -67,15 +90,43 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
         throw new NoSuchElementException();
     }
 
+    private ArrayList<Type> values;
+
+    private void addSingleNodeToValues(BinaryNode<Type> node) {
+        if (node != null) {
+            addSingleNodeToValues(node.getLeftChild());
+            values.add(node.getData());
+            addSingleNodeToValues(node.getRightChild());
+        }
+    }
+
+    private ArrayList<Type> getValuesInOrder() {
+        this.values = new ArrayList<>();
+        addSingleNodeToValues(root);
+        ArrayList<Type> valuesCopy = new ArrayList<>(values);
+        // Make it so it starts fresh next time
+        this.values = new ArrayList<>();
+        return valuesCopy;
+    }
+
+
+    public String toListString() {
+        StringJoiner sb = new StringJoiner(", ");
+        for (Type item : this.getValuesInOrder()) {
+            sb.add(item.toString());
+        }
+        return sb.toString();
+    }
+
     public String toDot() {
         StringBuilder sb = new StringBuilder();
         sb.append("digraph G {\n");
 
         if (root == null) {
             return sb.append("}\n").toString();
-
-
         }
+
+        ArrayList<Type> values = getValuesInOrder();
 
         // Finish after iterator
 

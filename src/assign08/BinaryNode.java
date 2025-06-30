@@ -15,6 +15,8 @@ public class BinaryNode<Type> {
 
 	private BinaryNode<Type> rightChild;
 
+	private BinaryNode<Type> parent;
+
 	/**
 	 * Creates a new binary node, given references to children.
 	 * 
@@ -22,10 +24,11 @@ public class BinaryNode<Type> {
 	 * @param leftChild - reference to this node's left child
 	 * @param rightChild - reference to this node's right child
 	 */
-	public BinaryNode(Type data, BinaryNode<Type> leftChild, BinaryNode<Type> rightChild) {
+	public BinaryNode(Type data, BinaryNode<Type> leftChild, BinaryNode<Type> rightChild, BinaryNode<Type> parent) {
 		this.data = data;
 		this.leftChild = leftChild;
 		this.rightChild = rightChild;
+		this.parent = parent;
 	}
 
 	/**
@@ -34,7 +37,7 @@ public class BinaryNode<Type> {
 	 * @param data - data to be housed in this node
 	 */
 	public BinaryNode(Type data) {
-		this(data, null, null);
+		this(data, null, null, null);
 	}
 
 	/**
@@ -89,6 +92,14 @@ public class BinaryNode<Type> {
 	 */
 	public void setRightChild(BinaryNode<Type> rightChild) {
 		this.rightChild = rightChild;
+	}
+
+	public BinaryNode<Type> getParent() {
+		return parent;
+	}
+
+	public void setParent(BinaryNode<Type> parent) {
+		this.parent = parent;
 	}
 
 	/**
