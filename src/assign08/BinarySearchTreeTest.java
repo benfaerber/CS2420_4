@@ -10,8 +10,12 @@ import java.util.Arrays;
 import java.util.List;
 
 public class BinarySearchTreeTest {
+    private BinarySearchTree<Integer> basicBst;
+
     @BeforeEach
     void setUp() throws Exception {
+        basicBst = new BinarySearchTree<>();
+        basicBst.addAll(List.of(new Integer[]{2, 3, 4, 1}));
     }
 
     @AfterEach
@@ -61,6 +65,16 @@ public class BinarySearchTreeTest {
 
         // Doesn't have a 5
         assertFalse(bst.contains(5));
+    }
+
+    @Test
+    void testFirst() {
+        assertEquals(1, basicBst.first());
+    }
+
+    @Test
+    void testLast() {
+        assertEquals(4, basicBst.last());
     }
 
 }
