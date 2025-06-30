@@ -33,10 +33,12 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
         if (compare > 0) {
             BinaryNode<Type> left = node.getLeftChild();
             BinaryNode<Type> newLeft = addAux(left, key);
+            newLeft.setParent(node);
             node.setLeftChild(newLeft);
         } else if (compare < 0) {
             BinaryNode<Type> right = node.getRightChild();
             BinaryNode<Type> newRight = addAux(right, key);
+            newRight.setParent(node);
             node.setRightChild(newRight);
         }
 
@@ -74,21 +76,26 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
     }
 
     public boolean remove(Type item) {
-
-
-
-        // TODO
         return false;
     }
 
+    private void deleteAux() {
+
+    }
+
     public Type first() throws NoSuchElementException {
-        // TODO: after create iterator
-        throw new NoSuchElementException();
+        if (root == null) {
+            throw new NoSuchElementException();
+        }
+
+        return root.getLeftmostNode().getData();
     }
 
     public Type last() throws NoSuchElementException {
-        // TODO: after create iterator
-        throw new NoSuchElementException();
+        if (root == null) {
+            throw new NoSuchElementException();
+        }
+        return root.getRightmostNode().getData();
     }
 
     public int size() {
