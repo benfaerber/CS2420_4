@@ -52,12 +52,31 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
 
 
     public boolean contains(Type item) {
-        // TODO: After create iterator
-        return false;
+        BinaryNode<Type> node = searchAux(root, item);
+        return node != null;
     }
 
+    private BinaryNode<Type> searchAux(BinaryNode<Type> node, Type key) {
+        if (node == null) {
+            return null;
+        }
+        int compare = node.getData().compareTo(key);
+        boolean isDuplicate = compare == 0;
+        if (isDuplicate) {
+            return node;
+        }
+
+        if (compare < 0) {
+            return searchAux(node.getRightChild(), key);
+        }
+
+        return searchAux(node.getLeftChild(), key);
+    }
 
     public boolean remove(Type item) {
+
+
+
         // TODO
         return false;
     }

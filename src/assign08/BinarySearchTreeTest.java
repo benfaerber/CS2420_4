@@ -46,6 +46,23 @@ public class BinarySearchTreeTest {
         assertEquals(bst.toListString(), bstAddAll.toListString());
     }
 
+
+    @Test
+    void testContains() {
+        BinarySearchTree<Integer> bst = new BinarySearchTree<>();
+        bst.addAll(List.of(new Integer[]{2, 3, 4, 1}));
+
+        // Should find the 2 (first)
+        assertTrue(bst.contains(2));
+        // Should find the rightmost (4)
+        assertTrue(bst.contains(4));
+        // Should find the leftmost
+        assertTrue(bst.contains(1));
+
+        // Doesn't have a 5
+        assertFalse(bst.contains(5));
+    }
+
 }
 
 
