@@ -9,7 +9,7 @@ import java.util.Scanner;
 /**
  * Represents a "dictionary" of strings using a binary search tree and offers
  * methods for spell-checking documents.
- * 
+ *
  * @author CS 2420 course staff and ***STUDENT NAME***
  * @version March 6, 2025
  */
@@ -26,7 +26,7 @@ public class SpellChecker {
 
 	/**
 	 * Creates dictionary from a list of words.
-	 * 
+	 *
 	 * @param words - the List of Strings used to build the dictionary
 	 */
 	public SpellChecker(List<String> words) {
@@ -36,7 +36,7 @@ public class SpellChecker {
 
 	/**
 	 * Creates dictionary from a file.
-	 * 
+	 *
 	 * @param dictionaryFile - the File that contains Strings used to build the
 	 *                        dictionary
 	 */
@@ -47,44 +47,52 @@ public class SpellChecker {
 
 	/**
 	 * Add a word to the dictionary.
-	 * 
+	 *
 	 * @param word - the String to be added to the dictionary
 	 */
 	public void addToDictionary(String word) {
-		// TODO: FILL IN
+		if (!dictionary.contains(word)){
+			dictionary.add(word);
+		}
 	}
 
 	/**
 	 * Spell-checks a document against the dictionary.
 	 * Makes a list of words from the document that are not in the dictionary.
-	 * 
+	 *
 	 * @param documentFile - the File that contains Strings to be looked up in the
 	 *                      dictionary
 	 * @return a List of misspelled words (i.e., words not in the dictionary)
 	 */
 	public List<String> spellCheck(File documentFile) {
-
 		List<String> wordsToCheck = readFromFile(documentFile);
+		List<String> misspelledWords = new ArrayList<String>();
 
-		// TODO: FILL IN -- do not return null
+		for (String word : wordsToCheck) {
+			if (!dictionary.contains(word)) {
+				misspelledWords.add(word);
+			}
+		}
 
-		return null;
+		return misspelledWords;
 	}
 
 	/**
 	 * Fills in the dictionary with the input list of words.
-	 * 
+	 *
 	 * @param words - the List of Strings to be added to the dictionary
 	 */
 	private void buildDictionary(List<String> words) {
-		// TODO: FILL IN
+		for (String word : words) {
+			dictionary.add(word);
+		}
 	}
 
 	/**
 	 * Returns a list of the words contained in the specified file. (Note that
 	 * symbols, digits, and spaces are ignored; and all words are converted
 	 * to lower case.)
-	 * 
+	 *
 	 * @param file - the File to be read
 	 * @return a List of the Strings in the input file
 	 */
@@ -110,13 +118,13 @@ public class SpellChecker {
 
 			while (fileInput.hasNext()) {
 				String s = fileInput.next();
-				if (!s.equals("")) 
+				if (!s.equals(""))
 					words.add(s.toLowerCase());
 			}
-			
+
 			fileInput.close();
 
-		} 
+		}
 		catch(FileNotFoundException e) {
 			System.err.println("File " + file + " cannot be found.");
 		}
