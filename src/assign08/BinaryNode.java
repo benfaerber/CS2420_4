@@ -136,14 +136,17 @@ public class BinaryNode<Type> {
 	 * @return the height of the binary tree rooted at this node
 	 */
 	public int height() {
-		if (this.leftChild == null) {
-			return 0;
+		int leftHeight = -1;
+		int rightHeight = -1;
+
+		if (leftChild != null) {
+			leftHeight = leftChild.height();
 		}
 
-		if (this.rightChild == null) {
-			return 0;
+		if (rightChild != null) {
+			rightHeight = rightChild.height();
 		}
 
-		return Math.max(leftChild.height()+1, rightChild.height()+1);
+		return Math.max(leftHeight, rightHeight) + 1;
 	}
 }

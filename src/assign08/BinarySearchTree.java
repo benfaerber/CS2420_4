@@ -4,10 +4,10 @@ import java.util.*;
 
 public class BinarySearchTree<Type extends Comparable<? super Type>> implements SortedSet<Type> {
     private BinaryNode<Type> root = null;
+    private int size = 0;
+    private ArrayList<Type> values;
 
-    public BinarySearchTree() {
-
-    }
+    public BinarySearchTree() {}
 
     public boolean add(Type item) {
         // First, the binary tree is empty
@@ -21,6 +21,7 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
         }
 
         this.addAux(root, item);
+        size++;
         return true;
     }
 
@@ -76,11 +77,44 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
     }
 
     public boolean remove(Type item) {
-        return false;
+        if (!contains(item)) {
+            return false;
+        }
+        root = removeAux(root, item);
+        size--;
+        return true;
     }
 
-    private void deleteAux() {
+    private BinaryNode<Type> removeAux(BinaryNode<Type> node, Type key) {
+        if (node == null) {
+            return null;
+        }
 
+        int compare = node.getData().compareTo(key);
+        if (compare > 0) {
+            node.setLeftChild(removeAux(node.getLeftChild(), key));
+        } else if (compare < 0) {
+            node.setRightChild(removeAux(node.getRightChild(), key));
+        } else {
+            if (node.getLeftChild() == null) {
+                return node.getRightChild();
+            } else if (node.getRightChild() == null) {
+                return node.getLeftChild();
+            }
+
+            node.setData(minValue(node.getRightChild()));
+            node.setRightChild(removeAux(node.getRightChild(), node.getData()));
+        }
+        return node;
+    }
+
+    private Type minValue(BinaryNode<Type> node) {
+        Type minValue = node.getData();
+        while (node.getLeftChild() != null) {
+            minValue = node.getLeftChild().getData();
+            node = node.getLeftChild();
+        }
+        return minValue;
     }
 
     public Type first() throws NoSuchElementException {
@@ -99,8 +133,7 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
     }
 
     public int size() {
-        // TODO: after create iterator
-        return 0;
+        return this.size;
     }
 
     public boolean isEmpty() {
@@ -112,11 +145,71 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
     }
 
     public Iterator<Type> iterator() {
-        // TODO
-        throw new NoSuchElementException();
+        return new BSTIterator();
     }
 
-    private ArrayList<Type> values;
+    private class BSTIterator implements Iterator<Type> {
+        private BinaryNode<Type> current;
+        private BinaryNode<Type> lastReturned; // Needed for remove()
+
+        public BSTIterator() {
+            current = root;
+            // Initialize to the leftmost (smallest) node
+            while (current != null && current.getLeftChild() != null) {
+                current = current.getLeftChild();
+            }
+        }
+
+        @Override
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        @Override
+        public Type next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+
+            lastReturned = current;
+            Type result = current.getData();
+
+            // Have right child
+            if (current.getRightChild() != null) {
+                current = current.getRightChild();
+                while (current.getLeftChild() != null) {
+                    current = current.getLeftChild();
+                }
+            }
+            // No right child
+            else {
+                BinaryNode<Type> parent = current.getParent();
+                while (parent != null && current == parent.getRightChild()) {
+                    current = parent;
+                    parent = parent.getParent();
+                }
+                current = parent;
+            }
+
+            return result;
+        }
+
+        @Override
+        public void remove() {
+            if (lastReturned == null) {
+                throw new IllegalStateException("next() must be called before remove()");
+            }
+
+            // If the node has two children, find successor
+            if (lastReturned.getLeftChild() != null && lastReturned.getRightChild() != null) {
+                current = lastReturned; // Adjust iterator state
+            }
+
+            // Remove the node (reuse BST's remove logic)
+            BinarySearchTree.this.remove(lastReturned.getData());
+            lastReturned = null; // Prevent multiple removes
+        }
+    }
 
     private void addSingleNodeToValues(BinaryNode<Type> node) {
         if (node != null) {
@@ -135,27 +228,59 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
         return valuesCopy;
     }
 
-
     public String toListString() {
-        StringJoiner sb = new StringJoiner(", ");
+        StringJoiner sj = new StringJoiner(", ");
         for (Type item : this.getValuesInOrder()) {
-            sb.add(item.toString());
+            sj.add(item.toString());
         }
+        return sj.toString();
+    }
+
+    /**
+     * Generates a DOT representation of the BST using DFS (no queue).
+     * @return DOT format string
+     */
+    public String toDot() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("digraph BST {\n");
+
+        if (root != null) {
+            for (Type item : this) {
+                sb.append("    \"").append(item).append("\";\n");
+            }
+            toDotAux(root, sb);
+        }
+
+        sb.append("}\n");
         return sb.toString();
     }
 
-    public String toDot() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("digraph G {\n");
-
-        if (root == null) {
-            return sb.append("}\n").toString();
+    /**
+     * Helper method to add edges recursively (DFS traversal).
+     */
+    private void toDotAux(BinaryNode<Type> node, StringBuilder sb) {
+        if (node == null) {
+            return;
         }
 
-        ArrayList<Type> values = getValuesInOrder();
+        // Add left child edge
+        if (node.getLeftChild() != null) {
+            sb.append("    \"")
+                    .append(node.getData())
+                    .append("\" -> \"")
+                    .append(node.getLeftChild().getData())
+                    .append("\";\n");
+            toDotAux(node.getLeftChild(), sb);
+        }
 
-        // Finish after iterator
-
-        return "";
+        // Add right child edge
+        if (node.getRightChild() != null) {
+            sb.append("    \"")
+                    .append(node.getData())
+                    .append("\" -> \"")
+                    .append(node.getRightChild().getData())
+                    .append("\";\n");
+            toDotAux(node.getRightChild(), sb);
+        }
     }
 }

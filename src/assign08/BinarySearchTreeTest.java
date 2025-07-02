@@ -77,6 +77,16 @@ public class BinarySearchTreeTest {
         assertEquals(4, basicBst.last());
     }
 
+    @Test
+    void testToDot(){
+        BinarySearchTree<Integer> bst = new BinarySearchTree<>();
+        bst.add(5);
+        bst.add(3);
+        bst.add(7);
+        bst.add(2);
+        bst.add(4);
+        System.out.print(bst.toDot());
+    }
 }
 
 
