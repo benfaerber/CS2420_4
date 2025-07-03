@@ -153,11 +153,8 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
         private BinaryNode<Type> lastReturned; // Needed for remove()
 
         public BSTIterator() {
-            current = root;
-            // Initialize to the leftmost (smallest) node
-            while (current != null && current.getLeftChild() != null) {
-                current = current.getLeftChild();
-            }
+            // Left most node will be the smallest
+            current = root.getLeftmostNode();
         }
 
         @Override
@@ -167,7 +164,7 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
 
         @Override
         public Type next() {
-            if (!hasNext()) {
+            if (!this.hasNext()) {
                 throw new NoSuchElementException();
             }
 
@@ -180,9 +177,7 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
                 while (current.getLeftChild() != null) {
                     current = current.getLeftChild();
                 }
-            }
-            // No right child
-            else {
+            } else {
                 BinaryNode<Type> parent = current.getParent();
                 while (parent != null && current == parent.getRightChild()) {
                     current = parent;
@@ -200,14 +195,13 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
                 throw new IllegalStateException("next() must be called before remove()");
             }
 
-            // If the node has two children, find successor
+            // If there are children, fix the link
             if (lastReturned.getLeftChild() != null && lastReturned.getRightChild() != null) {
-                current = lastReturned; // Adjust iterator state
+                current = lastReturned;
             }
 
-            // Remove the node (reuse BST's remove logic)
             BinarySearchTree.this.remove(lastReturned.getData());
-            lastReturned = null; // Prevent multiple removes
+            lastReturned = null;
         }
     }
 
