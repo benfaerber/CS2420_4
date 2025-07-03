@@ -5,17 +5,16 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class BinarySearchTreeTest {
-    private BinarySearchTree<Integer> basicBst;
+    private BinarySearchTree<Integer> basicBst, tree;
 
     @BeforeEach
     void setUp() throws Exception {
         basicBst = new BinarySearchTree<>();
         basicBst.addAll(List.of(new Integer[]{2, 3, 4, 1}));
+        tree = new BinarySearchTree<>();
     }
 
     @AfterEach
@@ -32,24 +31,83 @@ public class BinarySearchTreeTest {
         bst.add(4);
         bst.add(1);
 
-        System.out.println(bst.toListString());
+        System.out.println(bst.toDot());
     }
 
     @Test
     void testAddAll() {
+        List<Integer> items = Arrays.asList(5, 3, 7);
+        tree.addAll(items);
 
-        BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>();
-        bst.add(2);
-        bst.add(3);
-        bst.add(4);
-        bst.add(1);
-
-        BinarySearchTree<Integer> bstAddAll = new BinarySearchTree<>();
-        bstAddAll.addAll(List.of(new Integer[]{2, 3, 4, 1}));
-
-        assertEquals(bst.toListString(), bstAddAll.toListString());
+        tree.addAll(items);
+        for (int i : items) {
+            assertTrue(tree.contains(i));
+        }
     }
 
+    @Test
+    void testRemoveLeafNode() {
+        tree.add(10);
+        tree.add(5);
+        tree.add(15);
+        assertTrue(tree.remove(5));
+        assertFalse(tree.contains(5));
+    }
+
+    @Test
+    void testRemoveNodeWithOneChild() {
+        tree.add(10);
+        tree.add(5);
+        tree.add(3);
+        assertTrue(tree.remove(5));
+        assertFalse(tree.contains(5));
+        assertTrue(tree.contains(3));
+    }
+
+    @Test
+    void testRemoveNodeWithTwoChildren() {
+        tree.add(10);
+        tree.add(5);
+        tree.add(15);
+        tree.add(12);
+        tree.add(18);
+        assertTrue(tree.remove(15));
+        assertFalse(tree.contains(15));
+        assertTrue(tree.contains(12));
+        assertTrue(tree.contains(18));
+    }
+
+    @Test
+    void testFirstAndLast() {
+        tree.add(20);
+        tree.add(10);
+        tree.add(30);
+        tree.add(5);
+        tree.add(35);
+        assertEquals(5, tree.first());
+        assertEquals(35, tree.last());
+    }
+
+    @Test
+    void testFirstThrowsOnEmpty() {
+        assertThrows(NoSuchElementException.class, () -> tree.first());
+    }
+
+    @Test
+    void testLastThrowsOnEmpty() {
+        assertThrows(NoSuchElementException.class, () -> tree.last());
+    }
+
+    @Test
+    void testIterator() {
+        tree.addAll(Arrays.asList(10, 5, 15, 3, 7));
+        Iterator<Integer> it = tree.iterator();
+        List<Integer> actual = new ArrayList<>();
+        while (it.hasNext()) {
+            actual.add(it.next());
+        }
+        assertEquals(Arrays.asList(3, 5, 7, 10, 15), actual);
+    }
 
     @Test
     void testContains() {

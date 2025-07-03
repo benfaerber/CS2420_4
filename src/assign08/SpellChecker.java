@@ -31,7 +31,7 @@ public class SpellChecker {
 	 */
 	public SpellChecker(List<String> words) {
 		this();
-		buildDictionary(words);
+		this.buildDictionary(words);
 	}
 
 	/**
@@ -42,7 +42,7 @@ public class SpellChecker {
 	 */
 	public SpellChecker(File dictionaryFile) {
 		this();
-		buildDictionary(readFromFile(dictionaryFile));
+		this.buildDictionary(readFromFile(dictionaryFile));
 	}
 
 	/**
@@ -100,10 +100,6 @@ public class SpellChecker {
 		ArrayList<String> words = new ArrayList<String>();
 
 		try {
-			/*
-			 * Java's Scanner class is a simple lexer for Strings and primitive types (see
-			 * the Java API, if you are unfamiliar).
-			 */
 			Scanner fileInput = new Scanner(file);
 
 			/*
@@ -118,7 +114,7 @@ public class SpellChecker {
 
 			while (fileInput.hasNext()) {
 				String s = fileInput.next();
-				if (!s.equals(""))
+				if (!s.isEmpty())
 					words.add(s.toLowerCase());
 			}
 

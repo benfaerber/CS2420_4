@@ -11,12 +11,6 @@ public class SpellCheckerTest {
 
     @AfterEach
     void tearDown() throws Exception {}
-
-
-    @Test
-    void testParseGraph() {
-
-    }
 }
 
 
