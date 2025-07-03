@@ -2,6 +2,14 @@ package assign08;
 
 import java.util.*;
 
+/**
+ * A binary search tree ADT.
+ * This is a graph based data structure that sorts nodes in a tree structure.
+ * The leftmost node will be the smallest element and the rightmost node will be the largest element
+ * This allows for fast lookups.
+ * @param <Type> The type that the individual node should contain
+ * @author Benjamin Faerber and David Chen
+ */
 public class BinarySearchTree<Type extends Comparable<? super Type>> implements SortedSet<Type> {
     private BinaryNode<Type> root = null;
     private int size = 0;
@@ -17,17 +25,38 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
      *         the input item was actually inserted); otherwise, returns false
      */
     public boolean add(Type item) {
-        // First, the binary tree is empty
         if (root == null) {
             root = new BinaryNode<>(item);
+            size++;
             return true;
         }
 
-        if (root.getData().compareTo(item) == 0) {
-            return false;
+        BinaryNode<Type> current = root;
+        BinaryNode<Type> parent = null;
+        int compare = 0;
+
+        while (current != null) {
+            parent = current;
+            compare = item.compareTo(current.getData());
+
+            if (compare < 0) {
+                current = current.getLeftChild();
+            } else if (compare > 0) {
+                current = current.getRightChild();
+            } else {
+                return false;
+            }
         }
 
-        this.addAux(root, item);
+        BinaryNode<Type> newNode = new BinaryNode<>(item);
+        newNode.setParent(parent);
+
+        if (compare < 0) {
+            parent.setLeftChild(newNode);
+        } else {
+            parent.setRightChild(newNode);
+        }
+
         size++;
         return true;
     }
@@ -129,19 +158,10 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
                 return node.getLeftChild();
             }
 
-            node.setData(minValue(node.getRightChild()));
+            node.setData(node.getRightChild().getLeftmostNode().getData());
             node.setRightChild(removeAux(node.getRightChild(), node.getData()));
         }
         return node;
-    }
-
-    private Type minValue(BinaryNode<Type> node) {
-        Type minValue = node.getData();
-        while (node.getLeftChild() != null) {
-            minValue = node.getLeftChild().getData();
-            node = node.getLeftChild();
-        }
-        return minValue;
     }
 
     /**
@@ -205,6 +225,11 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
         private BinaryNode<Type> lastReturned;
 
         public BSTIterator() {
+            if (root == null) {
+                current = null;
+                return;
+            }
+
             // Left most node will be the smallest
             current = root.getLeftmostNode();
         }

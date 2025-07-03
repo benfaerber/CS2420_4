@@ -10,12 +10,12 @@ import java.util.Scanner;
  * Represents a "dictionary" of strings using a binary search tree and offers
  * methods for spell-checking documents.
  *
- * @author CS 2420 course staff and ***STUDENT NAME***
+ * @author CS 2420 course staff and Benjamin Faerber and David Chen
  * @version March 6, 2025
  */
 public class SpellChecker {
 
-	private BinarySearchTree<String> dictionary;
+	private final BinarySearchTree<String> dictionary;
 
 	/**
 	 * Default constructor--creates empty dictionary.

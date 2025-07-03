@@ -145,6 +145,16 @@ public class BinarySearchTreeTest {
         bst.add(4);
         System.out.print(bst.toDot());
     }
+
+    @Test
+    public void testNextThrowsAfterEnd() {
+        BinarySearchTree<Integer> bst = new BinarySearchTree<>();
+        bst.add(1);
+        Iterator<Integer> iter = bst.iterator();
+        iter.next();
+        // ITerator is over
+        assertThrows(NoSuchElementException.class, () -> iter.next());
+    }
 }
 
 
