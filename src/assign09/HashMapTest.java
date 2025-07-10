@@ -143,6 +143,12 @@ public class HashMapTest {
         }
 
         assertEquals(500, simpleMap.size());
+        assertEquals(499, simpleMap.get("key499"));
+
+        // Some random values
+        assertEquals(99, simpleMap.get("key99"));
+        assertEquals(150, simpleMap.get("key150"));
+        assertEquals(410, simpleMap.get("key410"));
     }
 }
 
