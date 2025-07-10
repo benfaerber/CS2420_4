@@ -1,5 +1,6 @@
 package timing;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.awt.datatransfer.StringSelection;
 import java.awt.Toolkit;
@@ -53,7 +54,6 @@ public abstract class TimingExperiment {
         for (int i = 0; i < problemSizeCount; i++) {
             long medianElapsedTime = computeMedianElapsedTime(size);
             System.out.println(size + "\t" + medianElapsedTime);
-//            System.out.println(medianElapsedTime);
             results.append(medianElapsedTime).append("\n");
             size += problemSizeStep;
         }
@@ -62,6 +62,7 @@ public abstract class TimingExperiment {
         // It should work on your computer if you download xclip
         ClipboardHelper.copyToClipboard(results.toString());
     }
+
 
     /**
      * Computes the median time elapsed to run the computation for a given problem size.

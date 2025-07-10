@@ -286,6 +286,49 @@ public class HashTable<K, V> implements Map<K, V> {
         throw new IllegalStateException("Table is full! Size: " + table.size() + ", Items: " + tableItems + ", Load: " + loadFactor());
     }
 
+
+    /** Annoying version I had to make for analysis */
+    public int putWithCollisionCount(K key, V value) {
+        if (loadFactor() > MAX_LOAD_FACTOR) {
+            rehash();
+        }
+
+        int collisions = 0;
+        Integer deletedSlot = null;
+
+        for (int i = 0; i < table.size(); i++) {
+            int slot = doubleHash(key, i);
+            MapEntry<K, V> entry = table.get(slot);
+            boolean isDeleted = isDeletedTable.get(slot);
+
+            if (entry == null) {
+                int targetSlot = (deletedSlot != null) ? deletedSlot : slot;
+                table.set(targetSlot, new MapEntry<>(key, value));
+                isDeletedTable.set(targetSlot, false);
+                tableItems++;
+                return collisions;
+            }
+
+            if (isDeleted) {
+                if (deletedSlot == null) {
+                    deletedSlot = slot;
+                }
+                collisions++;
+                continue;
+            }
+
+            if (entry.getKey().equals(key)) {
+                entry.setValue(value);
+                return collisions;
+            }
+
+            collisions++;
+        }
+
+        throw new IllegalStateException("Table is full! Size: " + table.size() + ", Items: " + tableItems + ", Load: " + loadFactor());
+    }
+
+
     /**
      * Removes the mapping for a key from this map if it is present.
      *

@@ -1,8 +1,7 @@
 package assign09;
 
+import java.util.Random;
 import timing.TimingExperiment;
-
-import java.util.ArrayList;
 
 /**
  * Timing experiment for XXXXXXXXXXXXXXXX
@@ -10,23 +9,21 @@ import java.util.ArrayList;
  * @author Benjamin Faerber
  * @version 2025-06-12
  */
-public class GoodTimingExperiment extends TimingExperiment {
+public class TimingMyHashMapExperiment extends TimingExperiment {
 
     private static String problemSizeDescription = "HashMap Size";
     private static int problemSizeMin = 1;
-    private static int problemSizeCount = 1000;
-    private static int problemSizeStep = 10;
-    private static int experimentIterationCount = 30;
+    private static int problemSizeCount = 50;
+    private static int problemSizeStep = 100;
+    private static int experimentIterationCount = 10;
 
-    private HashTable<StudentGoodHash, Float> students;
-    private ArrayList<StudentGoodHash> studentList;
 
     public static void main(String[] args) {
-        TimingExperiment timingExperiment = new GoodTimingExperiment();
+        TimingExperiment timingExperiment = new TimingMyHashMapExperiment();
         timingExperiment.printResults();
     }
 
-    public GoodTimingExperiment() {
+    public TimingMyHashMapExperiment() {
         super(
                 problemSizeDescription,
                 problemSizeMin,
@@ -42,15 +39,7 @@ public class GoodTimingExperiment extends TimingExperiment {
      */
     @Override
     protected void setupExperiment(int problemSize) {
-        students = new HashTable<>();
-        studentList = new ArrayList<>();
-        for (int i = 0; i < problemSizeCount; i++) {
-            String firstName = Integer.toString(i * 2);
-            String lastName = Integer.toString(i);
 
-            StudentGoodHash student = new StudentGoodHash(i, firstName, lastName);
-            studentList.add(student);
-        }
     }
 
     /**
@@ -58,8 +47,6 @@ public class GoodTimingExperiment extends TimingExperiment {
      */
     @Override
     protected void runComputation() {
-        for (StudentGoodHash student : studentList) {
-            students.put(student, (float)Math.random());
-        }
+
     }
 }
