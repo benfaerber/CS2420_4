@@ -73,7 +73,21 @@ public class HashTable<K, V> implements Map<K, V> {
      * @return true if this map contains the key, false otherwise
      */
     public boolean containsKey(K key) {
-        return get(key) != null;
+        for (int i = 0; i < tableItems; i++) {
+            int slot = doubleHash(key, i);
+            MapEntry<K, V> entry = table.get(slot);
+
+            if (entry == null) {
+                return false;
+            }
+
+            boolean isKeyEqual = entry.getKey().equals(key);
+            if (isKeyEqual) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
