@@ -9,11 +9,28 @@ import java.util.*;
 
 
 public class HashMapTest {
-    private HashTable<String, Integer> simpleMap;
+    private HashTable<String, Integer> simpleMap, fruits;
+
+    // TODO: get, remove
+    // Done: containsKey, isEmpty, put, size, containsValue,entries
+
 
     @BeforeEach
     void setUp() throws Exception {
         simpleMap = new HashTable<>();
+        fruits = new HashTable<>();
+
+        fruits.put("apple", 1);
+        fruits.put("orange", 2);
+        fruits.put("pineapple", 3);
+        fruits.put("kiwi", 4);
+    }
+
+    @Test
+    void testIsEmpty() {
+        HashMap<String, Integer> emptyMap = new HashMap<>();
+        assertTrue(emptyMap.isEmpty());
+        assertFalse(fruits.isEmpty());
     }
 
     @AfterEach
@@ -30,8 +47,69 @@ public class HashMapTest {
 
         // Apple stores 1
         assertEquals(1, simpleMap.get("apple"));
+    }
 
-        System.out.println(simpleMap.toString());
+    @Test
+    public void testClear() {
+        // Starts at 4
+        assertEquals(4, fruits.size());
+        fruits.clear();
+        // Should be empty
+        assertEquals(0, fruits.size());
+        assertTrue(fruits.isEmpty());
+
+        // Should be able to readd
+        fruits.put("red_apple", 50);
+        fruits.put("red_banana", 12);
+        fruits.put("red_pear", 13);
+
+        assertEquals(3, fruits.size());
+        assertEquals(50, fruits.get("red_apple"));
+    }
+
+    @Test
+    public void testContainsKey() {
+        assertTrue(fruits.containsKey("apple"));
+        assertFalse(fruits.containsKey("dog"));
+        assertTrue(fruits.containsKey("kiwi"));
+    }
+
+    @Test
+    public void testContainsValue() {
+        // Should have
+        assertTrue(fruits.containsValue(1));
+        assertTrue(fruits.containsValue(4));
+
+        // Shouldn't have
+        assertFalse(fruits.containsValue(5));
+        assertFalse(fruits.containsValue(12));
+    }
+
+    @Test
+    public void testEntries() {
+        // Should have all these
+        ArrayList<String> keys = new ArrayList<>();
+        keys.add("apple");
+        keys.add("orange");
+        keys.add("pineapple");
+        keys.add("kiwi");
+
+        int entries = 0;
+
+        for (MapEntry<String, Integer> entry : fruits.entries()) {
+            assertTrue(keys.contains(entry.getKey()));
+            entries++;
+        }
+
+        assertEquals(entries, keys.size());
+    }
+
+    @Test
+    public void testGet() {
+        assertNull(fruits.get("dog"));
+
+        assertEquals(1, fruits.get("apple"));
+        assertEquals(3, fruits.get("pineapple"));
     }
 }
 

@@ -32,20 +32,42 @@ public class HashTable<K, V> implements Map<K, V> {
     }
 
     public void clear() {
-        this.table = createTableWithCapacity(DEFAULT_CAPACITY, null);
-        this.isDeletedTable = createTableWithCapacity(DEFAULT_CAPACITY, false);
+        table = createTableWithCapacity(DEFAULT_CAPACITY, null);
+        isDeletedTable = createTableWithCapacity(DEFAULT_CAPACITY, false);
+        tableItems = 0;
     }
 
     public boolean containsKey(K key) {
-        throw new UnsupportedOperationException();
+        return get(key) != null;
     }
 
     public boolean containsValue(V value) {
-        throw new UnsupportedOperationException();
+        for (int i = 0; i < table.size(); i++) {
+            MapEntry<K, V> entry = getEntry(i);
+            if (entry == null) {
+                continue;
+            }
+
+            if (value.equals(entry.getValue())) {
+                return true;
+            }
+        }
+        return false;
+
     }
 
     public List<MapEntry<K, V>> entries() {
-        throw new UnsupportedOperationException();
+        List<MapEntry<K, V>> result = new ArrayList<>();
+        for (int i = 0; i < table.size(); i++) {
+            MapEntry<K, V> entry = getEntry(i);
+            if (entry == null) {
+                continue;
+            }
+
+            result.add(entry);
+        }
+
+        return result;
     }
 
     private int hash1(K key) {
@@ -54,6 +76,7 @@ public class HashTable<K, V> implements Map<K, V> {
 
     private int hash2(K key) {
         int underPrime = 79;
+        // If it's under our default capacity, lets use this small prime
         int selectedPrime = primeIndex == 0 ? underPrime : PRIMES[primeIndex - 1];
         return selectedPrime + (Math.abs(key.hashCode()) % selectedPrime);
     }
@@ -67,14 +90,12 @@ public class HashTable<K, V> implements Map<K, V> {
     public V get(K key) {
         for (int i = 0; i != table.size(); i++) {
             int slot = doubleHash(key, i);
-            MapEntry<K, V> entry = table.get(slot);
-
+            MapEntry<K, V> entry = getEntry(slot);
             if (entry == null) {
                 return null;
             }
 
-            boolean isDeleted = isDeletedTable.get(slot);
-            if (! isDeleted && entry.getKey().equals(key)) {
+            if (entry.getKey().equals(key)) {
                 return entry.getValue();
             }
         }
@@ -93,13 +114,20 @@ public class HashTable<K, V> implements Map<K, V> {
         }
         int newSize = PRIMES[this.primeIndex];
 
+        ArrayList<MapEntry<K, V>> oldTable = table;
+        ArrayList<Boolean> oldDeleted = isDeletedTable;
+
         table = createTableWithCapacity(newSize, null);
         isDeletedTable = createTableWithCapacity(newSize, false);
-
-
-
         tableItems = 0;
 
+        for (int i = 0; i < oldTable.size(); i++) {
+            MapEntry<K, V> oldEntry = oldTable.get(i);
+            boolean isOldDeleted = oldDeleted.get(i);
+            if (oldEntry != null && ! isOldDeleted) {
+                put(oldEntry.getKey(), oldEntry.getValue());
+            }
+        }
     }
 
     private float loadFactor() {
@@ -120,9 +148,9 @@ public class HashTable<K, V> implements Map<K, V> {
 
         for (int i = 0; i < table.size(); i++) {
             int slot = doubleHash(key, i);
-            MapEntry<K, V> entry = table.get(slot);
+            MapEntry<K, V> entry = getEntry(slot);
 
-            if (entry == null || isDeletedTable.get(slot)) {
+            if (entry == null) {
                 table.set(slot, new MapEntry<>(key, value));
                 isDeletedTable.set(slot, false);
                 tableItems++;
@@ -140,22 +168,38 @@ public class HashTable<K, V> implements Map<K, V> {
     }
 
     public V remove(K key) {
-        throw new UnsupportedOperationException();
+        for (int i = 0; i != table.size(); i++) {
+            int slot = doubleHash(key, i);
+            MapEntry<K, V> entry = getEntry(slot);
+            if (entry == null) {
+                return null;
+            }
+
+            boolean isKeyEqual = entry.getKey().equals(key);
+            if (isKeyEqual) {
+                isDeletedTable.set(slot, true);
+                tableItems--;
+                return entry.getValue();
+            }
+        }
+        return null;
     }
 
     public int size() {
         return tableItems;
     }
 
+    private MapEntry<K, V> getEntry(int slot) {
+        boolean isDeleted = isDeletedTable.get(slot);
+        MapEntry<K, V> entry = table.get(slot);
+        return isDeleted ? null : entry;
+    }
+
     @Override
     public String toString() {
         StringJoiner sj = new StringJoiner(", ");
-        for (int i = 0; i < table.size(); i++) {
-            boolean isDeleted = isDeletedTable.get(i);
-            MapEntry<K, V> entry = table.get(i);
-            if (entry != null && !isDeleted) {
-                sj.add(entry.toString());
-            }
+        for (MapEntry<K, V> entry : entries()) {
+            sj.add(entry.toString());
         }
         return "{" + sj + "}";
     }
