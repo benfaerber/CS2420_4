@@ -9,16 +9,15 @@ import java.util.*;
 
 
 public class HashMapTest {
-    private HashTable<String, Integer> simpleMap, fruits;
+    private HashTable<String, Integer> fruits, emptyMap;
 
-    // TODO: get, remove
-    // Done: containsKey, isEmpty, put, size, containsValue,entries
+    // Done: containsKey, isEmpty, put, size, containsValue, entries, get, remove
 
 
     @BeforeEach
     void setUp() throws Exception {
-        simpleMap = new HashTable<>();
         fruits = new HashTable<>();
+        emptyMap = new HashTable<>();
 
         fruits.put("apple", 1);
         fruits.put("orange", 2);
@@ -28,7 +27,6 @@ public class HashMapTest {
 
     @Test
     void testIsEmpty() {
-        HashMap<String, Integer> emptyMap = new HashMap<>();
         assertTrue(emptyMap.isEmpty());
         assertFalse(fruits.isEmpty());
     }
@@ -107,9 +105,23 @@ public class HashMapTest {
     @Test
     public void testGet() {
         assertNull(fruits.get("dog"));
-
         assertEquals(1, fruits.get("apple"));
         assertEquals(3, fruits.get("pineapple"));
+    }
+
+    @Test
+    public void testRemove() {
+        assertEquals(1, fruits.remove("apple"));
+
+        assertEquals(3, fruits.size());
+        assertNull(fruits.get("apple"));
+
+        // Clear by removing
+        fruits.remove("kiwi");
+        fruits.remove("orange");
+        fruits.remove("pineapple");
+
+        assertEquals(0, fruits.size());
     }
 }
 
