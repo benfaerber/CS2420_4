@@ -66,7 +66,7 @@ public class HashTable<K, V> implements Map<K, V> {
 
     /**
      * Determines whether this map contains the specified key.
-     *
+     *s
      * O(1)
      *
      * @param key - the key being searched for
@@ -75,7 +75,7 @@ public class HashTable<K, V> implements Map<K, V> {
     public boolean containsKey(K key) {
         for (int i = 0; i < tableItems; i++) {
             int slot = doubleHash(key, i);
-            MapEntry<K, V> entry = table.get(slot);
+            MapEntry<K, V> entry = getEntry(slot);
 
             if (entry == null) {
                 return false;
