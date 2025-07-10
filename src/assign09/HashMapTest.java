@@ -124,6 +124,26 @@ public class HashMapTest {
 
         assertEquals(0, fruits.size());
     }
+
+    @Test
+    public void testDeletedSlotReused() {
+        HashTable<String, Integer> map = new HashTable<>();
+        map.put("one", 1);
+        map.remove("one");
+        map.put("one", 2);
+        map.put("one", 2);
+        assertEquals(2, map.get("one"));
+        assertEquals(1, map.size());
+    }
+
+    @Test
+    public void testInternalRehashing() {
+        for (int i = 0; i < 500; i++) {
+            simpleMap.put("key" + i, i);
+        }
+
+        assertEquals(500, simpleMap.size());
+    }
 }
 
 

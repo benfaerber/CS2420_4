@@ -24,6 +24,12 @@ public class HashTable<K, V> implements Map<K, V> {
         isDeletedTable = createTableWithCapacity(DEFAULT_CAPACITY, false);
     }
 
+    private void initWithCapacity(int capacity) {
+        table = createTableWithCapacity(capacity, null);
+        isDeletedTable = createTableWithCapacity(capacity, false);
+        tableItems = 0;
+    }
+
     private static <T> ArrayList<T> createTableWithCapacity(int capacity, T defaultValue) {
         ArrayList<T> newTable = new ArrayList<T>();
         for(int i = 0; i < capacity; i++)
@@ -32,9 +38,8 @@ public class HashTable<K, V> implements Map<K, V> {
     }
 
     public void clear() {
-        table = createTableWithCapacity(DEFAULT_CAPACITY, null);
-        isDeletedTable = createTableWithCapacity(DEFAULT_CAPACITY, false);
-        tableItems = 0;
+        initWithCapacity(DEFAULT_CAPACITY);
+        primeIndex = 0;
     }
 
     public boolean containsKey(K key) {
@@ -75,10 +80,8 @@ public class HashTable<K, V> implements Map<K, V> {
     }
 
     private int hash2(K key) {
-        int underPrime = 79;
-        // If it's under our default capacity, lets use this small prime
-        int selectedPrime = primeIndex == 0 ? underPrime : PRIMES[primeIndex - 1];
-        return selectedPrime + (Math.abs(key.hashCode()) % selectedPrime);
+        int hash = Math.abs(key.hashCode()) % (table.size() - 1);
+        return hash + 1;
     }
 
     private int doubleHash(K key, int index) {
@@ -117,9 +120,7 @@ public class HashTable<K, V> implements Map<K, V> {
         ArrayList<MapEntry<K, V>> oldTable = table;
         ArrayList<Boolean> oldDeleted = isDeletedTable;
 
-        table = createTableWithCapacity(newSize, null);
-        isDeletedTable = createTableWithCapacity(newSize, false);
-        tableItems = 0;
+        initWithCapacity(newSize);
 
         for (int i = 0; i < oldTable.size(); i++) {
             MapEntry<K, V> oldEntry = oldTable.get(i);
@@ -131,14 +132,7 @@ public class HashTable<K, V> implements Map<K, V> {
     }
 
     private float loadFactor() {
-        float filled = 0;
-        for (MapEntry<K, V> kvMapEntry : table) {
-            if (kvMapEntry != null) {
-                filled++;
-            }
-        }
-
-        return filled / table.size();
+        return (float) tableItems / table.size();
     }
 
     public V put(K key, V value) {
@@ -146,15 +140,27 @@ public class HashTable<K, V> implements Map<K, V> {
             rehash();
         }
 
+        Integer deletedSlot = null;
         for (int i = 0; i < table.size(); i++) {
             int slot = doubleHash(key, i);
-            MapEntry<K, V> entry = getEntry(slot);
+            MapEntry<K, V> entry = table.get(slot);
+            boolean isDeleted = isDeletedTable.get(slot);
 
             if (entry == null) {
-                table.set(slot, new MapEntry<>(key, value));
-                isDeletedTable.set(slot, false);
+                // Use deleted slot if we found one earlier
+                int targetSlot = (deletedSlot != null) ? deletedSlot : slot;
+                MapEntry<K, V> newEntry = new MapEntry<>(key, value);
+                table.set(targetSlot, newEntry);
+                isDeletedTable.set(targetSlot, false);
                 tableItems++;
                 return null;
+            }
+
+            if (isDeleted) {
+                if (deletedSlot == null) {
+                    deletedSlot = slot;
+                }
+                continue;
             }
 
             if (entry.getKey().equals(key)) {
@@ -164,9 +170,8 @@ public class HashTable<K, V> implements Map<K, V> {
             }
         }
 
-        throw new IllegalStateException("Table is full!");
+        throw new IllegalStateException("Table is full! Size: " + table.size() + ", Items: " + tableItems + ", Load: " + loadFactor());
     }
-
     public V remove(K key) {
         for (int i = 0; i != table.size(); i++) {
             int slot = doubleHash(key, i);
