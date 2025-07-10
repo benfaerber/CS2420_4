@@ -11,7 +11,7 @@ import java.text.DecimalFormat;
  * @author Prof. Parker and ?
  * @version ?
  */
-public class StudentBadHash {
+public class StudentMediumHash {
 
 	private int uid;
 	private String firstName;
@@ -19,12 +19,12 @@ public class StudentBadHash {
 
 	/**
 	 * Creates a new student with the specified uid, firstName, and lastName.
-	 * 
+	 *
 	 * @param uid
 	 * @param firstName
 	 * @param lastName
 	 */
-	public StudentBadHash(int uid, String firstName, String lastName) {
+	public StudentMediumHash(int uid, String firstName, String lastName) {
 		this.uid = uid;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -65,10 +65,10 @@ public class StudentBadHash {
 	 */
 	public boolean equals(Object other) {
 		// change to StudentMediumHash and StudentGoodHash for two new classes
-		if(!(other instanceof StudentBadHash))
+		if(!(other instanceof StudentMediumHash))
 			return false;
 
-		StudentBadHash rhs = (StudentBadHash) other;
+		StudentMediumHash rhs = (StudentMediumHash) other;
 
 		return this.uid == rhs.uid && this.firstName.equals(rhs.firstName) && this.lastName.equals(rhs.lastName);
 	}
@@ -84,11 +84,11 @@ public class StudentBadHash {
 	}
 
 	/**
-	 * The hashcode of the first letter is a bad hash.
-	 * It will duplicate for Ada and Alan
+	 * The first and last name combined is a better hashcode
+	 * It is rare it will duplicate
 	 * @return hash code
 	 */
 	public int hashCode() {
-		return firstName.substring(0, 1).hashCode();
+		return (firstName + " " + lastName).hashCode();
 	}
 }
