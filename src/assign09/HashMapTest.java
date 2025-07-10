@@ -9,7 +9,7 @@ import java.util.*;
 
 
 public class HashMapTest {
-    private HashTable<String, Integer> fruits, emptyMap;
+    private HashTable<String, Integer> fruits, emptyMap, simpleMap;
 
     // Done: containsKey, isEmpty, put, size, containsValue, entries, get, remove
 
@@ -18,6 +18,7 @@ public class HashMapTest {
     void setUp() throws Exception {
         fruits = new HashTable<>();
         emptyMap = new HashTable<>();
+        simpleMap = new HashTable<>();
 
         fruits.put("apple", 1);
         fruits.put("orange", 2);
