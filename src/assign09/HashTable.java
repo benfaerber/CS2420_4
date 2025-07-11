@@ -26,6 +26,9 @@ public class HashTable<K, V> implements Map<K, V> {
     private ArrayList<Boolean> isDeletedTable;
     private int tableItems = 0;
 
+    /**
+     * Construct an empty HashTable
+     */
     public HashTable() {
         initWithCapacity(DEFAULT_CAPACITY);
     }
