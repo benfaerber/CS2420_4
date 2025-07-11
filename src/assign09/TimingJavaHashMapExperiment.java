@@ -1,8 +1,9 @@
 package assign09;
 
-import java.util.ArrayList;
-import java.util.Random;
 import timing.TimingExperiment;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Timing experiment for XXXXXXXXXXXXXXXX
@@ -10,7 +11,7 @@ import timing.TimingExperiment;
  * @author Benjamin Faerber
  * @version 2025-06-12
  */
-public class TimingMyHashMapExperiment extends TimingExperiment {
+public class TimingJavaHashMapExperiment extends TimingExperiment {
 
     private static String problemSizeDescription = "HashMap Size";
     private static int problemSizeMin = 1;
@@ -20,15 +21,15 @@ public class TimingMyHashMapExperiment extends TimingExperiment {
 
     private ArrayList<String> toInsertKeys = new ArrayList<>();
     private ArrayList<Integer> toInsertValues = new ArrayList<>();
-    private HashTable<String, Integer> map;
+    private HashMap<String, Integer> map;
 
 
     public static void main(String[] args) {
-        TimingExperiment timingExperiment = new TimingMyHashMapExperiment();
+        TimingExperiment timingExperiment = new TimingJavaHashMapExperiment();
         timingExperiment.printResults();
     }
 
-    public TimingMyHashMapExperiment() {
+    public TimingJavaHashMapExperiment() {
         super(
                 problemSizeDescription,
                 problemSizeMin,
@@ -44,7 +45,7 @@ public class TimingMyHashMapExperiment extends TimingExperiment {
      */
     @Override
     protected void setupExperiment(int problemSize) {
-        map = new HashTable<>();
+        map = new HashMap<>();
         toInsertKeys = new ArrayList<>();
         toInsertValues = new ArrayList<>();
         for (int i = 0; i < problemSizeCount; i++) {
