@@ -1,6 +1,7 @@
 package assign10;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -45,8 +46,17 @@ public class FindKLargest {
 	 */
 	public static <E> List<E> findKLargestHeap(List<E> items, int k, Comparator<? super E> cmp) 
 			throws IllegalArgumentException {
-		// TODO: Fill in (do not return null).
-		return null;
+		if (k<0||k>items.size()) {throw new IllegalArgumentException("k must be between 0 and the size of the list");}
+		if (k == 0) {return new ArrayList<E>();}
+
+		BinaryMaxHeap<E> maxHeap = new BinaryMaxHeap<>(items, cmp);
+		List<E> result = new ArrayList<>();
+
+		for (int i = 0; i < k; i++) {
+			result.add(maxHeap.extract());
+		}
+
+		return result;
 	}
 
 	/**
@@ -60,8 +70,17 @@ public class FindKLargest {
 	 */
 	public static <E extends Comparable<? super E>> List<E> findKLargestSort(List<E> items, int k) 
 			throws IllegalArgumentException {
-		// TODO: Fill in (do not return null).
-		return null;
+		if (k < 0 || k > items.size()) {
+			throw new IllegalArgumentException("k is negative or larger than the list size");
+		}
+		if (k == 0) {
+			return new ArrayList<E>();
+		}
+
+		List<E> copy = new ArrayList<>(items);
+		copy.sort(Collections.reverseOrder());
+
+		return copy.subList(0, k);
 	}
 
 	/**
@@ -75,7 +94,17 @@ public class FindKLargest {
 	 */
 	public static <E> List<E> findKLargestSort(List<E> items, int k, Comparator<? super E> cmp) 
 			throws IllegalArgumentException {
-		// TODO: Fill in (do not return null).
-		return null;
+		if (k < 0 || k > items.size()) {
+			throw new IllegalArgumentException("k is negative or larger than the list size");
+		}
+		if (k == 0) {
+			return new ArrayList<E>();
+		}
+
+		List<E> copy = new ArrayList<>(items);
+		copy.sort(cmp.reversed());
+
+		return copy.subList(0, k);
+	}
 	}
 }
