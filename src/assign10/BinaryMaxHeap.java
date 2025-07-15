@@ -9,8 +9,10 @@ import java.util.*;
  * @author Ben Faerber and David Chen
  * @version July 14, 2025
  */
-public class BinaryMaxHeap<E extends Comparable<? super E>> implements PriorityQueue<E> {
-    private final Comparator<? super E> cmp;
+public class BinaryMaxHeap<E> implements PriorityQueue<E> {
+    private Comparator<? super E> cmp = null;
+    private boolean useComparator = false;
+
     private ArrayList<E> heap;
     private int size;
 
@@ -18,7 +20,11 @@ public class BinaryMaxHeap<E extends Comparable<? super E>> implements PriorityQ
      * Constructs an empty binary max heap using natural ordering.
      */
     public BinaryMaxHeap() {
-        this(Comparator.naturalOrder());
+        this.cmp = null;
+        this.useComparator = false;
+        this.heap = new ArrayList<>();
+        this.size = 0;
+        buildHeap(new ArrayList<>());
     }
 
     /**
@@ -27,7 +33,11 @@ public class BinaryMaxHeap<E extends Comparable<? super E>> implements PriorityQ
      * @param cmp the comparator to use for ordering elements
      */
     public BinaryMaxHeap(Comparator<? super E> cmp) {
-        this(new ArrayList<>(), cmp);
+        this.cmp = cmp;
+        this.useComparator = true;
+        this.heap = new ArrayList<>();
+        this.size = 0;
+        buildHeap(new ArrayList<>());
     }
 
     /**
@@ -37,7 +47,14 @@ public class BinaryMaxHeap<E extends Comparable<? super E>> implements PriorityQ
      * @throws IllegalArgumentException if the list is null
      */
     public BinaryMaxHeap(List<? extends E> list) {
-        this(list, Comparator.naturalOrder());
+        if (list == null) {
+            throw new IllegalArgumentException("Input list cannot be null");
+        }
+        this.cmp = null;
+        this.useComparator = false;
+        this.heap = new ArrayList<>();
+        this.size = 0;
+        buildHeap(list);
     }
 
     /**
@@ -52,6 +69,7 @@ public class BinaryMaxHeap<E extends Comparable<? super E>> implements PriorityQ
             throw new IllegalArgumentException("Input list cannot be null");
         }
         this.cmp = cmp;
+        this.useComparator = true;
         this.heap = new ArrayList<>();
         this.size = 0;
         buildHeap(list);
@@ -278,8 +296,12 @@ public class BinaryMaxHeap<E extends Comparable<? super E>> implements PriorityQ
      * @return the comparison result
      */
     private int innerCompare(E a, E b) {
-        // Always use comparator. (natural ordering is assigned sometimes)
-        return cmp.compare(a, b);
+        if (useComparator) {
+            return cmp.compare(a, b);
+        }
+
+        Comparable<E> ac = (Comparable<E>) a;
+        return ac.compareTo(b);
     }
 
     /**
