@@ -11,7 +11,6 @@ import java.util.*;
  */
 public class BinaryMaxHeap<E> implements PriorityQueue<E> {
     private Comparator<? super E> cmp = null;
-    private boolean useComparator = false;
 
     private ArrayList<E> heap;
     private int size;
@@ -21,7 +20,6 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
      */
     public BinaryMaxHeap() {
         this.cmp = null;
-        this.useComparator = false;
         this.heap = new ArrayList<>();
         this.size = 0;
         buildHeap(new ArrayList<>());
@@ -34,7 +32,6 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
      */
     public BinaryMaxHeap(Comparator<? super E> cmp) {
         this.cmp = cmp;
-        this.useComparator = true;
         this.heap = new ArrayList<>();
         this.size = 0;
         buildHeap(new ArrayList<>());
@@ -51,7 +48,6 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
             throw new IllegalArgumentException("Input list cannot be null");
         }
         this.cmp = null;
-        this.useComparator = false;
         this.heap = new ArrayList<>();
         this.size = 0;
         buildHeap(list);
@@ -69,7 +65,6 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
             throw new IllegalArgumentException("Input list cannot be null");
         }
         this.cmp = cmp;
-        this.useComparator = true;
         this.heap = new ArrayList<>();
         this.size = 0;
         buildHeap(list);
@@ -296,7 +291,7 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
      * @return the comparison result
      */
     private int innerCompare(E a, E b) {
-        if (useComparator) {
+        if (cmp != null) {
             return cmp.compare(a, b);
         }
 
