@@ -300,6 +300,7 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
             return cmp.compare(a, b);
         }
 
+        @SuppressWarnings("unchecked")
         Comparable<E> ac = (Comparable<E>) a;
         return ac.compareTo(b);
     }
