@@ -8,8 +8,8 @@ import java.util.List;
 /**
  * This class contains generic static methods for finding the k largest items in a list.
  * 
- * @author Prof. Parker and ??
- * @version ??
+ * @author Prof. Parker, Ben Faerber, and David Chen
+ * @version July 14, 2025
  */
 public class FindKLargest {
 	
@@ -24,8 +24,8 @@ public class FindKLargest {
 	 */
 	public static <E extends Comparable<? super E>> List<E> findKLargestHeap(List<E> items, int k) 
 			throws IllegalArgumentException {
-		if (k<0||k>items.size()) {throw new IllegalArgumentException("k has to be a positive number");}
-		if (k == 0) {return new ArrayList<E>();}
+		if (k < 0 || k > items.size()) {throw new IllegalArgumentException("k has to be a positive number");}
+		if (k == 0 || items == null) {return new ArrayList<E>();}
 
 		BinaryMaxHeap<E> maxHeap = new BinaryMaxHeap<>(items);
 		List<E> result = new ArrayList<>();
@@ -44,10 +44,13 @@ public class FindKLargest {
 	 * @return a list of the k largest items, in descending order
 	 * @throws IllegalArgumentException if k is negative or larger than the size of the given list
 	 */
+	// Soemthings not right
 	public static <E> List<E> findKLargestHeap(List<E> items, int k, Comparator<? super E> cmp) 
 			throws IllegalArgumentException {
 		if (k<0||k>items.size()) {throw new IllegalArgumentException("k must be between 0 and the size of the list");}
-		if (k == 0) {return new ArrayList<E>();}
+		if (k == 0 || items == null) {
+			return new ArrayList<>();
+		}
 
 		BinaryMaxHeap<E> maxHeap = new BinaryMaxHeap<>(items, cmp);
 		List<E> result = new ArrayList<>();
