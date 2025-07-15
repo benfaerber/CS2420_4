@@ -2,7 +2,7 @@ package assign10;
 
 import java.util.*;
 
-public class BinaryMaxHeap<E extends Comparable<E>> implements PriorityQueue<E> {
+public class BinaryMaxHeap<E extends Comparable<? super E>> implements PriorityQueue<E> {
     private final Comparator<? super E> cmp;
 
     private ArrayList<E> heap = new ArrayList<>();
