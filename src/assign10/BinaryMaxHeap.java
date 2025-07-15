@@ -6,7 +6,7 @@ import java.util.*;
  * This class creates a generic binary max heap that implements a priority queue,
  * storing elements in a way that the maximum element is always at the root.
  *
- * @author Ben Faerber and David Chen
+ * @author Benjamin Faerber and David Chen
  * @version July 14, 2025
  */
 public class BinaryMaxHeap<E> implements PriorityQueue<E> {

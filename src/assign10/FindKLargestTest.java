@@ -9,6 +9,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Tests for the FindKLargest static utility class
+ */
 public class FindKLargestTest {
 
     private ArrayList<Integer> listRange, listReverse, listRandom;
