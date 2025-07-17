@@ -79,7 +79,7 @@ public class FindKLargest {
 		if (k == 0) {
 			return new ArrayList<E>();
 		}
-		
+
 		// I changed to direct sorting so copying doesn't interfere with analysis
 		items.sort(Collections.reverseOrder());
 
