@@ -79,11 +79,11 @@ public class FindKLargest {
 		if (k == 0) {
 			return new ArrayList<E>();
 		}
+		
+		// I changed to direct sorting so copying doesn't interfere with analysis
+		items.sort(Collections.reverseOrder());
 
-		List<E> copy = new ArrayList<>(items);
-		copy.sort(Collections.reverseOrder());
-
-		return copy.subList(0, k);
+		return items.subList(0, k);
 	}
 
 	/**
@@ -104,9 +104,9 @@ public class FindKLargest {
 			return new ArrayList<E>();
 		}
 
-		List<E> copy = new ArrayList<>(items);
-		copy.sort(cmp.reversed());
+		// I changed to direct sorting so copying doesn't interfere with analysis
+		items.sort(cmp.reversed());
 
-		return copy.subList(0, k);
+		return items.subList(0, k);
 	}
 }

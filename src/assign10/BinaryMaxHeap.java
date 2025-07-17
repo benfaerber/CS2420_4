@@ -183,6 +183,9 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
         return (index - 1) / 2;
     }
 
+
+    // 6 / 3
+
     /**
      * Calculates the left child index for a given node index.
      *
@@ -270,7 +273,6 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
      * @param list the list of elements to build the heap from
      */
     private void buildHeap(List<? extends E> list) {
-//        heap = new ArrayList<>(list);
         heap.clear();
         if (!list.isEmpty()) {
             heap.addAll(list);
