@@ -44,8 +44,7 @@ public class FindKLargest {
 	 * @return a list of the k largest items, in descending order
 	 * @throws IllegalArgumentException if k is negative or larger than the size of the given list
 	 */
-	// Soemthings not right
-	public static <E extends Comparable<? super E>> List<E> findKLargestHeap(List<E> items, int k, Comparator<? super E> cmp)
+	public static <E> List<E> findKLargestHeap(List<E> items, int k, Comparator<? super E> cmp)
 			throws IllegalArgumentException {
 		if (k<0||k>items.size()) {throw new IllegalArgumentException("k must be between 0 and the size of the list");}
 		if (k == 0 || items == null) {

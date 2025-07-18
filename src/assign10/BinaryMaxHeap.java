@@ -11,7 +11,6 @@ import java.util.*;
  */
 public class BinaryMaxHeap<E> implements PriorityQueue<E> {
     private Comparator<? super E> cmp = null;
-
     private ArrayList<E> heap;
     private int size;
 
@@ -105,6 +104,7 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
      * @return the highest priority item
      * @throws NoSuchElementException if the heap is empty
      */
+    @Override
     public E extract() throws NoSuchElementException {
         if (isEmpty()) {
             throw new NoSuchElementException("The heap is empty");
@@ -114,7 +114,6 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
         E last = heap.remove(size - 1);
         size--;
 
-        // Special case for if this is the root
         if (size == 0) {
             return result;
         }
@@ -142,6 +141,7 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
      *
      * @return true if the heap is empty, false otherwise
      */
+    @Override
     public boolean isEmpty() {
         return size == 0;
     }
@@ -152,7 +152,6 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
      */
     @Override
     public void clear() {
-//        buildHeap(new ArrayList<>());
         heap = new ArrayList<>();
         size = 0;
     }
@@ -182,9 +181,6 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
     private int calculateParent(int index) {
         return (index - 1) / 2;
     }
-
-
-    // 6 / 3
 
     /**
      * Calculates the left child index for a given node index.
@@ -279,7 +275,6 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
         }
         int parentStart = calculateParent(heap.size());
         size = heap.size();
-        // should i = (size - 2)/2 ?
         for (int i = parentStart; i >= 0; i--) {
             percolateDown(i);
         }

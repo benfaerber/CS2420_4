@@ -14,9 +14,9 @@ import java.util.Collections;
 public class FindKHeap10TimingExperiment extends TimingExperiment {
 
     private static String problemSizeDescription = "List Size";
-    private static int problemSizeMin = 1;
+    private static int problemSizeMin = 100;
     private static int problemSizeCount = 100;
-    private static int problemSizeStep = 1000;
+    private static int problemSizeStep = 100;
     private static int experimentIterationCount = 30;
 
     private ArrayList<Integer> toAdd = new ArrayList<>();
@@ -43,7 +43,9 @@ public class FindKHeap10TimingExperiment extends TimingExperiment {
      */
     @Override
     protected void setupExperiment(int problemSize) {
-        chosenK = 5;
+        chosenK = problemSize/10;
+//        chosenK = 100;
+//        chosenK = 200;
         for (int i = 1; i <= problemSizeCount; i++) {
             toAdd.add(i);
         }

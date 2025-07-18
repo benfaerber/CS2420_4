@@ -10,10 +10,12 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Tests for the FindKLargest static utility class
+ * This class contains tests for the FindKLargest static utility class
+ *
+ * @author Benjamin Faerber and David Chen
+ * @version July 14, 2025
  */
 public class FindKLargestTest {
-
     private ArrayList<Integer> listRange, listReverse, listRandom;
     private ArrayList<String> animals;
 

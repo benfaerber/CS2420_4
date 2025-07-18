@@ -14,9 +14,9 @@ import java.util.Collections;
 public class PeekTimingExperiment extends TimingExperiment {
 
     private static String problemSizeDescription = "Heap Size";
-    private static int problemSizeMin = 1;
-    private static int problemSizeCount = 100;
-    private static int problemSizeStep = 1000;
+    private static int problemSizeMin = 100;
+    private static int problemSizeCount = 20;
+    private static int problemSizeStep = 100;
     private static int experimentIterationCount = 30;
 
     private BinaryMaxHeap<Integer> heap;
