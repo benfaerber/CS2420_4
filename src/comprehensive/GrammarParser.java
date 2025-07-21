@@ -29,8 +29,13 @@ public class GrammarParser {
         }
     }
 
-    public ArrayList<GrammarSection> getSections(String filePath) {
-        return parseSections(readFile(filePath));
+    public Grammar parseGrammar(String filePath) {
+        String rawContent = readFile(filePath);
+        ArrayList<GrammarSection> sections = parseSections(rawContent);
+        return new Grammar(filePath, sections);
     }
 
+    public Grammar parseGrammarFromExamples(String exampleName) {
+        return parseGrammar("src/comprehensive/examples/" + exampleName);
+    }
 }

@@ -16,7 +16,10 @@ public class GrammarParserTest {
     @Test
     public void testGrammarParser() {
         GrammarParser parser = new GrammarParser();
-        ArrayList<GrammarSection> sections = parser.getSections("src/comprehensive/super_simple.g");
-        System.out.println(sections.get(0));
+        Grammar grammar = parser.parseGrammarFromExamples("super_simple.g");
+        System.out.println(grammar);
+
+        String eval = grammar.evaluate();
+        System.out.println(eval);
     }
 }

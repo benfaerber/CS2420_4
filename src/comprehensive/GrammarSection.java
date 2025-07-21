@@ -12,11 +12,11 @@ public class GrammarSection {
     private String TEXT_SUBSECTION = "([^<>]+)";
     Pattern GRAMMAR_STREAM_REGEX = Pattern.compile(VARIABLE_SUBSECTION + "|" +  TEXT_SUBSECTION);
 
-    private String groupName;
+    private String name;
     private ArrayList<GrammarLine> lines;
 
-    public GrammarSection(String groupName, String rawContent) {
-        this.groupName = groupName;
+    public GrammarSection(String name, String rawContent) {
+        this.name = name;
         this.lines = parseAllGrammarLines(rawContent);
     }
 
@@ -48,65 +48,15 @@ public class GrammarSection {
         for (GrammarLine grammarLine : lines) {
             joiner.add(grammarLine.toString());
         }
-        return "{\nGroup Name: " + groupName + "\n" + joiner.toString() + "\n}";
+        return "{\nGroup Name: " + name + "\n" + joiner.toString() + "\n}";
     }
 
-    private static class GrammarLine {
-        private ArrayList<GrammarToken> tokens;
-        public GrammarLine(ArrayList<GrammarToken> tokens) {
-            this.tokens = tokens;
-        }
-
-        @Override
-        public String toString() {
-            StringJoiner joiner = new StringJoiner(" ");
-            for (GrammarToken token : tokens) {
-                joiner.add(token.toString());
-            }
-            return joiner.toString();
-        }
+    public String getName() {
+        return name;
     }
 
-    private static class GrammarToken {
-        enum GrammarType {
-            Variable,
-            Text,
-        }
-
-        private final String content;
-        private final GrammarType type;
-
-        public GrammarToken(String content, GrammarType type) {
-            this.content = content;
-            this.type = type;
-        }
-
-        public static GrammarToken ofText(String text) {
-            return new GrammarToken(text, GrammarType.Text);
-        }
-
-        public static GrammarToken ofVariable(String variable) {
-            return new GrammarToken(variable, GrammarType.Variable);
-        }
-
-        public boolean isVariable() {
-            return type == GrammarType.Variable;
-        }
-        public boolean isText() {
-            return type == GrammarType.Text;
-        }
-
-        public String getContent() {
-            return content;
-        }
-
-        @Override
-        public String toString() {
-            return switch (type) {
-                case Variable -> "Var(" + content + ")";
-                case Text -> "Text(" + content + ")";
-            };
-        }
+    public GrammarLine randomLine() {
+        return lines.get((int) (Math.random() * lines.size()));
     }
 
 }
