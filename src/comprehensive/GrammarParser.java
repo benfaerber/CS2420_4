@@ -8,10 +8,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class GrammarParser {
-    private static final Pattern SECTION_REGEX = Pattern.compile("\\{\n" +
-            "<(.+?)>\n" +
-            "([.\n" +
-            "+])}", Pattern.MULTILINE);
+    private static final Pattern SECTION_REGEX = Pattern.compile(
+            "\\{\\n<(.+?)>\\n([\\s\\S]*?)\\}", Pattern.DOTALL);
 
     private ArrayList<GrammarSection> parseSections(String content) {
         Matcher matcher = SECTION_REGEX.matcher(content);

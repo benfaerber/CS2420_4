@@ -1,12 +1,13 @@
 package comprehensive;
 
 import java.util.ArrayList;
+import java.util.StringJoiner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class GrammarSection {
-    /** Group 1: It is a variable */
-    private String VARIABLE_SUBSECTION = "<(.+)>";
+    /** Group 1: It is a variable (ensure variable as short as possible */
+    private String VARIABLE_SUBSECTION = "<(.+?)>";
     /** Group 2: It is outer text */
     private String TEXT_SUBSECTION = "([^<>]+)";
     Pattern GRAMMAR_STREAM_REGEX = Pattern.compile(VARIABLE_SUBSECTION + "|" +  TEXT_SUBSECTION);
@@ -30,25 +31,43 @@ public class GrammarSection {
 
     private GrammarLine parseSingleGrammarLine(String line) {
         Matcher matcher = GRAMMAR_STREAM_REGEX.matcher(line);
-        ArrayList<GrammarChunk> grammarStream = new ArrayList<>();
+        ArrayList<GrammarToken> grammarStream = new ArrayList<>();
         while (matcher.find()) {
-            GrammarChunk chunk = matcher.group(1) != null
-                    ? GrammarChunk.ofVariable(matcher.group(1))
-                    : GrammarChunk.ofText(matcher.group(2));
+            GrammarToken chunk = matcher.group(1) != null
+                    ? GrammarToken.ofVariable(matcher.group(1))
+                    : GrammarToken.ofText(matcher.group(2));
             grammarStream.add(chunk);
         }
 
         return new GrammarLine(grammarStream);
     }
 
+    @Override
+    public String toString() {
+        StringJoiner joiner = new StringJoiner("\n");
+        for (GrammarLine grammarLine : lines) {
+            joiner.add(grammarLine.toString());
+        }
+        return "{\nGroup Name: " + groupName + "\n" + joiner.toString() + "\n}";
+    }
+
     private static class GrammarLine {
-        private ArrayList<GrammarChunk> chunks;
-        public GrammarLine(ArrayList<GrammarChunk> chunks) {
-            this.chunks = chunks;
+        private ArrayList<GrammarToken> tokens;
+        public GrammarLine(ArrayList<GrammarToken> tokens) {
+            this.tokens = tokens;
+        }
+
+        @Override
+        public String toString() {
+            StringJoiner joiner = new StringJoiner(" ");
+            for (GrammarToken token : tokens) {
+                joiner.add(token.toString());
+            }
+            return joiner.toString();
         }
     }
 
-    private static class GrammarChunk {
+    private static class GrammarToken {
         enum GrammarType {
             Variable,
             Text,
@@ -57,17 +76,17 @@ public class GrammarSection {
         private final String content;
         private final GrammarType type;
 
-        public GrammarChunk(String content, GrammarType type) {
+        public GrammarToken(String content, GrammarType type) {
             this.content = content;
             this.type = type;
         }
 
-        public static GrammarChunk ofText(String text) {
-            return new GrammarChunk(text, GrammarType.Text);
+        public static GrammarToken ofText(String text) {
+            return new GrammarToken(text, GrammarType.Text);
         }
 
-        public static GrammarChunk ofVariable(String variable) {
-            return new GrammarChunk(variable, GrammarType.Variable);
+        public static GrammarToken ofVariable(String variable) {
+            return new GrammarToken(variable, GrammarType.Variable);
         }
 
         public boolean isVariable() {
@@ -79,6 +98,14 @@ public class GrammarSection {
 
         public String getContent() {
             return content;
+        }
+
+        @Override
+        public String toString() {
+            return switch (type) {
+                case Variable -> "Var(" + content + ")";
+                case Text -> "Text(" + content + ")";
+            };
         }
     }
 
