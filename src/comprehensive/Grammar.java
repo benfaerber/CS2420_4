@@ -21,6 +21,18 @@ public class Grammar implements Iterable<GrammarSection>, Serializable {
         }
     }
 
+    public static Grammar fromText(String text) {
+        return GrammarParser.parseGrammar(text);
+    }
+
+    public static Grammar fromFile(String fileName) {
+        return GrammarParser.parseGrammar(fileName);
+    }
+
+    public static Grammar fromExampleFile(String fileName) {
+        return GrammarParser.parseGrammarFromExamples(fileName);
+    }
+
     public Iterator<GrammarSection> iterator() {
         return sections.values().iterator();
     }
@@ -30,7 +42,7 @@ public class Grammar implements Iterable<GrammarSection>, Serializable {
         return section.randomLine();
     }
 
-    public String evaluate() {
+    public String randomPhrase() {
         GrammarSection startSection = sections.get(START_SECTION);
         GrammarLine startLine = startSection.randomLine();
 

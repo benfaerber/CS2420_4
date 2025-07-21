@@ -15,11 +15,10 @@ public class GrammarParserTest {
 
     @Test
     public void testGrammarParser() {
-        GrammarParser parser = new GrammarParser();
-        Grammar grammar = parser.parseGrammarFromExamples("super_simple.g");
+        Grammar grammar = Grammar.fromExampleFile("super_simple.g");
         System.out.println(grammar);
 
-        String eval = grammar.evaluate();
+        String eval = grammar.randomPhrase();
         System.out.println(eval);
     }
 }

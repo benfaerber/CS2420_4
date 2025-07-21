@@ -1,6 +1,7 @@
 package comprehensive;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.StringJoiner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,6 +15,7 @@ public class GrammarSection {
 
     private String name;
     private ArrayList<GrammarLine> lines;
+    private Random random = new Random();
 
     public GrammarSection(String name, String rawContent) {
         this.name = name;
@@ -56,7 +58,7 @@ public class GrammarSection {
     }
 
     public GrammarLine randomLine() {
-        return lines.get((int) (Math.random() * lines.size()));
+        return lines.get(random.nextInt(lines.size()));
     }
 
 }

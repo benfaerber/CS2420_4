@@ -11,7 +11,7 @@ public class GrammarParser {
     private static final Pattern SECTION_REGEX = Pattern.compile(
             "\\{\\n<(.+?)>\\n([\\s\\S]*?)\\}", Pattern.DOTALL);
 
-    private ArrayList<GrammarSection> parseSections(String content) {
+    private static ArrayList<GrammarSection> parseSections(String content) {
         Matcher matcher = SECTION_REGEX.matcher(content);
         ArrayList<GrammarSection> sections = new ArrayList<>();
         while (matcher.find()) {
@@ -21,7 +21,7 @@ public class GrammarParser {
         return sections;
     }
 
-    private String readFile(String filePath) {
+    private static String readFile(String filePath) {
         try {
             return Files.readString(Path.of(filePath));
         } catch (Exception e) {
@@ -29,13 +29,13 @@ public class GrammarParser {
         }
     }
 
-    public Grammar parseGrammar(String filePath) {
+    public static Grammar parseGrammar(String filePath) {
         String rawContent = readFile(filePath);
         ArrayList<GrammarSection> sections = parseSections(rawContent);
         return new Grammar(filePath, sections);
     }
 
-    public Grammar parseGrammarFromExamples(String exampleName) {
+    public static Grammar parseGrammarFromExamples(String exampleName) {
         return parseGrammar("src/comprehensive/examples/" + exampleName);
     }
 }

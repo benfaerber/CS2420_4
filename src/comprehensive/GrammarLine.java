@@ -35,6 +35,6 @@ public class GrammarLine {
         for (GrammarToken token : tokens) {
             joiner.add(token.toString());
         }
-        return joiner.toString();
+        return "[" + joiner.toString() + "]";
     }
 }
