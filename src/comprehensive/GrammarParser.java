@@ -9,7 +9,11 @@ import java.util.regex.Pattern;
 
 public class GrammarParser {
     private static final Pattern SECTION_REGEX = Pattern.compile(
-            "\\{\\n<(.+?)>\\n([\\s\\S]*?)\\}", Pattern.DOTALL);
+            "\\{\\n" // Start with opening brackets
+                    + "<(.+?)>\\n" // Now a variable surrounded by angle brackets, followed by a newline
+                    + "([\\s\\S]*?)" // All the content (the *? means as few as possible, so it doesn't eat all the sections)
+                    + "\\}", // And finally close off the bracket!
+            Pattern.DOTALL);
 
     private static ArrayList<GrammarSection> parseSections(String content) {
         Matcher matcher = SECTION_REGEX.matcher(content);
