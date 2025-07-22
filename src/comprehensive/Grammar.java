@@ -10,27 +10,34 @@ import java.util.StringJoiner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Grammar implements Iterable<GrammarSection>, Serializable {
+public class Grammar implements Iterable<GrammarSection> {
     private final String name;
     private static String START_SECTION = "start";
 
     private final HashMap<String, GrammarSection> sections;
+    private final RandomProvider random;
 
-    public Grammar(String name, ArrayList<GrammarSection> sectionsList) {
+    public Grammar(String name, ArrayList<GrammarSection> sectionsList, RandomProvider random) {
         this.name = name;
 
         sections = new HashMap<>();
         for (GrammarSection section : sectionsList) {
             sections.put(section.getName(), section);
         }
+        this.random = random;
     }
 
-    public static Grammar fromFile(String fileName) {
-        return GrammarParser.parseGrammar(fileName);
+
+    public static Grammar fromFile(Path path) {
+        return GrammarParser.parseGrammar(path, new ValueRandom());
     }
 
-    public static Grammar fromExampleFile(String fileName) {
-        return GrammarParser.parseGrammarFromExamples(fileName);
+    public static Grammar fromFile(Path path, RandomProvider random) {
+        return GrammarParser.parseGrammar(path, random);
+    }
+
+    public static Grammar fromExampleFile(String fileName, RandomProvider random) {
+        return GrammarParser.parseGrammarFromExamples(fileName, random);
     }
 
     public Iterator<GrammarSection> iterator() {
@@ -66,32 +73,32 @@ public class Grammar implements Iterable<GrammarSection>, Serializable {
                         + "\\}", // And finally close off the bracket!
                 Pattern.DOTALL);
 
-        private static ArrayList<GrammarSection> parseSections(String content) {
+        private static ArrayList<GrammarSection> parseSections(String content, RandomProvider random) {
             Matcher matcher = SECTION_REGEX.matcher(content);
             ArrayList<GrammarSection> sections = new ArrayList<>();
             while (matcher.find()) {
-                GrammarSection section = new GrammarSection(matcher.group(1), matcher.group(2));
+                GrammarSection section = new GrammarSection(matcher.group(1), matcher.group(2), random);
                 sections.add(section);
             }
             return sections;
         }
 
-        private static String readFile(String filePath) {
+        private static String readFile(Path filePath) {
             try {
-                return Files.readString(Path.of(filePath));
+                return Files.readString(filePath);
             } catch (Exception e) {
                 throw new RuntimeException("Failed to read file! Context: " + e);
             }
         }
 
-        public static Grammar parseGrammar(String filePath) {
+        public static Grammar parseGrammar(Path filePath, RandomProvider random) {
             String rawContent = readFile(filePath);
-            ArrayList<GrammarSection> sections = parseSections(rawContent);
-            return new Grammar(filePath, sections);
+            ArrayList<GrammarSection> sections = parseSections(rawContent, random);
+            return new Grammar(filePath.getFileName().toString(), sections, random);
         }
 
-        public static Grammar parseGrammarFromExamples(String exampleName) {
-            return parseGrammar("src/comprehensive/examples/" + exampleName);
+        public static Grammar parseGrammarFromExamples(String exampleName, RandomProvider random) {
+            return parseGrammar(Path.of("src/comprehensive/examples/" + exampleName), random);
         }
     }
 

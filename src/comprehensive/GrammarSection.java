@@ -8,18 +8,19 @@ import java.util.regex.Pattern;
 
 public class GrammarSection {
     /** Group 1: It is a variable (ensure variable as short as possible */
-    private String VARIABLE_SUBSECTION = "<(.+?)>";
+    private String VARIABLE_SUBSECTION = "<([a-z_-]+?)>";
     /** Group 2: It is outer text */
     private String TEXT_SUBSECTION = "([^<>]+)";
     Pattern GRAMMAR_STREAM_REGEX = Pattern.compile(VARIABLE_SUBSECTION + "|" +  TEXT_SUBSECTION);
 
     private String name;
     private ArrayList<GrammarLine> lines;
-    private Random random = new Random();
+    private RandomProvider random;
 
-    public GrammarSection(String name, String rawContent) {
+    public GrammarSection(String name, String rawContent, RandomProvider random) {
         this.name = name;
         this.lines = parseAllGrammarLines(rawContent);
+        this.random = random;
     }
 
     private ArrayList<GrammarLine> parseAllGrammarLines(String rawContent) {
@@ -58,7 +59,7 @@ public class GrammarSection {
     }
 
     public GrammarLine randomLine() {
-        return lines.get(random.nextInt(lines.size()));
+        return lines.get(random.nextInt(0, lines.size()));
     }
 
 }
