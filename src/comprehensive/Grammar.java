@@ -27,13 +27,16 @@ public class Grammar implements Iterable<GrammarSection> {
         this.random = random;
     }
 
+    public static Grammar fromText(String name, String text) {
+        return GrammarParser.parseGrammarFromText(name, text, new ValueRandom());
+    }
 
     public static Grammar fromFile(Path path) {
-        return GrammarParser.parseGrammar(path, new ValueRandom());
+        return GrammarParser.parseGrammarFromFile(path, new ValueRandom());
     }
 
     public static Grammar fromFile(Path path, RandomProvider random) {
-        return GrammarParser.parseGrammar(path, random);
+        return GrammarParser.parseGrammarFromFile(path, random);
     }
 
     public static Grammar fromExampleFile(String fileName, RandomProvider random) {
@@ -91,14 +94,17 @@ public class Grammar implements Iterable<GrammarSection> {
             }
         }
 
-        public static Grammar parseGrammar(Path filePath, RandomProvider random) {
-            String rawContent = readFile(filePath);
+        public static Grammar parseGrammarFromText(String name, String rawContent, RandomProvider random) {
             ArrayList<GrammarSection> sections = parseSections(rawContent, random);
-            return new Grammar(filePath.getFileName().toString(), sections, random);
+            return new Grammar(name, sections, random);
+        }
+
+        public static Grammar parseGrammarFromFile(Path filePath, RandomProvider random) {
+            return parseGrammarFromText(filePath.getFileName().toString(), readFile(filePath), random);
         }
 
         public static Grammar parseGrammarFromExamples(String exampleName, RandomProvider random) {
-            return parseGrammar(Path.of("src/comprehensive/examples/" + exampleName), random);
+            return parseGrammarFromFile(Path.of("src/comprehensive/examples/" + exampleName), random);
         }
     }
 

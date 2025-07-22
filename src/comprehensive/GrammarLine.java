@@ -20,7 +20,8 @@ public class GrammarLine {
             }
 
             if (token.isVariable()) {
-                GrammarLine varLine = grammar.randomLineInSection(token.getContent());
+                String varName = token.getContent();
+                GrammarLine varLine = grammar.randomLineInSection(varName);
                 String varEval = varLine.evaluate(grammar);
                 builder.append(varEval);
             }

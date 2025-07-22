@@ -8,10 +8,10 @@ import java.util.regex.Pattern;
 
 public class GrammarSection {
     /** Group 1: It is a variable (ensure variable as short as possible */
-    private String VARIABLE_SUBSECTION = "<([a-z_-]+?)>";
+    private static String VARIABLE_SUBSECTION = "<([a-z0-9_-]+?)>";
     /** Group 2: It is outer text */
-    private String TEXT_SUBSECTION = "([^<>]+)";
-    Pattern GRAMMAR_STREAM_REGEX = Pattern.compile(VARIABLE_SUBSECTION + "|" +  TEXT_SUBSECTION);
+    private static String TEXT_SUBSECTION = "([^<>]+)";
+    private static Pattern GRAMMAR_STREAM_REGEX = Pattern.compile(VARIABLE_SUBSECTION + "|" +  TEXT_SUBSECTION);
 
     private String name;
     private ArrayList<GrammarLine> lines;
