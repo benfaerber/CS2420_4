@@ -14,7 +14,7 @@ public class PhraseGeneratorTimingExperiment extends TimingExperiment {
     private static int problemSizeMin = 10;
     private static int problemSizeCount = 300;
     private static int problemSizeStep = 50;
-    private static int experimentIterationCount = 30;
+    private static int experimentIterationCount = 10;
 
     private int currentProblemSize = 0;
 
@@ -52,7 +52,6 @@ public class PhraseGeneratorTimingExperiment extends TimingExperiment {
             RandomPhraseGenerator.main(new String[] {
                     "src/comprehensive/examples/fruit.g",
                     this.currentProblemSize + "",
-                    "--quiet"
             });
         } catch (Exception e) {
             throw new RuntimeException(e);
