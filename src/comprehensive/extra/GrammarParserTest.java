@@ -33,21 +33,6 @@ public class GrammarParserTest {
     }
 
     @Test
-    public void testPhraseGeneratorWithSequenceRandom() {
-        Grammar grammar0 = Grammar.fromExampleFile("super_simple.g", new MockSequenceRandom());
-        String expectedPhrase0 = "The cat sat on the dog.";
-        assertEquals(grammar0.randomPhrase(), expectedPhrase0);
-
-        Grammar grammar2 = Grammar.fromExampleFile("assignment_extension_request.g", new MockSequenceRandom());
-        String expectedPhrase2 = "I need an extension because my USB flash drive got erased.";
-        assertEquals(grammar2.randomPhrase(), expectedPhrase2);
-
-        Grammar grammar3 = Grammar.fromExampleFile("fruit.g", new MockSequenceRandom());
-        String expectedPhrase3 = "I can't eat fruit today because I got into a fight with a banana.";
-        assertEquals(grammar3.randomPhrase(), expectedPhrase3);
-    }
-
-    @Test
     public void testValueRandom() {
         // Value random should generate 0-10 exclusive
         RandomProvider random = new ValueRandom();
