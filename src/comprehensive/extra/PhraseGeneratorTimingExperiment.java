@@ -1,5 +1,6 @@
-package comprehensive;
+package comprehensive.extra;
 
+import comprehensive.RandomPhraseGenerator;
 import timing.TimingExperiment;
 
 /**
@@ -14,7 +15,7 @@ public class PhraseGeneratorTimingExperiment extends TimingExperiment {
     private static int problemSizeMin = 10;
     private static int problemSizeCount = 300;
     private static int problemSizeStep = 50;
-    private static int experimentIterationCount = 10;
+    private static int experimentIterationCount = 2;
 
     private int currentProblemSize = 0;
 

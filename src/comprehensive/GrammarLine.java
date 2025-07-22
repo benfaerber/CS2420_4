@@ -1,8 +1,6 @@
 package comprehensive;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.StringJoiner;
+import java.util.*;
 
 public class GrammarLine {
     private ArrayList<GrammarToken> tokens;
@@ -11,23 +9,23 @@ public class GrammarLine {
     }
 
     public String evaluate(Grammar grammar) {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder output = new StringBuilder();
+        Deque<GrammarToken> stack = new ArrayDeque<>(tokens);
+        while (!stack.isEmpty()) {
+            GrammarToken token = stack.pollFirst();
 
-        for (GrammarToken token : tokens) {
             if (token.isText()) {
-                builder.append(token.getContent());
-                continue;
-            }
-
-            if (token.isVariable()) {
-                String varName = token.getContent();
-                GrammarLine varLine = grammar.randomLineInSection(varName);
-                String varEval = varLine.evaluate(grammar);
-                builder.append(varEval);
+                output.append(token.getContent());
+            } else if (token.isVariable()) {
+                GrammarLine replacement = grammar.randomLineInSection(token.getContent());
+                List<GrammarToken> replacementTokens = replacement.tokens;
+                for (int i = replacementTokens.size() - 1; i >= 0; i--) {
+                    stack.addFirst(replacementTokens.get(i));
+                }
             }
         }
 
-        return builder.toString();
+        return output.toString();
     }
 
     @Override

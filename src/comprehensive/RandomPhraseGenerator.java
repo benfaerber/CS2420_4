@@ -4,6 +4,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.List;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -33,18 +34,23 @@ public class RandomPhraseGenerator {
         String grammarName = filepath.getFileName().toString();
         Grammar grammar = Grammar.fromText(grammarName, grammarRawContent);
 
-        StringJoiner buffer = new StringJoiner("\n");
-        for (int i = 0; i < phraseCount; i++) {
-            String phrase = grammar.randomPhrase();
-            buffer.add(phrase);
+        List<String> phrases = IntStream.range(0, phraseCount)
+                .parallel()
+                .mapToObj(i -> grammar.randomPhrase())
+                .toList();
 
-            int BUFFER_SIZE = 1_000;
-            if (buffer.length() > BUFFER_SIZE) {
-                System.out.println(buffer);
-                buffer = new StringJoiner("\n");
+        int BUFFER_SIZE = 200;
+
+        StringBuilder buffer = new StringBuilder();
+        for (int i = 0; i < phrases.size(); i++) {
+            buffer.append(phrases.get(i)).append("\n");
+            if ((i + 1) % BUFFER_SIZE == 0) {
+                System.out.print(buffer);
+                buffer.setLength(0);
             }
         }
-
-        System.out.println(buffer);
+        if (!buffer.isEmpty()) {
+            System.out.print(buffer);
+        }
     }
 }
