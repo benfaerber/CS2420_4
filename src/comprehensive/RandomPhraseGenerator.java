@@ -43,7 +43,7 @@ public class RandomPhraseGenerator {
         ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         List<Future<String>> futures = new ArrayList<>();
         for (int i = 0; i < batchCount; i++) {
-            int count = batchCount;
+            int count = BATCH_SIZE;
             if (i == batchCount - 1) {
                 count = phraseCount - i * BATCH_SIZE;
             }
