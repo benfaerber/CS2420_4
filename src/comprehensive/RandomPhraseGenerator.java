@@ -1,5 +1,7 @@
 package comprehensive;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -15,7 +17,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class RandomPhraseGenerator {
-    private static int BATCH_SIZE = 10_000;
+    private static int BATCH_SIZE = 100;
 
     public static void main(String[] args) throws IOException, ExecutionException, InterruptedException {
         if (args.length == 0) {
@@ -40,7 +42,8 @@ public class RandomPhraseGenerator {
 
         int batchCount = (int) Math.ceil(phraseCount / (double) BATCH_SIZE);
 
-        ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        int threads = Runtime.getRuntime().availableProcessors();
+        ExecutorService pool = Executors.newFixedThreadPool(threads);
         List<Future<String>> futures = new ArrayList<>();
         for (int i = 0; i < batchCount; i++) {
             int count = BATCH_SIZE;
@@ -50,10 +53,13 @@ public class RandomPhraseGenerator {
             futures.add(pool.submit(new PhraseBatchGenerator(grammar, count)));
         }
 
-        for (Future<String> future : futures) {
-            String batchPhrases = future.get();
-            System.out.println(batchPhrases);
+        try (BufferedWriter writer = new BufferedWriter(
+                new OutputStreamWriter(System.out), 50_000)) {
+            for (Future<String> future : futures) {
+                writer.write(future.get());
+            }
         }
+
         pool.shutdown();
     }
 }
