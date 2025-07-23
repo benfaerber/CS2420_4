@@ -2,6 +2,7 @@ package comprehensive.extra;
 
 import comprehensive.RandomPhraseGenerator;
 import timing.TimingExperiment;
+import timing.TimingWithTimestampExperiment;
 
 /**
  * Timing experiment for XXXXXXXXXXXXXXXX
@@ -9,18 +10,18 @@ import timing.TimingExperiment;
  * @author Benjamin Faerber
  * @version 2025-06-12
  */
-public class PhraseGeneratorTimingExperiment extends TimingExperiment {
+public class PhraseGeneratorTimingExperiment extends TimingWithTimestampExperiment {
 
     private static String problemSizeDescription = "Phrase Count";
-    private static int problemSizeMin = 10;
-    private static int problemSizeCount = 300;
-    private static int problemSizeStep = 50;
+    private static int problemSizeMin = 100_000;
+    private static int problemSizeCount = 1;
+    private static int problemSizeStep = 5_00;
     private static int experimentIterationCount = 2;
 
     private int currentProblemSize = 0;
 
     public static void main(String[] args) {
-        TimingExperiment timingExperiment = new PhraseGeneratorTimingExperiment();
+        TimingWithTimestampExperiment timingExperiment = new PhraseGeneratorTimingExperiment();
         timingExperiment.printResults();
     }
 

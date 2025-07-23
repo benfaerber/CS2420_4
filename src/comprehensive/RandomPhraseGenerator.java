@@ -19,6 +19,12 @@ import java.util.stream.IntStream;
 public class RandomPhraseGenerator {
     private static int BATCH_SIZE = 100;
 
+    /**
+     * The buffered writer is much better performance wise but messes with the order the output is display in
+     * (it doesn't lock like println so the order will be weird)
+     */
+    private static boolean USE_BUFFERED_WRITER = true;
+
     public static void main(String[] args) throws IOException, ExecutionException, InterruptedException {
         if (args.length == 0) {
             System.out.println("Usage: java comprehensive.RandomPhraseGenerator <filename.g>");
@@ -53,13 +59,30 @@ public class RandomPhraseGenerator {
             futures.add(pool.submit(new PhraseBatchGenerator(grammar, count)));
         }
 
+        if (USE_BUFFERED_WRITER) {
+            bufferedWriter(futures);
+        } else {
+            printlnWriter(futures);
+        }
+        pool.shutdown();
+    }
+
+    private static void printlnWriter(List<Future<String>> futures) throws ExecutionException, InterruptedException {
+        StringJoiner sb = new StringJoiner("\n");
+        for (Future<String> future : futures) {
+            sb.add(future.get());
+        }
+        System.out.println(sb.toString());
+    }
+
+    private static void bufferedWriter(List<Future<String>> futures) {
         try (BufferedWriter writer = new BufferedWriter(
                 new OutputStreamWriter(System.out), 50_000)) {
             for (Future<String> future : futures) {
                 writer.write(future.get());
             }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-
-        pool.shutdown();
     }
 }
