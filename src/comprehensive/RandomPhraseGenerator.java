@@ -45,7 +45,10 @@ public class RandomPhraseGenerator {
         }
 
         Grammar grammar = Grammar.fromFile(filepath);
+        executeBulkPhraseGenerator(grammar, phraseCount);
+    }
 
+    private static void executeBulkPhraseGenerator(Grammar grammar, int phraseCount) throws ExecutionException, InterruptedException {
         int batchCount = (int) Math.ceil(phraseCount / (double) BATCH_SIZE);
 
         int threads = Runtime.getRuntime().availableProcessors();
@@ -72,7 +75,7 @@ public class RandomPhraseGenerator {
         for (Future<String> future : futures) {
             sb.add(future.get());
         }
-        System.out.println(sb.toString());
+        System.out.println(sb);
     }
 
     private static void bufferedWriter(List<Future<String>> futures) {

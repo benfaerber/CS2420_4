@@ -50,11 +50,13 @@ public class PhraseGeneratorTimingExperiment extends TimingWithTimestampExperime
     @Override
     protected void runComputation() {
         try {
-            // Just run main to be accurate to gradescope
-            RandomPhraseGenerator.main(new String[] {
-                    "src/comprehensive/examples/fruit.g",
-                    this.currentProblemSize + "",
-            });
+            for (int i = 1; i <= 20; i++) {
+                // Just run main to be accurate to gradescope
+                RandomPhraseGenerator.main(new String[] {
+                        "src/comprehensive/examples/fruit.g",
+                        this.currentProblemSize + "",
+                });
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
