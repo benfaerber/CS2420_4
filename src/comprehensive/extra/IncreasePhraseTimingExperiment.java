@@ -14,8 +14,8 @@ public class IncreasePhraseTimingExperiment extends TimingExperiment {
 
     private static String problemSizeDescription = "Phrase Count";
     private static int problemSizeMin = 100;
-    private static int problemSizeCount = 50;
-    private static int problemSizeStep = 100;
+    private static int problemSizeCount = 100;
+    private static int problemSizeStep = 500;
     private static int experimentIterationCount = 30;
 
     private int phraseCount;

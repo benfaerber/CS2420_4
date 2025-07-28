@@ -14,9 +14,9 @@ public class IncreaseRulesTimingExperiment extends TimingExperiment {
 
     private static String problemSizeDescription = "Rule Count";
     private static int problemSizeMin = 100;
-    private static int problemSizeCount = 50;
-    private static int problemSizeStep = 100;
-    private static int experimentIterationCount = 30;
+    private static int problemSizeCount = 100;
+    private static int problemSizeStep = 1_000;
+    private static int experimentIterationCount = 10;
 
     private int ruleCount;
     private Grammar grammar;

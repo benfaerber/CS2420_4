@@ -23,8 +23,15 @@ public class RandomPhraseGenerator {
      * The buffered writer is much better performance wise but messes with the order the output is display in
      * (it doesn't lock like println so the order will be weird)
      */
-    private static boolean USE_BUFFERED_WRITER = true;
+    private static boolean USE_BUFFERED_WRITER = false;
 
+    /**
+     * The main method ran when the program is ran from the CLI
+     * @param args the CLI arguments
+     * @throws IOException If it failed to read the file
+     * @throws ExecutionException If it failed to execute
+     * @throws InterruptedException If the threading gets interrupted
+     */
     public static void main(String[] args) throws IOException, ExecutionException, InterruptedException {
         if (args.length == 0) {
             System.out.println("Usage: java comprehensive.RandomPhraseGenerator <filename.g>");
@@ -48,6 +55,14 @@ public class RandomPhraseGenerator {
         executeBulkPhraseGenerator(grammar, phraseCount);
     }
 
+    /**
+     * This chunks up the phrase generation and uses multithreading to quickly
+     * generate a bunch of phrases
+     * @param grammar the grammar used to randomly generate
+     * @param phraseCount how many phrases to generate
+     * @throws ExecutionException If the Future throws an execution
+     * @throws InterruptedException If the Future gets interrupted
+     */
     private static void executeBulkPhraseGenerator(Grammar grammar, int phraseCount) throws ExecutionException, InterruptedException {
         int batchCount = (int) Math.ceil(phraseCount / (double) BATCH_SIZE);
 
@@ -70,6 +85,12 @@ public class RandomPhraseGenerator {
         pool.shutdown();
     }
 
+    /**
+     * Print the output using System.out.println
+     * @param futures a list of batch generation futures
+     * @throws ExecutionException If the Future throws an execution
+     * @throws InterruptedException If the Future gets interrupted
+     */
     private static void printlnWriter(List<Future<String>> futures) throws ExecutionException, InterruptedException {
         StringJoiner sb = new StringJoiner("\n");
         for (Future<String> future : futures) {
@@ -78,6 +99,10 @@ public class RandomPhraseGenerator {
         System.out.println(sb);
     }
 
+    /**
+     * Print the output using a buffered writer
+     * @param futures a list of batch generation futures
+     */
     private static void bufferedWriter(List<Future<String>> futures) {
         try (BufferedWriter writer = new BufferedWriter(
                 new OutputStreamWriter(System.out), 50_000)) {

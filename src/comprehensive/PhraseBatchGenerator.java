@@ -5,15 +5,28 @@ import java.util.List;
 import java.util.StringJoiner;
 import java.util.concurrent.Callable;
 
+/**
+ * A batch of phrase generation.
+ * This is so you can generate phrases in chunks on different threads.
+ */
 class PhraseBatchGenerator implements Callable<String> {
     private final Grammar grammar;
     private final int count;
 
+    /**
+     * Create a new PhraseBatchGenerator
+     * @param grammar the grammar to use
+     * @param count the random phrases in this batch
+     */
     public PhraseBatchGenerator(Grammar grammar, int count) {
         this.grammar = grammar;
         this.count = count;
     }
 
+    /**
+     * This is what is executed when Future.get is called
+     * @return The chunk output
+     */
     @Override
     public String call() {
         StringJoiner phrases = new StringJoiner("\n");
