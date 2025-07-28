@@ -7,11 +7,6 @@ public class GrammarLine {
     private boolean hasVars;
     private int sizeGuess;
 
-    /**
-     * I'm guessing the average line will be 200
-     */
-    private int SIZE_GUESS = 200;
-
     public GrammarLine(ArrayList<GrammarToken> tokens) {
 
         this.tokens = tokens;
