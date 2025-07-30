@@ -1,6 +1,5 @@
 package comprehensive;
 
-import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -15,6 +14,9 @@ import java.util.regex.Pattern;
  *
  * This parses grammar files and allows you to generate random phrases.
  * To get started use "Grammar.fromText" or "Grammar.fromFile"
+ *
+ * @author Benjamin Faerber and David Chen
+ * @version July 28, 2025
  */
 public class Grammar implements Iterable<GrammarSection> {
     private final String name;
@@ -24,7 +26,8 @@ public class Grammar implements Iterable<GrammarSection> {
     private final RandomProvider random;
 
     /**
-     * Create a named Grammar file from a list of sections
+     * Create a named Grammar file from a list of sections.
+     *
      * @param name the file name (ie grammar.g)
      * @param sectionsList a list of the GrammarSections
      * @param random A RandomProvider. For normal use, use ValueRandom and for unit testing use MockRandom
@@ -40,7 +43,8 @@ public class Grammar implements Iterable<GrammarSection> {
     }
 
     /**
-     * Create a named grammar from raw text
+     * Create a named grammar from raw text.
+     *
      * @param name the desired name of the grammar
      * @param text the raw text content of the grammar
      * @return A Grammar based on your input text
@@ -50,7 +54,8 @@ public class Grammar implements Iterable<GrammarSection> {
     }
 
     /**
-     * Create a grammar from a file (.g file)
+     * Create a grammar from a file (.g file).
+     *
      * @param path The filepath to your grammar file
      * @return A newly parsed grammar of your file
      */
@@ -59,28 +64,27 @@ public class Grammar implements Iterable<GrammarSection> {
     }
 
     /**
-     * Create a grammar from a file (.g file)
+     * Create a grammar from a file (.g file).
+     *
      * This method allows you to add a random provider for testing purposes
      * @param path The filepath to your grammar file
      * @param random A RandomProvider (source of randomness)
      * @return A newly parsed grammar from your file
      */
-    public static Grammar fromFile(Path path, RandomProvider random) {
-        return GrammarParser.parseGrammarFromFile(path, random);
-    }
+    public static Grammar fromFile(Path path, RandomProvider random) {return GrammarParser.parseGrammarFromFile(path, random);}
 
     /**
-     * Load an example file from the "examples" directory. Used for TimingExperiments and testing
+     * Load an example file from the "examples" directory. Used for TimingExperiments and testing.
+     *
      * @param fileName the name of the example file
      * @param random the RandomProvider (either Mock or Value)
      * @return A newly parsed grammar from your file
      */
-    public static Grammar fromExampleFile(String fileName, RandomProvider random) {
-        return GrammarParser.parseGrammarFromExamples(fileName, random);
-    }
+    public static Grammar fromExampleFile(String fileName, RandomProvider random) {return GrammarParser.parseGrammarFromExamples(fileName, random);}
 
     /**
-     * Iterate over grammar sections
+     * Iterate over grammar sections.
+     *
      * @return An iterator of grammar sections
      */
     public Iterator<GrammarSection> iterator() {
@@ -88,7 +92,8 @@ public class Grammar implements Iterable<GrammarSection> {
     }
 
     /**
-     * Get a random line in a named section
+     * Get a random line in a named section.
+     *
      * @param name a section name
      * @return a random GrammarLine
      */
@@ -98,18 +103,19 @@ public class Grammar implements Iterable<GrammarSection> {
     }
 
     /**
-     * Generate a random phrase based on this grammar
+     * Generate a random phrase based on this grammar.
+     *
      * @return a random phrase
      */
     public String randomPhrase() {
         GrammarSection startSection = sections.get(START_SECTION);
         GrammarLine startLine = startSection.randomLine();
-
         return startLine.evaluate(this);
     }
 
     /**
-     * Convert this grammar into a string display
+     * Convert this grammar into a string display.
+     *
      * @return a string representation of the grammar
      */
     @Override
@@ -122,7 +128,8 @@ public class Grammar implements Iterable<GrammarSection> {
     }
 
     /**
-     * A Parser class to hide the encapsulate parsing of the file
+     * A Parser class to hide the encapsulate parsing of the file.
+     *
      */
     private static class GrammarParser {
         private static final Pattern SECTION_REGEX = Pattern.compile(
@@ -133,7 +140,8 @@ public class Grammar implements Iterable<GrammarSection> {
                 Pattern.DOTALL);
 
         /**
-         * Extract a list of sections from raw text
+         * Extract a list of sections from raw text.
+         *
          * @param content The raw content of the grammar
          * @param random The source of randomness
          * @return A list of grammar sections
@@ -149,7 +157,8 @@ public class Grammar implements Iterable<GrammarSection> {
         }
 
         /**
-         * Read a file from a string and return a runtime error on failure
+         * Read a file from a string and return a runtime error on failure.
+         *
          * @param filePath The file path to load
          * @return The string contents of the file
          */
@@ -162,7 +171,8 @@ public class Grammar implements Iterable<GrammarSection> {
         }
 
         /**
-         * Parse a grammar from text
+         * Parse a grammar from text.
+         *
          * @param name the name of the grammar
          * @param rawContent the raw content of the grammar
          * @param random the source of randomness
@@ -174,7 +184,8 @@ public class Grammar implements Iterable<GrammarSection> {
         }
 
         /**
-         * Parse a grammar from a file
+         * Parse a grammar from a file.
+         *
          * @param filePath the file to parse from
          * @param random the source of randomness
          * @return the parsed grammar
@@ -184,7 +195,8 @@ public class Grammar implements Iterable<GrammarSection> {
         }
 
         /**
-         * Parse a grammar from the examples folder
+         * Parse a grammar from the examples folder.
+         *
          * @param exampleName the name of the example
          * @param random the source of randomness
          * @return the parsed grammar
@@ -193,5 +205,4 @@ public class Grammar implements Iterable<GrammarSection> {
             return parseGrammarFromFile(Path.of("src/comprehensive/examples/" + exampleName), random);
         }
     }
-
 }

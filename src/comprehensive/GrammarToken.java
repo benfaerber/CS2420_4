@@ -4,11 +4,14 @@ package comprehensive;
  * A single GrammarToken
  * This can either be Variable or Text.
  * A variable can be expanded
+ *
+ * @author Benjamin Faerber and David Chen
+ * @version July 28, 2025
  */
 class GrammarToken {
     /**
-     * The various types of grammar
-     * This could be expanded later to add new types of grammars
+     * The various types of grammar.
+     * This could be expanded later to add new types of grammars.
      */
     enum GrammarType {
         Variable,
@@ -17,9 +20,9 @@ class GrammarToken {
 
     private final String content;
     private final GrammarType type;
-
     /**
-     * Construct a GrammarToken
+     * Construct a GrammarToken.
+     *
      * @param content the text content of the token
      * @param type the token type
      */
@@ -29,7 +32,8 @@ class GrammarToken {
     }
 
     /**
-     * Create a Text token
+     * Create a Text token.
+     *
      * @param text the text contents of the token
      * @return a new text token
      */
@@ -38,7 +42,8 @@ class GrammarToken {
     }
 
     /**
-     * Create a Variable token
+     * Create a Variable token.
+     *
      * @param variable the name of the variable
      * @return a new variable token
      */
@@ -47,7 +52,8 @@ class GrammarToken {
     }
 
     /**
-     * Is this a variable token?
+     * Check if the token is a variable.
+     *
      * @return true if the token is a variable
      */
     public boolean isVariable() {
@@ -55,7 +61,7 @@ class GrammarToken {
     }
 
     /**
-     * Is this a text token?
+     * Check if the token is a text
      * @return true if the token is text
      */
     public boolean isText() {
@@ -63,7 +69,8 @@ class GrammarToken {
     }
 
     /**
-     * Get the inner content of the token
+     * Get the inner content of the token.
+     *
      * @return the inner content of the token
      */
     public String getContent() {
@@ -71,7 +78,8 @@ class GrammarToken {
     }
 
     /**
-     * Get a string representation of the token
+     * Get a string representation of the token.
+     *
      * @return a string representation of the token
      */
     @Override

@@ -2,20 +2,23 @@ package comprehensive;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.StringJoiner;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
+/**
+ * This class is used to generate random phrases based on a grammar defined in a text file.
+ * The grammar specifies nonterminal symbols and their corresponding production rules.
+ * The generator expands these rules recursively to produce complete phrases.
+ *
+ * @author Benjamin Faerber and David Chen
+ * @version July 28, 2025
+ **/
 public class RandomPhraseGenerator {
     private static int BATCH_SIZE = 100;
 
@@ -26,7 +29,8 @@ public class RandomPhraseGenerator {
     private static boolean USE_BUFFERED_WRITER = false;
 
     /**
-     * The main method ran when the program is ran from the CLI
+     * The main method ran when the program is ran from the CLI.
+     *
      * @param args the CLI arguments
      * @throws IOException If it failed to read the file
      * @throws ExecutionException If it failed to execute
@@ -57,7 +61,8 @@ public class RandomPhraseGenerator {
 
     /**
      * This chunks up the phrase generation and uses multithreading to quickly
-     * generate a bunch of phrases
+     * generate a bunch of phrases.
+     *
      * @param grammar the grammar used to randomly generate
      * @param phraseCount how many phrases to generate
      * @throws ExecutionException If the Future throws an execution
@@ -86,7 +91,8 @@ public class RandomPhraseGenerator {
     }
 
     /**
-     * Print the output using System.out.println
+     * Print the output using System.out.println.
+     *
      * @param futures a list of batch generation futures
      * @throws ExecutionException If the Future throws an execution
      * @throws InterruptedException If the Future gets interrupted
@@ -100,7 +106,8 @@ public class RandomPhraseGenerator {
     }
 
     /**
-     * Print the output using a buffered writer
+     * Print the output using a buffered writer.
+     *
      * @param futures a list of batch generation futures
      */
     private static void bufferedWriter(List<Future<String>> futures) {

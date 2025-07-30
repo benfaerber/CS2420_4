@@ -3,6 +3,9 @@ package comprehensive;
 /**
  * This interface represents the base requirements of randomness.
  * This is used throughout the app so we can use different sources of randomness.
+ *
+ * @author Benjamin Faerber and David Chen
+ * @version July 28, 2025
  */
 public interface RandomProvider {
     /**

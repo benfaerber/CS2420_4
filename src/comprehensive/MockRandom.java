@@ -5,19 +5,23 @@ package comprehensive;
  * It allows for deterministic testing.
  * For example you can create a MockRandom that will always return 1
  * this will ALWAYS create the same sentence so you can test properly
+ *
+ * @author Benjamin Faerber and David Chen
+ * @version July 28, 2025
  */
 public class MockRandom implements RandomProvider {
     private int alwaysReturn;
 
     /**
-     * Create a new MockRandom that always returns 0
+     * Create a new MockRandom that always returns 0.
      */
     public MockRandom() {
         this.alwaysReturn = 0;
     }
 
     /**
-     * Create a new MockRandom that always returns alwaysReturn
+     * Create a new MockRandom that always returns alwaysReturn.
+     *
      * @param alwaysReturn the value to always return
      */
     public MockRandom(int alwaysReturn) {
@@ -25,7 +29,8 @@ public class MockRandom implements RandomProvider {
     }
 
     /**
-     * Get the alwaysReturn value (compatible with RandomProvider)
+     * Get the alwaysReturn value (compatible with RandomProvider).
+     *
      * @param min the minimum value
      * @param max the maximum value
      * @return the alwaysReturn value
@@ -35,8 +40,6 @@ public class MockRandom implements RandomProvider {
         if (alwaysReturn >= max - 1) {
             return max - 1;
         }
-
         return Math.max(alwaysReturn, min);
-
     }
 }

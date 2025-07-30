@@ -1,7 +1,6 @@
 package comprehensive;
 
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.StringJoiner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,6 +15,9 @@ import java.util.regex.Pattern;
  * <name>
  * contents
  * }
+ *
+ * @author Benjamin Faerber and David Chen
+ * @version July 28, 2025
  */
 public class GrammarSection {
     /** Group 1: It is a variable (ensure variable as short as possible */
@@ -29,7 +31,8 @@ public class GrammarSection {
     private RandomProvider random;
 
     /**
-     * Construct a grammar section from raw content
+     * Construct a grammar section from raw content.
+     *
      * @param name the name of the section
      * @param rawContent the raw content in the section
      * @param random the source of randomness
@@ -41,7 +44,8 @@ public class GrammarSection {
     }
 
     /**
-     * Parse all lines from raw content
+     * Parse all lines from raw content.
+     *
      * @param rawContent the content to parse
      * @return A list of parsed lines
      */
@@ -55,7 +59,8 @@ public class GrammarSection {
     }
 
     /**
-     * Parse a single line of the Grammar
+     * Parse a single line of the Grammar.
+     *
      * @param line The contents of a single line
      * @return The parsed GrammarLine
      */
@@ -68,12 +73,12 @@ public class GrammarSection {
                     : GrammarToken.ofText(matcher.group(2));
             grammarStream.add(chunk);
         }
-
         return new GrammarLine(grammarStream);
     }
 
     /**
-     * A string representation of the grammar
+     * A string representation of the grammar.
+     *
      * @return A string representation of the grammar
      */
     @Override
@@ -86,7 +91,8 @@ public class GrammarSection {
     }
 
     /**
-     * Get the name of the grammar section
+     * Get the name of the grammar section.
+     *
      * @return the name of the grammar section
      */
     public String getName() {
@@ -94,11 +100,11 @@ public class GrammarSection {
     }
 
     /**
-     * Get a random line from this grammar section
+     * Get a random line from this grammar section.
+     *
      * @return a random line from this grammar section
      */
     public GrammarLine randomLine() {
         return lines.get(random.nextInt(0, lines.size()));
     }
-
 }
